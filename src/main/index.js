@@ -1,13 +1,24 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
-import { electronApp, optimizer } from '@electron-toolkit/utils'
-import createWindow from './create-window';
+import { app, ipcMain } from 'electron';
+import { electronApp, optimizer } from '@electron-toolkit/utils';
+import createMainWindow from './services/create-main-window';
+import createInitializationsWindow from './services/create-initializations-window';
+import { initializeLocale, getLocaleResources } from './services/locale';
+import { handleSetTitle } from './services';
+import {
+  choosePESDirectory,
+  getSettings,
+  saveSettings,
+  isPESDirectorySetup,
+  initializeSettings,
+} from './services/settings';
+import { activate, isActivated } from './services/activation';
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   // Set app user model id for windows
-  electronApp.setAppUserModelId('com.electron');
+  electronApp.setAppUserModelId('RezaFikkri.SiderManager');
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
@@ -16,16 +27,28 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window);
   });
 
-  // IPC test
-  ipcMain.on('ping', () => console.log('pong'));
+  initializeLocale();
 
-  createWindow();
+  ipcMain.handle('getLocaleResources', () => getLocaleResources());
+  ipcMain.handle('getSettings', () => getSettings());
+  ipcMain.handle('saveSettings', (_, settings) => saveSettings(settings));
+  ipcMain.on('set-title', handleSetTitle);
 
-  app.on('activate', function () {
-    // On macOS it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
-  });
+  // this is for catch mainWindow object that created after initialization
+  // so that is can be used when create settingsWindow
+  const mainWindowObj = { mainWindow: null };
+
+  if (!isActivated() || !isPESDirectorySetup()) {
+    ipcMain.handle('activate', (_, activationKey) => activate(activationKey));
+    ipcMain.handle('initializeSettings', (_, pesDirectory) => initializeSettings(pesDirectory, mainWindowObj));
+
+    createInitializationsWindow();
+  } else {
+    mainWindowObj.mainWindow = createMainWindow();
+  }
+
+  ipcMain.handle('isActivated', () => isActivated());
+  ipcMain.handle('choosePESDirectory', () => choosePESDirectory());
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common

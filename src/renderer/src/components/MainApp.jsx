@@ -1,8 +1,4 @@
-import Versions from './Versions';
-
 export default function MainApp() {
-  const ipcHandle = () => window.electron.ipcRenderer.send('ping')
-
   return (
     <>
       <h1 className="text-xl font-black">This is Initializations</h1>
@@ -20,13 +16,7 @@ export default function MainApp() {
             Documentation
           </a>
         </div>
-        <div className="action">
-          <a target="_blank" rel="noreferrer" onClick={ipcHandle}>
-            Send IPC
-          </a>
-        </div>
       </div>
-      <Versions></Versions>
     </>
   );
 }

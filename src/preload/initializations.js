@@ -1,20 +1,25 @@
-import { contextBridge } from 'electron'
-import { electronAPI } from '@electron-toolkit/preload'
+import { contextBridge, ipcRenderer } from 'electron';
 
-// Custom APIs for renderer
-const api = {}
+const initializations = {
+  setTitle: (title) => ipcRenderer.send('set-title', title),
+  getLocaleResources: () => ipcRenderer.invoke('getLocaleResources'),
+  getSettings: () => ipcRenderer.invoke('getSettings'),
+  saveSettings: (settings) => ipcRenderer.invoke('saveSettings', settings),
+  isActivated: () => ipcRenderer.invoke('isActivated'),
+  activate: (activationKey) => ipcRenderer.invoke('activate', activationKey),
+  choosePESDirectory: () => ipcRenderer.invoke('choosePESDirectory'),
+  initializeSettings: (pesDirectory) => ipcRenderer.invoke('initializeSettings', pesDirectory),
+};
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise
 // just add to the DOM global.
 if (process.contextIsolated) {
   try {
-    contextBridge.exposeInMainWorld('electron', electronAPI)
-    contextBridge.exposeInMainWorld('api', api)
+    contextBridge.exposeInMainWorld('initializations', initializations);
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 } else {
-  window.electron = electronAPI
-  window.api = api
+  window.initializations = initializations;
 }

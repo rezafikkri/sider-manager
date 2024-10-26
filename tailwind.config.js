@@ -5,7 +5,11 @@ module.exports = {
     './src/renderer/src/**/*.{js,jsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'sima-bg': '#161437',
+      },
+    },
   },
   plugins: [],
 };
