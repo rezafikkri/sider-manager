@@ -8,9 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Get App Version
-        shell: bash
-        run: echo "APP_VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
+
 
   download-and-upload:
     needs: get-app-version
@@ -18,19 +16,13 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       PARENT_FOLDER_ID: 1jn2NjBBRHY0cR4xrd9pLjUUFr5QjScEv
 
-    strategy:
-      matrix: 
-        file-name:
-          - builder-debug.yml
-          - latest-linux.yml
-          - latest.yml
-          - sider-manager-${{ env.APP_VERSION }}-setup.exe
-          - sider-manager-${{ env.APP_VERSION }}-setup.exe.blockmap
-          - sider-manager_${{ env.APP_VERSION }}_amd64.deb
-
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Get App Version
+        shell: bash
+        run: echo "APP_VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
 
       - name: Get test-build-and-release Workflow Run Id
         shell: bash
@@ -54,11 +46,38 @@ jobs:
         run: |
           cd release
           ls -R
-
-      - name: Upload (${{ matrix.file-name }}) Artifacts TO Google Drive
+          
+      - name: Upload (*.yml) Artifacts TO Google Drive
         uses: Jumbo810/Upload_Github_Artifacts_TO_GDrive@v2.2.2
         with:
-          target: release/${{ matrix.file-name }}
+          target: release/*.yml
+          credentials: ${{ secrets.G_SERVICE_CREDENTIAL }}
+          parent_folder_id: ${{ env.PARENT_FOLDER_ID }}
+          child_folder: v${{ env.APP_VERSION }}
+          override: true
+
+      - name: Upload (sider-manager-${{ env.APP_VERSION }}-setup.exe) Artifacts TO Google Drive
+        uses: Jumbo810/Upload_Github_Artifacts_TO_GDrive@v2.2.2
+        with:
+          target: release/sider-manager-${{ env.APP_VERSION }}-setup.exe
+          credentials: ${{ secrets.G_SERVICE_CREDENTIAL }}
+          parent_folder_id: ${{ env.PARENT_FOLDER_ID }}
+          child_folder: v${{ env.APP_VERSION }}
+          override: true
+
+      - name: Upload (sider-manager-${{ env.APP_VERSION }}-setup.exe.blockmap) Artifacts TO Google Drive
+        uses: Jumbo810/Upload_Github_Artifacts_TO_GDrive@v2.2.2
+        with:
+          target: release/sider-manager-${{ env.APP_VERSION }}-setup.exe.blockmap
+          credentials: ${{ secrets.G_SERVICE_CREDENTIAL }}
+          parent_folder_id: ${{ env.PARENT_FOLDER_ID }}
+          child_folder: v${{ env.APP_VERSION }}
+          override: true
+
+      - name: Upload (sider-manager_${{ env.APP_VERSION }}_amd64.deb) Artifacts TO Google Drive
+        uses: Jumbo810/Upload_Github_Artifacts_TO_GDrive@v2.2.2
+        with:
+          target: release/sider-manager_${{ env.APP_VERSION }}_amd64.deb
           credentials: ${{ secrets.G_SERVICE_CREDENTIAL }}
           parent_folder_id: ${{ env.PARENT_FOLDER_ID }}
           child_folder: v${{ env.APP_VERSION }}
