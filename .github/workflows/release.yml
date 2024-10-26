@@ -1,4 +1,4 @@
-name: Build/release Sider Managaer
+name: Release
 
 on:
   push:
