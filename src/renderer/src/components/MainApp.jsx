@@ -1,12 +1,12 @@
 import Versions from './Versions';
-import electronLogo from '../assets/electron.svg';
 
 export default function MainApp() {
   const ipcHandle = () => window.electron.ipcRenderer.send('ping')
 
   return (
     <>
-      <img alt="logo" className="logo" src={electronLogo} />
+      <h1 className="text-xl font-black">This is Initializations</h1>
+      <img alt="logo" className="logo" src="" />
       <div className="creator">Powered by electron-vite</div>
       <div className="text">
         Build an Electron app with <span className="react">React</span>
