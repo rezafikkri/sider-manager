@@ -39,6 +39,7 @@ jobs:
             dist/*.yml
 
   build-on-windows:
+    needs: build-on-linux
     runs-on: windows-latest
 
     steps:
@@ -58,6 +59,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: linux_build
+          path: dist
 
       - name: See dist
         shell: bash
