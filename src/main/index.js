@@ -12,6 +12,7 @@ import {
   initializeSettings,
 } from './services/settings';
 import { activate, isActivated } from './services/activation';
+import { playGame } from './services/play-game';
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -49,6 +50,9 @@ app.whenReady().then(() => {
 
   ipcMain.handle('isActivated', () => isActivated());
   ipcMain.handle('choosePESDirectory', () => choosePESDirectory());
+  ipcMain.handle('playGame', () => playGame());
+  // ipcMain.handle('createSettingsWindow', () => createSettingsWindow(mainWindowObj.mainWindow));
+  // ipcMain.handle('isPESExecutableExist', (_, exePath) => existsSync(exePath));
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common

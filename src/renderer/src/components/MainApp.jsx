@@ -1,22 +1,29 @@
+import Locale from './Locale';
+import Header from './Header';
+import AdvancedConfigurationButton from './AdvancedConfigurationButton';
+import InstallAddonButton from './InstallAddonButton';
+import PlayGameButton from './PlayGameButton';
+import SimpleConfigurationButton from './SimpleConfigurationButton';
+import Footer from './Footer';
+
 export default function MainApp() {
   return (
-    <>
-      <h1 className="text-xl font-black">This is Initializations</h1>
-      <img alt="logo" className="logo" src="" />
-      <div className="creator">Powered by electron-vite</div>
-      <div className="text">
-        Build an Electron app with <span className="react">React</span>
-      </div>
-      <p className="tip">
-        Please try pressing <code>F12</code> to open the devTool
-      </p>
-      <div className="actions">
-        <div className="action">
-          <a href="https://electron-vite.org/" target="_blank" rel="noreferrer">
-            Documentation
-          </a>
-        </div>
-      </div>
-    </>
+    <Locale
+      getResources={window.main.getLocaleResources}
+      getSettings={window.main.getSettings}
+      saveSettings={window.main.saveSettings}
+    >
+      <section className="absolute top-0 bottom-0 right-0 left-0 flex justify-center items-center z-0">
+        <div className="bg-gradient"></div>
+      </section>
+      <Header type="main"/>
+      <main className="grid grid-cols-3 gap-5 p-10 text-center relative z-10">
+        <InstallAddonButton />
+        <PlayGameButton />
+        <AdvancedConfigurationButton />
+        <SimpleConfigurationButton />
+      </main>
+      <Footer />
+    </Locale>
   );
 }

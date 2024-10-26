@@ -6,7 +6,7 @@ export default function ShowSettingsWindowButton() {
   const {locale, resources} = useContext(LocaleContext);
 
   function handleShowSettingsWindow() {
-    window.sm.ipcRenderer.invoke('sm:createSettingsWindow');
+    window.main.createSettingsWindow();
   }
 
   return (
