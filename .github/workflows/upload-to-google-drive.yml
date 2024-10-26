@@ -13,6 +13,7 @@ jobs:
         run: echo "APP_VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
 
   download-and-upload:
+    needs: get-app-version
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       PARENT_FOLDER_ID: 1jn2NjBBRHY0cR4xrd9pLjUUFr5QjScEv
