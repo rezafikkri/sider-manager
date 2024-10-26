@@ -4,20 +4,15 @@ on:
   push:
     branches: [release]
 
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
-  release:
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
+  build-on-linux:
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Install Node.js
         uses: actions/setup-node@v4
@@ -27,13 +22,42 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: build-linux
-        if: matrix.os == 'ubuntu-latest'
+      - name: Build
         run: npm run build:linux
 
-      - name: build-win
-        if: matrix.os == 'windows-latest'
+      - name: See dist
+        shell: bash
+        run: |
+          cd dist
+          ls -R
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux_build
+          path: |
+            dist/*.deb
+            dist/*.yml
+
+  build-on-windows:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build
         run: npm run build:win
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: linux_build
 
       - name: See dist
         shell: bash
@@ -51,23 +75,11 @@ jobs:
             dist/*.yml
             dist/*.blockmap
 
-      - name: Upload artifact (ubuntu-latest)
-        if: matrix.os == 'ubuntu-latest'
-        uses: actions/upload-artifact@v4
-        with:
-          name: upload_to_google_drive
-          path: |
-            dist/*.deb
-            dist/*.yml
-          overwrite: true
-
-      - name: Upload artifact (windows-latest)
-        if: matrix.os == 'windows-latest'
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: upload_to_google_drive
           path: |
             dist/*.exe
-            dist/latest.yml
+            dist/*.deb
+            dist/*.yml
             dist/*.blockmap
-          overwrite: true

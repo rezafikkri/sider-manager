@@ -1,0 +1,32 @@
+name: Upload to Google Drive
+on:
+  release:
+    types: [published]
+
+jobs:
+  download-and-upload:
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      PARENT_FOLDER_ID: 1jn2NjBBRHY0cR4xrd9pLjUUFr5QjScEv
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get test-build-and-release Workflow Run Id
+        shell: bash
+        run: |
+          RUNID=$(gh run list --repo rezafikkri/sider-manager --json databaseId --workflow=release.yml --limit 1 | jq '.[0].databaseId')
+          echo "RUNID=$RUNID" >> $GITHUB_ENV
+
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ env.GITHUB_TOKEN }}
+          name: upload_to_google_drive
+          run-id: ${{ env.RUNID }}
+
+      - name: Display structure of downloaded files
+        shell: bash
+        run: |
+          cd dist
+          ls -R
