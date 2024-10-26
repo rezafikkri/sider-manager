@@ -19,14 +19,19 @@ jobs:
           RUNID=$(gh run list --repo rezafikkri/sider-manager --json databaseId --workflow=release.yml --limit 1 | jq '.[0].databaseId')
           echo "RUNID=$RUNID" >> $GITHUB_ENV
 
+      - name: Create Release Dir
+        shell: bash
+        run: mkdir release
+
       - uses: actions/download-artifact@v4
         with:
           github-token: ${{ env.GITHUB_TOKEN }}
           name: upload_to_google_drive
           run-id: ${{ env.RUNID }}
+          path: release
 
       - name: Display structure of downloaded files
         shell: bash
         run: |
-          cd dist
+          cd release
           ls -R
