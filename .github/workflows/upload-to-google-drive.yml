@@ -47,10 +47,28 @@ jobs:
           cd release
           ls -R
           
-      - name: Upload (*.yml) Artifacts TO Google Drive
+      - name: Upload (builder-debug.yml) Artifacts TO Google Drive
         uses: Jumbo810/Upload_Github_Artifacts_TO_GDrive@v2.2.2
         with:
-          target: release/*.yml
+          target: release/builder-debug.yml
+          credentials: ${{ secrets.G_SERVICE_CREDENTIAL }}
+          parent_folder_id: ${{ env.PARENT_FOLDER_ID }}
+          child_folder: v${{ env.APP_VERSION }}
+          override: true
+
+      - name: Upload (latest-linux.yml) Artifacts TO Google Drive
+        uses: Jumbo810/Upload_Github_Artifacts_TO_GDrive@v2.2.2
+        with:
+          target: release/latest-linux.yml
+          credentials: ${{ secrets.G_SERVICE_CREDENTIAL }}
+          parent_folder_id: ${{ env.PARENT_FOLDER_ID }}
+          child_folder: v${{ env.APP_VERSION }}
+          override: true
+
+      - name: Upload (latest.yml) Artifacts TO Google Drive
+        uses: Jumbo810/Upload_Github_Artifacts_TO_GDrive@v2.2.2
+        with:
+          target: release/latest.yml
           credentials: ${{ secrets.G_SERVICE_CREDENTIAL }}
           parent_folder_id: ${{ env.PARENT_FOLDER_ID }}
           child_folder: v${{ env.APP_VERSION }}
