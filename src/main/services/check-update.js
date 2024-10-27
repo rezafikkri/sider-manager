@@ -3,6 +3,7 @@ import path from 'node:path';
 import { writeFileSync, readFileSync, existsSync } from 'node:fs';
 import { app, Notification } from 'electron';
 import log from 'electron-log/main';
+import os from 'node:os';
 import { getSettingsPath, getSettings } from './settings';
 import { generateErrorLogMessage } from '../utils';
 import { getLocaleResources } from './locale';
@@ -83,7 +84,7 @@ export default async function checkUpdate() {
     if (currentAppVersion < latestReleaseVersion && latestCheckUpdateVersion < latestReleaseVersion) {
       // show notifications and update check-update.json file
       new Notification({
-        title: translate(locale, 'notification.title', localeResources, latestReleaseVersion),
+        title: translate(locale, 'notification.title', localeResources, versions[0].name),
         body: translate(locale, 'notification.body', localeResources),
       }).show();
 
