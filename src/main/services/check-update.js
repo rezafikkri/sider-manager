@@ -71,14 +71,14 @@ export default async function checkUpdate() {
   const versions = await getFolders();
   const latestReleaseVersion = versions[0].name.replace('v', '');
   const currentAppVersion = app.getVersion();
-  const limitCheckUpdate = Math.floor(new Date().getTime() / 1000) + (3600 * 24 * 2); // 2 days
 
   const checkUpdateFilePath = path.join(getSettingsPath(), 'check-update.json');
   const isCheckUpdateExist = existsSync(checkUpdateFilePath);
   if (isCheckUpdateExist) {
     const latestCheckUpdateVersion = getCheckUpdate(checkUpdateFilePath).version;
-    const latestCheckUpdateTime = getCheckUpdate(checkUpdateFilePath).time;
-    if (latestCheckUpdateTime < limitCheckUpdate) return false;
+    const limitCheckUpdate = getCheckUpdate(checkUpdateFilePath).limitTime;
+    const currentTime = Math.floor(new Date().getTime() / 1000);
+    if (currentTime < limitCheckUpdate) return false;
 
     if (currentAppVersion < latestReleaseVersion && latestCheckUpdateVersion < latestReleaseVersion) {
       // show notifications and update check-update.json file
@@ -89,7 +89,7 @@ export default async function checkUpdate() {
 
       writeFileSync(checkUpdateFilePath, JSON.stringify({
         version: latestReleaseVersion,
-        time: Math.floor(new Date().getTime() / 1000),
+        limitTime: Math.floor(new Date().getTime() / 1000) + (3600 * 24 * 2), // 2 days
       }));
 
       return true;
@@ -107,7 +107,7 @@ export default async function checkUpdate() {
 
     writeFileSync(checkUpdateFilePath, JSON.stringify({
       version: latestReleaseVersion,
-      time: Math.floor(new Date().getTime() / 1000),
+      limitTime: Math.floor(new Date().getTime() / 1000) + (3600 * 24 * 2), // 2 days
     }));
   }
 }
