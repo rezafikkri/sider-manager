@@ -1,4 +1,4 @@
-import { app, ipcMain } from 'electron';
+import { app, ipcMain, Menu } from 'electron';
 import { electronApp, optimizer } from '@electron-toolkit/utils';
 import path from 'node:path';
 import { existsSync } from 'node:fs';
@@ -16,6 +16,9 @@ import {
 } from './services/settings';
 import { activate, isActivated } from './services/activation';
 import { playGame } from './services/play-game';
+
+// for performance
+Menu.setApplicationMenu(null);
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

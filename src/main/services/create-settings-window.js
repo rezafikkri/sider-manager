@@ -15,7 +15,6 @@ export default function createSettingsWindow(parentWindow) {
     width: 450,
     height: 598,
     show: false,
-    autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/settings.js'),

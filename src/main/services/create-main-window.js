@@ -9,7 +9,6 @@ export default function createMainWindow() {
     width: 800,
     height: 430,
     show: false,
-    autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),

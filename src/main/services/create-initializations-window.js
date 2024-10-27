@@ -15,7 +15,6 @@ export default function createInitializationsWindow() {
     width: 400,
     height: 500,
     show: false,
-    autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/initializations.js'),
