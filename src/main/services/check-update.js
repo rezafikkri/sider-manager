@@ -37,7 +37,7 @@ async function refreshAT() {
 async function getFolders() {
   const { at: accessToken } = await loadAccessToken();
   try {
-    const url = 'https://www.googleapis.com/drive/v3/files?orderBy=name%20desc&q=%27upload-sm%40release-sider-manager.iam.gserviceaccount.com%27%20in%20owners%20and%20mimeType%20%3D%20%27application%2Fvnd.google-apps.folder%27';
+    const url = 'https://www.googleapis.com/drive/v3/files?orderBy=name_natural%20desc&q=%27upload-sm%40release-sider-manager.iam.gserviceaccount.com%27%20in%20owners%20and%20mimeType%20%3D%20%27application%2Fvnd.google-apps.folder%27';
     const res = await needle('get', url, {
       headers: { 'Authorization': `Bearer ${accessToken}` }
     });
@@ -62,6 +62,10 @@ function getCheckUpdate(checkUpdateFilePath) {
   return JSON.parse(readFileSync(checkUpdateFilePath));
 }
 
+function checkSmallerThanVersion(currentVersion, latestVersion) {
+  return parseInt(currentVersion.replace(/\./g, '')) < parseInt(latestVersion.replace(/\./g, ''));
+}
+
 export default async function checkUpdate() {
   // check if native notification is support or not
   if (!Notification.isSupported()) return false;
@@ -81,7 +85,9 @@ export default async function checkUpdate() {
     const currentTime = Math.floor(new Date().getTime() / 1000);
     if (currentTime < limitCheckUpdate) return false;
 
-    if (currentAppVersion < latestReleaseVersion && latestCheckUpdateVersion < latestReleaseVersion) {
+    // if (currentAppVersion < latestReleaseVersion && latestCheckUpdateVersion < latestReleaseVersion) {
+    if (checkSmallerThanVersion(currentAppVersion, latestReleaseVersion) &&
+      checkSmallerThanVersion(latestCheckUpdateVersion, latestReleaseVersion)) {
       // show notifications and update check-update.json file
       new Notification({
         title: translate(locale, 'notification.title', localeResources, versions[0].name),
@@ -99,7 +105,8 @@ export default async function checkUpdate() {
     return false;
   }
 
-  if (currentAppVersion < latestReleaseVersion) {
+  // if (currentAppVersion < latestReleaseVersion) {
+  if (checkSmallerThanVersion(currentAppVersion < latestReleaseVersion)) {
     // show notifications and create check-update.json file
     new Notification({
       title: translate(locale, 'notification.title', localeResources, latestReleaseVersion),
