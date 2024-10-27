@@ -1,7 +1,10 @@
 import { app, ipcMain } from 'electron';
 import { electronApp, optimizer } from '@electron-toolkit/utils';
+import path from 'node:path';
+import { existsSync } from 'node:fs';
 import createMainWindow from './services/create-main-window';
 import createInitializationsWindow from './services/create-initializations-window';
+import createSettingsWindow from './services/create-settings-window';
 import { initializeLocale, getLocaleResources } from './services/locale';
 import { handleSetTitle } from './services';
 import {
@@ -51,8 +54,8 @@ app.whenReady().then(() => {
   ipcMain.handle('isActivated', () => isActivated());
   ipcMain.handle('choosePESDirectory', () => choosePESDirectory());
   ipcMain.handle('playGame', () => playGame());
-  // ipcMain.handle('createSettingsWindow', () => createSettingsWindow(mainWindowObj.mainWindow));
-  // ipcMain.handle('isPESExecutableExist', (_, exePath) => existsSync(exePath));
+  ipcMain.handle('createSettingsWindow', () => createSettingsWindow(mainWindowObj.mainWindow));
+  ipcMain.handle('isPESExecutableExist', (_, pesDirectory, pesExe) => existsSync(path.join(pesDirectory, pesExe)));
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common

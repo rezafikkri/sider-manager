@@ -1,11 +1,11 @@
 import { contextBridge, ipcRenderer } from 'electron';
 
-const main = {
+const settings = {
   getLocaleResources: () => ipcRenderer.invoke('getLocaleResources'),
+  choosePESDirectory: () => ipcRenderer.invoke('choosePESDirectory'),
   getSettings: () => ipcRenderer.invoke('getSettings'),
+  isPESExecutableExist: (pesDirectory, pesExe) => ipcRenderer.invoke('isPESExecutableExist', pesDirectory, pesExe),
   saveSettings: (settings) => ipcRenderer.invoke('saveSettings', settings),
-  playGame: () => ipcRenderer.invoke('playGame'),
-  createSettingsWindow: () => ipcRenderer.invoke('createSettingsWindow'),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to
@@ -13,10 +13,10 @@ const main = {
 // just add to the DOM global.
 if (process.contextIsolated) {
   try {
-    contextBridge.exposeInMainWorld('main', main);
+    contextBridge.exposeInMainWorld('settings', settings);
   } catch (error) {
     console.error(error);
   }
 } else {
-  window.main = main;
+  window.settings = settings;
 }

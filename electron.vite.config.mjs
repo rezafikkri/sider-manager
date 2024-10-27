@@ -13,6 +13,7 @@ export default defineConfig({
         input: {
           index: resolve(__dirname, 'src/preload/index.js'),
           initializations: resolve(__dirname, 'src/preload/initializations.js'),
+          settings: resolve(__dirname, 'src/preload/settings.js'),
         },
       },
     },
@@ -29,6 +30,7 @@ export default defineConfig({
         input: {
           index: resolve(__dirname, 'src/renderer/index.html'),
           initializations: resolve(__dirname, 'src/renderer/initializations.html'),
+          settings: resolve(__dirname, 'src/renderer/settings.html'),
         },
       },
     },
