@@ -1,6 +1,6 @@
 {
   "name": "sider-manager",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Sider Manager Application for PES 2017",
   "main": "./out/main/index.js",
   "author": "fikkri.reza@gmail.com",
@@ -20,6 +20,7 @@
     "@electron-toolkit/utils": "^3.0.0",
     "electron-log": "^5.2.0",
     "jsonwebtoken": "^9.0.2",
+    "needle": "^3.3.1",
     "pg": "^8.13.1"
   },
   "devDependencies": {

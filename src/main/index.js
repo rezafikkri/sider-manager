@@ -16,6 +16,7 @@ import {
 } from './services/settings';
 import { activate, isActivated } from './services/activation';
 import { playGame } from './services/play-game';
+import checkUpdate from './services/check-update';
 
 // for performance
 Menu.setApplicationMenu(null);
@@ -59,6 +60,9 @@ app.whenReady().then(() => {
   ipcMain.handle('playGame', () => playGame());
   ipcMain.handle('createSettingsWindow', () => createSettingsWindow(mainWindowObj.mainWindow));
   ipcMain.handle('isPESExecutableExist', (_, pesDirectory, pesExe) => existsSync(path.join(pesDirectory, pesExe)));
+
+  // check-update in background
+  checkUpdate();
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common

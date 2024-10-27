@@ -90,6 +90,10 @@ const resources = {
       sendFeedbackText: 'Punya saran? ',
       sendFeedbackLinkText: 'Kirimkan masukan!'
     },
+    notification: {
+      title: 'Versi baru Sider Manager tersedia (:param)',
+      body: 'Kunjungi situs web resmi untuk mendapatkan versi terbaru.',
+    },
   },
 
   en: {
@@ -173,6 +177,10 @@ const resources = {
     footer: {
       sendFeedbackText: 'Have a suggestion? ',
       sendFeedbackLinkText: 'Send feedback!'
+    },
+    notification: {
+      title: 'A new version of Sider Manager is available (:param)',
+      body: 'Visit the official website to get the latest version.',
     },
   },
 };
