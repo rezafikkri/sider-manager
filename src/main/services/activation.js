@@ -25,8 +25,10 @@ function getSKeyCheck(sKeyActivate) {
 
 function validateActivationKey(aKey, sKeyActivate) {
   const decodedActivationKey = jwt.verify(aKey, sKeyActivate);
+  const activationKeyVersion = decodedActivationKey.version.split('.')[0];
+  const appVersion = app.getVersion().split('.')[0];
   // check if MAJOR version in activation_key is equal to MAJOR version from current app
-  if (decodedActivationKey.version.substring(0, 1) !== app.getVersion().substring(0, 1)) {
+  if (activationKeyVersion !== appVersion) {
     throw new ActivationKeyInvalidError('activationKeyInvalid');
   }
   return decodedActivationKey;
