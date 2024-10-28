@@ -38,8 +38,8 @@ app.whenReady().then(() => {
 
   initializeLocale();
 
-  ipcMain.handle('getLocaleResources', () => getLocaleResources());
-  ipcMain.handle('getSettings', () => getSettings());
+  ipcMain.handle('getLocaleResources', getLocaleResources);
+  ipcMain.handle('getSettings', getSettings);
   ipcMain.handle('saveSettings', (_, settings) => saveSettings(settings));
   ipcMain.handle('isActivated', isActivated);
   ipcMain.on('set-title', handleSetTitle);
@@ -59,8 +59,8 @@ app.whenReady().then(() => {
     mainWindowObj.mainWindow = createMainWindow();
   }
 
-  ipcMain.handle('choosePESDirectory', () => choosePESDirectory());
-  ipcMain.handle('playGame', () => playGame());
+  ipcMain.handle('choosePESDirectory', choosePESDirectory);
+  ipcMain.handle('playGame', playGame);
   ipcMain.handle('createSettingsWindow', () => createSettingsWindow(mainWindowObj.mainWindow));
   ipcMain.handle('isPESExecutableExist', (_, pesDirectory, pesExe) => existsSync(path.join(pesDirectory, pesExe)));
 
