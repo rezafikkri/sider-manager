@@ -106,7 +106,7 @@ export default async function checkUpdate() {
   }
 
   // if (currentAppVersion < latestReleaseVersion) {
-  if (checkSmallerThanVersion(currentAppVersion < latestReleaseVersion)) {
+  if (checkSmallerThanVersion(currentAppVersion, latestReleaseVersion)) {
     // show notifications and create check-update.json file
     new Notification({
       title: translate(locale, 'notification.title', localeResources, latestReleaseVersion),
