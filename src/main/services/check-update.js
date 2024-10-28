@@ -55,6 +55,7 @@ async function getFolders() {
       process.versions.electron,
       err.stack,
     ));
+    return false;
   }
 }
 
@@ -92,6 +93,8 @@ export default async function checkUpdate() {
   const localeResources = getLocaleResources();
 
   const versions = await getFolders();
+  if (!versions) return false;
+
   const latestReleaseVersion = versions[0].name.replace('v', '');
   const currentAppVersion = app.getVersion();
 

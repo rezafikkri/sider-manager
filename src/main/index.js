@@ -17,6 +17,7 @@ import {
 import { activate, isActivated } from './services/activation';
 import { playGame } from './services/play-game';
 import checkUpdate from './services/check-update';
+import { initializeMainWindow } from './services/initializations';
 
 // for performance
 Menu.setApplicationMenu(null);
@@ -40,6 +41,7 @@ app.whenReady().then(() => {
   ipcMain.handle('getLocaleResources', () => getLocaleResources());
   ipcMain.handle('getSettings', () => getSettings());
   ipcMain.handle('saveSettings', (_, settings) => saveSettings(settings));
+  ipcMain.handle('isActivated', isActivated);
   ipcMain.on('set-title', handleSetTitle);
 
   // this is for catch mainWindow object that created after initialization
@@ -49,13 +51,14 @@ app.whenReady().then(() => {
   if (!isActivated() || !isPESDirectorySetup()) {
     ipcMain.handle('activate', (_, activationKey) => activate(activationKey));
     ipcMain.handle('initializeSettings', (_, pesDirectory) => initializeSettings(pesDirectory, mainWindowObj));
-
+    ipcMain.handle('initializeMainWindow', () => initializeMainWindow(createMainWindow, mainWindowObj));
+    ipcMain.handle('isPESDirectorySetup', isPESDirectorySetup);
+    
     createInitializationsWindow();
   } else {
     mainWindowObj.mainWindow = createMainWindow();
   }
 
-  ipcMain.handle('isActivated', () => isActivated());
   ipcMain.handle('choosePESDirectory', () => choosePESDirectory());
   ipcMain.handle('playGame', () => playGame());
   ipcMain.handle('createSettingsWindow', () => createSettingsWindow(mainWindowObj.mainWindow));

@@ -9,6 +9,8 @@ const initializations = {
   activate: (activationKey) => ipcRenderer.invoke('activate', activationKey),
   choosePESDirectory: () => ipcRenderer.invoke('choosePESDirectory'),
   initializeSettings: (pesDirectory) => ipcRenderer.invoke('initializeSettings', pesDirectory),
+  initializeMainWindow: () => ipcRenderer.invoke('initializeMainWindow'),
+  isPESDirectorySetup: () => ipcRenderer.invoke('isPESDirectorySetup'),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

@@ -18,7 +18,7 @@ export default function Initializations() {
       }
     }
     generateStep();
-  }, []);
+  }, [step]);
 
   if (step === null) return null;
   

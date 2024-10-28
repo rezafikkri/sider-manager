@@ -21,7 +21,12 @@ export default function ActivationForm({ onActivate }) {
     const activate = await window.initializations.activate(key);
     if (activate === true) {
       // set step inilialization
-      onActivate('choose-pes-folder');
+      const isPESDirectorySetup = await window.initializations.isPESDirectorySetup();
+      if (isPESDirectorySetup) {
+        await window.initializations.initializeMainWindow();
+      } else {
+        onActivate('choose-pes-folder');
+      }
     } else if (activate !== false) {
       setActivateError(activate);
     } else {
