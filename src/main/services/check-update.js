@@ -63,7 +63,25 @@ function getCheckUpdate(checkUpdateFilePath) {
 }
 
 function checkSmallerThanVersion(currentVersion, latestVersion) {
-  return parseInt(currentVersion.replace(/\./g, '')) < parseInt(latestVersion.replace(/\./g, ''));
+  const arrCurrent = currentVersion.split('.');
+  const arrLatest = latestVersion.split('.');
+
+  // if major current < major latest
+  if (parseInt(arrCurrent[0]) < parseInt(arrLatest[0])) {
+    return true;
+  } else if (parseInt(arrCurrent[0]) === parseInt(arrLatest[0])) {
+    // if minor current < minor latest
+    if (parseInt(arrCurrent[1]) < parseInt(arrLatest[1])) {
+      return true;
+    } else if (parseInt(arrCurrent[1]) === parseInt(arrLatest[1])) {
+      // if patch current < patch latest
+      if (parseInt(arrCurrent[2]) < parseInt(arrLatest[2])) {
+        return true;
+      }
+    }
+  }
+
+  return false;
 }
 
 export default async function checkUpdate() {
