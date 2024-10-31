@@ -8,6 +8,7 @@ import { getSettingsPath, getSettings } from './settings';
 import { generateErrorLogMessage } from '../utils';
 import { getLocaleResources } from './locale';
 import { translate } from '../utils';
+import UnauthorizeError from '../exceptions/UnauthorizeError';
 
 const cid = '1067594218718-jue7kr807nc2nl08f1fpslk8v4mq70qs.apps.googleusercontent.com';
 const csec = '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';
@@ -43,18 +44,20 @@ async function getFolders() {
     });
     if (res.statusCode === 401) {
       refreshAT(rt);
-      throw new Error(JSON.stringify(res.body));
+      throw new UnauthorizeError(JSON.stringify(res.body));
     }
     if (res.statusCode !== 200) throw new Error(JSON.stringify(res.body));
 
     return res.body.files;
   } catch (err) {
-    log.error(generateErrorLogMessage(
-      app.getVersion(),
-      os.version(),
-      process.versions.electron,
-      err.stack,
-    ));
+    if (!err instanceof UnauthorizeError) {
+      log.error(generateErrorLogMessage(
+        app.getVersion(),
+        os.version(),
+        process.versions.electron,
+        err.stack,
+      ));
+    }
     return false;
   }
 }
@@ -92,10 +95,6 @@ export default async function checkUpdate() {
   const { locale } = getSettings();
   const localeResources = getLocaleResources();
 
-  const versions = await getFolders();
-  if (!versions) return false;
-
-  const latestReleaseVersion = versions[0].name.replace('v', '');
   const currentAppVersion = app.getVersion();
 
   const checkUpdateFilePath = path.join(getSettingsPath(), 'check-update.json');
@@ -105,6 +104,10 @@ export default async function checkUpdate() {
     const limitCheckUpdate = getCheckUpdate(checkUpdateFilePath).limitTime;
     const currentTime = Math.floor(new Date().getTime() / 1000);
     if (currentTime < limitCheckUpdate) return false;
+
+    const versions = await getFolders();
+    if (!versions) return false;
+    const latestReleaseVersion = versions[0].name.replace('v', '');
 
     // if (currentAppVersion < latestReleaseVersion && latestCheckUpdateVersion < latestReleaseVersion) {
     if (checkSmallerThanVersion(currentAppVersion, latestReleaseVersion) &&
@@ -126,12 +129,17 @@ export default async function checkUpdate() {
     return false;
   }
 
+  const versions = await getFolders();
+  if (!versions) return false;
+
+  const latestReleaseVersion = versions[0].name.replace('v', '');
+
   // if (currentAppVersion < latestReleaseVersion) {
   if (checkSmallerThanVersion(currentAppVersion, latestReleaseVersion)) {
     // show notifications and create check-update.json file
     new Notification({
-      title: translate(locale, 'notification.title', localeResources, latestReleaseVersion),
-      body: translate(locale, 'notification.body', localeResources),
+      title: translate(locale, 'notification.title', localeResources),
+      body: translate(locale, 'notification.body', localeResources, latestReleaseVersion),
     }).show();
 
     writeFileSync(checkUpdateFilePath, JSON.stringify({
