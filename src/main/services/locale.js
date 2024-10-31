@@ -91,8 +91,8 @@ const resources = {
       sendFeedbackLinkText: 'Kirimkan masukan!'
     },
     notification: {
-      title: 'Versi baru Sider Manager tersedia (:param)',
-      body: 'Kunjungi situs web resmi untuk mendapatkan versi terbaru.',
+      title: 'Pembaruan Sider Manager tersedia!',
+      body: 'Sider Manager versi :param diliris.',
     },
   },
 
@@ -179,8 +179,8 @@ const resources = {
       sendFeedbackLinkText: 'Send feedback!'
     },
     notification: {
-      title: 'A new version of Sider Manager is available (:param)',
-      body: 'Visit the official website to get the latest version.',
+      title: 'Sider Manager update available!',
+      body: 'Sider Manager version :param released.',
     },
   },
 };

@@ -111,8 +111,8 @@ export default async function checkUpdate() {
       checkSmallerThanVersion(latestCheckUpdateVersion, latestReleaseVersion)) {
       // show notifications and update check-update.json file
       new Notification({
-        title: translate(locale, 'notification.title', localeResources, versions[0].name),
-        body: translate(locale, 'notification.body', localeResources),
+        title: translate(locale, 'notification.title', localeResources),
+        body: translate(locale, 'notification.body', localeResources, latestReleaseVersion),
       }).show();
 
       writeFileSync(checkUpdateFilePath, JSON.stringify({
