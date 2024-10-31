@@ -27,8 +27,8 @@ export default function Locale({
   }, []);
 
   function setWindowTitle(locale) {
-    if (window.initializations) {
-      window.initializations.setTitle(translate(locale, 'initializationsWindow.title', resources));
+    if (window.sm) {
+      window.sm.setTitle(translate(locale, 'initializationsWindow.title', resources));
     }
   }
 

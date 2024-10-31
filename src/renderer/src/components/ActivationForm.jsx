@@ -18,12 +18,12 @@ export default function ActivationForm({ onActivate }) {
     // show loading
     setIsLoading(true);
 
-    const activate = await window.initializations.activate(key);
+    const activate = await window.sm.activate(key);
     if (activate === true) {
       // set step inilialization
-      const isPESDirectorySetup = await window.initializations.isPESDirectorySetup();
+      const isPESDirectorySetup = await window.sm.isPESDirectorySetup();
       if (isPESDirectorySetup) {
-        await window.initializations.initializeMainWindow();
+        await window.sm.initializeMainWindow();
       } else {
         onActivate('choose-pes-folder');
       }

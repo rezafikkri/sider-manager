@@ -13,7 +13,7 @@ export default function PESDirectoryForm() {
     // if directory is empty
     if (pesDirectory.trim() === '') return false;
 
-    window.initializations.initializeSettings(pesDirectory);
+    window.sm.initializeSettings(pesDirectory);
   }
 
   return (
@@ -21,7 +21,7 @@ export default function PESDirectoryForm() {
       <PESDirectoryInput
         value={pesDirectory}
         onChange={setPESDirectory}
-        onChoosePESDirectory={window.initializations.choosePESDirectory}
+        onChoosePESDirectory={window.sm.choosePESDirectory}
       />
       <div className="flex justify-end">
         <button type="submit" className="font-medium rounded-lg px-4 py-3 bg-indigo-700 hover:bg-indigo-600 outline outline-transparent focus:outline-offset-2 focus:outline-indigo-700 shadow-lg transition-colors duration-100 ease-in">

@@ -8,9 +8,9 @@ import InitializationsApp from './components/InitializationsApp';
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Locale
-      getResources={window.initializations.getLocaleResources}
-      getSettings={window.initializations.getSettings}
-      saveSettings={window.initializations.saveSettings}
+      getResources={window.sm.getLocaleResources}
+      getSettings={window.sm.getSettings}
+      saveSettings={window.sm.saveSettings}
     >
       <InitializationsApp />
     </Locale>

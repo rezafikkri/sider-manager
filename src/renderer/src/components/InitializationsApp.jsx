@@ -9,7 +9,7 @@ export default function Initializations() {
 
   useEffect(() => {
     async function generateStep() {
-      const isActivated = await window.initializations.isActivated();
+      const isActivated = await window.sm.isActivated();
       if (isActivated) {
         setStep('choose-pes-folder');
       } else {
