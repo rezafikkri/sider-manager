@@ -11,6 +11,7 @@ const sm = {
   initializeSettings: (pesDirectory) => ipcRenderer.invoke('initializeSettings', pesDirectory),
   initializeMainWindow: () => ipcRenderer.invoke('initializeMainWindow'),
   isPESDirectorySetup: () => ipcRenderer.invoke('isPESDirectorySetup'),
+  createAboutWindow: () => ipcRenderer.invoke('createAboutWindow'),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to
