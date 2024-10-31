@@ -15,6 +15,10 @@ const resources = {
     initializationsWindow: {
       title: 'Inisialisasi - Sider Manager',
     },
+    aboutWindow: {
+      title: 'Tentang - Sider Manager',
+      powered: 'Dipersembahkan oleh',
+    },
     settingsWindow: {
       title: 'Pengaturan - Sidar Manager',
     },
@@ -27,7 +31,7 @@ const resources = {
       },
       helpMenu: {
         tutorText: 'Lihat tutorial',
-        aboutText: 'Tentang kami'
+        aboutText: 'Tentang',
       },
     },
     settingsForm: {
@@ -106,6 +110,10 @@ const resources = {
     settingsWindow: {
       title: 'Settings - Sidar Manager',
     },
+    aboutWindow: {
+      title: 'About - Sider Manager',
+      powered: 'Powered by',
+    },
     header: {
       toggleLocaleBtn: {
         title: 'Change language to Indonesian',
@@ -115,7 +123,7 @@ const resources = {
       },
       helpMenu: {
         tutorText: 'View tutorial',
-        aboutText: 'About us'
+        aboutText: 'About'
       },
     },
     settingsForm: {

@@ -18,6 +18,7 @@ import { activate, isActivated } from './services/activation';
 import { playGame } from './services/play-game';
 import checkUpdate from './services/check-update';
 import { initializeMainWindow } from './services/initializations';
+import createAboutWindow from './services/create-about-window';
 
 // for performance
 Menu.setApplicationMenu(null);
@@ -63,6 +64,8 @@ app.whenReady().then(() => {
   ipcMain.handle('playGame', playGame);
   ipcMain.handle('createSettingsWindow', () => createSettingsWindow(mainWindowObj.mainWindow));
   ipcMain.handle('isPESExecutableExist', (_, pesDirectory, pesExe) => existsSync(path.join(pesDirectory, pesExe)));
+  ipcMain.handle('createAboutWindow', () => createAboutWindow(mainWindowObj.mainWindow));
+  ipcMain.handle('getAppVersion', () => app.getVersion());
 
   // check-update in background
   checkUpdate();

@@ -6,30 +6,31 @@ import { getSettings } from './settings';
 import { translate } from '../utils';
 import icon from '../../../resources/icon.png?asset';
 
-export default function createSettingsWindow(parentWindow) {
+export default function createAboutWindow(parentWindow) {
   const { locale } = getSettings();
   const localeResources = getLocaleResources();
 
-  // Create settings window
-  const settingsWindow = new BrowserWindow({
-    width: 450,
-    height: 598,
+  // Create about window
+  const aboutWindow = new BrowserWindow({
+    width: 300,
+    height: 425,
     show: false,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
-      preload: join(__dirname, '../preload/settings.js'),
+      preload: join(__dirname, '../preload/about.js'),
       sandbox: false,
     },
-    title: translate(locale, 'settingsWindow.title', localeResources),
+    title: translate(locale, 'aboutWindow.title', localeResources),
     parent: parentWindow,
     minimizable: false,
+    maximizable: false,
   });
 
-  settingsWindow.on('ready-to-show', () => {
-    settingsWindow.show();
+  aboutWindow.on('ready-to-show', () => {
+    aboutWindow.show();
   });
 
-  settingsWindow.webContents.setWindowOpenHandler((details) => {
+  aboutWindow.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url);
     return { action: 'deny' };
   });
@@ -37,8 +38,8 @@ export default function createSettingsWindow(parentWindow) {
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-    settingsWindow.loadURL(`${process.env['ELECTRON_RENDERER_URL']}/settings.html`);
+    aboutWindow.loadURL(`${process.env['ELECTRON_RENDERER_URL']}/about.html`);
   } else {
-    settingsWindow.loadFile(join(__dirname, '../renderer/settings.html'));
+    aboutWindow.loadFile(join(__dirname, '../renderer/about.html'));
   }
 }
