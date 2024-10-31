@@ -9,7 +9,7 @@ export default function PlayGameButton() {
   const [playGameError, setPlayGameError] = useState(null);
 
   async function handlePlayGame() {
-    const playGame = await window.main.playGame();
+    const playGame = await window.sm.playGame();
     if (playGame === false) {
       setPlayGameError('runApp');
     } else if(playGame !== true) {

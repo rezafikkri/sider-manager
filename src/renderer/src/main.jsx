@@ -8,9 +8,9 @@ import MainApp from './components/MainApp';
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Locale
-      getResources={window.main.getLocaleResources}
-      getSettings={window.main.getSettings}
-      saveSettings={window.main.saveSettings}
+      getResources={window.sm.getLocaleResources}
+      getSettings={window.sm.getSettings}
+      saveSettings={window.sm.saveSettings}
     >
       <MainApp />
     </Locale>

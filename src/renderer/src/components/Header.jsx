@@ -21,7 +21,7 @@ export default function Header({ type }) {
   }, []);
 
   function handleShowAboutWindow() {
-    window.main.createAboutWindow();
+    window.sm.createAboutWindow();
   }
 
   return (

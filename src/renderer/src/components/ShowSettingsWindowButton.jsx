@@ -6,7 +6,7 @@ export default function ShowSettingsWindowButton() {
   const {locale, resources} = useContext(LocaleContext);
 
   function handleShowSettingsWindow() {
-    window.main.createSettingsWindow();
+    window.sm.createSettingsWindow();
   }
 
   return (

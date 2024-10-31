@@ -1,6 +1,6 @@
 import { contextBridge, ipcRenderer } from 'electron';
 
-const main = {
+const sm = {
   getLocaleResources: () => ipcRenderer.invoke('getLocaleResources'),
   getSettings: () => ipcRenderer.invoke('getSettings'),
   saveSettings: (settings) => ipcRenderer.invoke('saveSettings', settings),
@@ -14,10 +14,10 @@ const main = {
 // just add to the DOM global.
 if (process.contextIsolated) {
   try {
-    contextBridge.exposeInMainWorld('main', main);
+    contextBridge.exposeInMainWorld('sm', sm);
   } catch (error) {
     console.error(error);
   }
 } else {
-  window.main = main;
+  window.sm = sm;
 }
