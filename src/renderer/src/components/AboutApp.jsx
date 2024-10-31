@@ -11,7 +11,7 @@ export default function AboutApp() {
 
   useEffect(() => {
     async function getAppVersion() {
-      const appVersion = await window.about.getAppVersion();
+      const appVersion = await window.sm.getAppVersion();
       setAppVersion(appVersion);
     }
     getAppVersion();

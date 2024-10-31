@@ -8,12 +8,12 @@ import AboutApp from './components/AboutApp';
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Locale
-      getResources={window.about.getLocaleResources}
-      getSettings={window.about.getSettings}
-      saveSettings={window.about.saveSettings}
+      getResources={window.sm.getLocaleResources}
+      getSettings={window.sm.getSettings}
+      saveSettings={window.sm.saveSettings}
     >
 
-    <AboutApp />
+      <AboutApp />
     </Locale>
   </React.StrictMode>
 );
