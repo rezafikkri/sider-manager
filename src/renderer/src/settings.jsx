@@ -8,9 +8,9 @@ import SettingsApp from './components/SettingsApp';
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Locale
-      getResources={window.settings.getLocaleResources}
-      getSettings={window.settings.getSettings}
-      saveSettings={window.settings.saveSettings}
+      getResources={window.sm.getLocaleResources}
+      getSettings={window.sm.getSettings}
+      saveSettings={window.sm.saveSettings}
     >
       <SettingsApp />
     </Locale>

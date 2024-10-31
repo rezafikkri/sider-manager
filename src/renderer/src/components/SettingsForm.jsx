@@ -20,19 +20,19 @@ export default function SettingsForm() {
 
     // check if executable file is in the pes directory
     let error = false;
-    if (!await window.settings.isPESExecutableExist(pesDirectory, pesExe)) {
+    if (!await window.sm.isPESExecutableExist(pesDirectory, pesExe)) {
       setPESExeError(translate(locale, 'settingsForm.error.pesExe', resources));
       error = true;
     }
 
-    if (!await window.settings.isPESExecutableExist(pesDirectory, siderExe)) {
+    if (!await window.sm.isPESExecutableExist(pesDirectory, siderExe)) {
       setSiderExeError(translate(locale, 'settingsForm.error.siderExe', resources));
       error = true;
     }
 
     if (error) return false;
 
-    const isSaved = await window.settings.saveSettings({
+    const isSaved = await window.sm.saveSettings({
       pesDirectory: pesDirectory,
       pesExecutable: [pesExe, siderExe],
     });
@@ -55,7 +55,7 @@ export default function SettingsForm() {
 
   useEffect(() => {
     async function getSettings() {
-      const settings = await window.settings.getSettings();
+      const settings = await window.sm.getSettings();
       setPESDirectory(settings.pesDirectory);
       setPESExe(settings.pesExecutable[0]);
       setSiderExe(settings.pesExecutable[1]);
@@ -69,7 +69,7 @@ export default function SettingsForm() {
         <PESDirectoryInput
           onChange={setPESDirectory}
           value={pesDirectory}
-          onChoosePESDirectory={window.settings.choosePESDirectory}
+          onChoosePESDirectory={window.sm.choosePESDirectory}
         />
 
         <label
