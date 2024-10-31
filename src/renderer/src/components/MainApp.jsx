@@ -1,4 +1,3 @@
-import Locale from './Locale';
 import Header from './Header';
 import AdvancedConfigurationButton from './AdvancedConfigurationButton';
 import InstallAddonButton from './InstallAddonButton';
@@ -8,11 +7,7 @@ import Footer from './Footer';
 
 export default function MainApp() {
   return (
-    <Locale
-      getResources={window.main.getLocaleResources}
-      getSettings={window.main.getSettings}
-      saveSettings={window.main.saveSettings}
-    >
+    <>
       <section className="absolute top-0 bottom-0 right-0 left-0 flex justify-center items-center z-0">
         <div className="bg-gradient"></div>
       </section>
@@ -24,6 +19,6 @@ export default function MainApp() {
         <SimpleConfigurationButton />
       </main>
       <Footer />
-    </Locale>
+    </>
   );
 }
