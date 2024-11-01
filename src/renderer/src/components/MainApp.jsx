@@ -1,6 +1,6 @@
 import Header from './Header';
 import AdvancedConfigurationButton from './AdvancedConfigurationButton';
-import InstallAddonButton from './InstallAddonButton';
+import AddonInitializationButton from './AddonInitializationButton';
 import PlayGameButton from './PlayGameButton';
 import SimpleConfigurationButton from './SimpleConfigurationButton';
 import Footer from './Footer';
@@ -13,7 +13,7 @@ export default function MainApp() {
       </section>
       <Header type="main"/>
       <main className="grid grid-cols-3 gap-5 p-10 text-center relative z-10">
-        <InstallAddonButton />
+        <AddonInitializationButton />
         <PlayGameButton />
         <AdvancedConfigurationButton />
         <SimpleConfigurationButton />

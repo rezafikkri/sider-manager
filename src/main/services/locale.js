@@ -78,9 +78,9 @@ const resources = {
         runApp: 'Terjadi kesalahan pada saat menjalankan aplikasi PES 2017 dan atau Sider.',
       },
     },
-    installAddonBtn: {
-      btnText: 'Pasang Addon',
-      smallText: 'Pasang Addon/Mod kamu dengan mudah',
+    addonInitializationBtn: {
+      btnText: 'Inisialisasi Addon',
+      smallText: 'Menginisialisasi Addon/Mod kamu dengan mudah',
     },
     advancedConfigBtn: {
       btnText: 'Lanjutan',
@@ -170,9 +170,9 @@ const resources = {
         runApp: 'An error occurred while running the PES 2017 and or Sider application.',
       },
     },
-    installAddonBtn: {
-      btnText: 'Install Addon',
-      smallText: 'Install your Addon/Mod easily',
+    addonInitializationBtn: {
+      btnText: 'Addon Initialization',
+      smallText: 'Initialize your Addon/Mod easily',
     },
     advancedConfigBtn: {
       btnText: 'Advanced',
