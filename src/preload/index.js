@@ -1,6 +1,7 @@
 import { contextBridge, ipcRenderer } from 'electron';
 
 const sm = {
+  windowName: 'main',
   getLocaleResources: () => ipcRenderer.invoke('getLocaleResources'),
   getSettings: () => ipcRenderer.invoke('getSettings'),
   saveSettings: (settings) => ipcRenderer.invoke('saveSettings', settings),

@@ -26,18 +26,17 @@ export default function Locale({
     getLocale();
   }, []);
 
-  function setWindowTitle(locale) {
-    if (window.sm) {
-      window.sm.setTitle(translate(locale, 'initializationsWindow.title', resources));
-    }
-  }
-
   function toggleLocale() {
     setLocale((prevLocale) => {
       const locale = prevLocale === 'id' ? 'en' : 'id';
       // save locale to settings file
       saveSettings({locale});
-      setWindowTitle(locale);
+
+      // list of window with dynamic title
+      const windowsDT = ['initializations'];
+      if (windowsDT.includes(window.sm.windowName)) {
+        window.sm.setTitle(translate(locale, `${window.sm.windowName}Window.title`, resources));
+      }
       return locale;
     });
   }

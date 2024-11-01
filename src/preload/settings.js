@@ -1,6 +1,7 @@
 import { contextBridge, ipcRenderer } from 'electron';
 
 const sm = {
+  windowName: 'settings',
   getLocaleResources: () => ipcRenderer.invoke('getLocaleResources'),
   choosePESDirectory: () => ipcRenderer.invoke('choosePESDirectory'),
   getSettings: () => ipcRenderer.invoke('getSettings'),
