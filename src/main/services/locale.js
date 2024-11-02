@@ -20,7 +20,10 @@ const resources = {
       powered: 'Dipersembahkan oleh',
     },
     settingsWindow: {
-      title: 'Pengaturan - Sidar Manager',
+      title: 'Pengaturan - Sider Manager',
+    },
+    addonInitializationWindow: {
+      title: 'Inisialisasi Addon - Sider Manager',
     },
     header: {
       toggleLocaleBtn: {
@@ -98,6 +101,17 @@ const resources = {
       title: 'Pembaruan Sider Manager tersedia!',
       body: 'Sider Manager versi :param diliris.',
     },
+    addonInitializationApp: {
+      smallStrongText: 'Catatan',
+      smallText: 'berkas Sider yang lama akan dibackup di',
+      cancelBtnText: 'Batal',
+      initializationBtnText: 'Inisialisasi',
+    },
+    addonInitializationChoose: {
+      pChooseFileText1: 'Pilih berkas',
+      pChooseFileText2: 'yang telah kamu unduh.',
+      chooseFileBtnText: 'Pilih',
+    },
   },
 
   en: {
@@ -108,11 +122,14 @@ const resources = {
       title: 'Initializations - Sider Manager',
     },
     settingsWindow: {
-      title: 'Settings - Sidar Manager',
+      title: 'Settings - Sider Manager',
     },
     aboutWindow: {
       title: 'About - Sider Manager',
       powered: 'Powered by',
+    },
+    addonInitializationWindow: {
+      title: 'Addon Initialization - Sider Manager',
     },
     header: {
       toggleLocaleBtn: {
@@ -189,6 +206,17 @@ const resources = {
     notification: {
       title: 'Sider Manager update available!',
       body: 'Sider Manager version :param released.',
+    },
+    addonInitializationApp: {
+      smallStrongText: 'Note',
+      smallText: 'old Sider file will be backed up in',
+      cancelBtnText: 'Cancel',
+      initializationBtnText: 'Initialization',
+    },
+    addonInitializationChoose: {
+      pChooseFileText1: 'Choose file',
+      pChooseFileText2: 'that you have downloaded.',
+      chooseFileBtnText: 'Choose',
     },
   },
 };
