@@ -9,6 +9,7 @@ const sm = {
   createSettingsWindow: () => ipcRenderer.invoke('createSettingsWindow'),
   createAboutWindow: () => ipcRenderer.invoke('createAboutWindow'),
   createAddonInitializationWindow: () => ipcRenderer.invoke('createAddonInitializationWindow'),
+  createSimpleConfigurationsWindow: () => ipcRenderer.invoke('createSimpleConfigurationsWindow'),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

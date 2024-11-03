@@ -25,6 +25,9 @@ const resources = {
     addonInitializationWindow: {
       title: 'Inisialisasi Addon - Sider Manager',
     },
+    simpleConfigurationsWindow: {
+      title: 'Konfigurasi Sederhana - Sider Manager',
+    },
     header: {
       toggleLocaleBtn: {
         title: 'Ubah bahasa ke bahasa Inggris',
@@ -130,6 +133,9 @@ const resources = {
     },
     addonInitializationWindow: {
       title: 'Addon Initialization - Sider Manager',
+    },
+    simpleConfigurationsWindow: {
+      title: 'Simple Configurations - Sider Manager',
     },
     header: {
       toggleLocaleBtn: {
