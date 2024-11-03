@@ -1,7 +1,12 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useContext } from 'react';
 import ConfigCardToggle from './ConfigCardToggle';
+import LocaleContext from '../contexts/LocaleContext';
+import { translate } from '../../../main/utils';
+import ConfigCardInput from './ConfigCardInput';
 
 export default function SimpleConfigurationsSider() {
+  const {locale, resources} = useContext(LocaleContext);
+
   const [debug, setDebug] = useState(false);
   const handleDebug = useCallback(() => setDebug((debug) => !debug), []);
 
@@ -42,21 +47,21 @@ export default function SimpleConfigurationsSider() {
     {
       id: 1,
       title: 'Debug',
-      desc: 'Membuat Sider mengeluarkan beberapa informasi tambahan ke dalam file log <code>sider.log</code>. Tetapi harap ingat logging ekstra dapat memperlambat game,',
+      desc: translate(locale, 'simpleConfigurationsSider.sectionPDesc1', resources),
       toggleValue: debug,
       onToggle: handleDebug,
     },
     {
       id: 2,
       title: 'Lua Modules',
-      desc: 'Mengaktifkan/menonaktifkan dukungan scripting.',
+      desc: translate(locale, 'simpleConfigurationsSider.sectionPDesc2', resources),
       toggleValue: luaModule,
       onToggle: handleLuaModule,
     },
     {
       id: 3,
       title: 'Live CPK',
-      desc: 'Mengaktifkan/menonaktifkan fungsionalitas LiveCPK dari Sider.',
+      desc: translate(locale, 'simpleConfigurationsSider.sectionPDesc3', resources),
       toggleValue: liveCpk,
       onToggle: handleLiveCpk,
     },
@@ -70,14 +75,14 @@ export default function SimpleConfigurationsSider() {
     {
       id: 5,
       title: 'Close On Exit',
-      desc: 'Membuat Sider akan menutup sendiri, ketika keluar dari game.',
+      desc: translate(locale, 'simpleConfigurationsSider.sectionPDesc5', resources),
       toggleValue: closeOnExit,
       onToggle: handleCloseOnExit,
     },
     {
       id: 6,
       title: 'Start Minimized',
-      desc: 'Membuat Sider akan mulai dengan jendela yang diminimalkan',
+      desc: translate(locale, 'simpleConfigurationsSider.sectionPDesc6', resources),
       toggleValue: startMinimized,
       onToggle: handleStartMinimized,
     },
@@ -91,28 +96,28 @@ export default function SimpleConfigurationsSider() {
     {
       id: 8,
       title: 'Free Select Sides',
-      desc: 'Memungkinkan gerakan bebas pengontrol. Biasanya, itu hanya mungkin dalam mode Exhibition, tetapi dengan mengaktifkan fitur ini, Anda juga dapat memindahkan pengontrol di mode kompetisi.',
+      desc: translate(locale, 'simpleConfigurationsSider.sectionPDesc8', resources),
       toggleValue: freeSelectSides,
       onToggle: handleFreeSelectSides,
     },
     {
       id: 9,
       title: 'Free First Player',
-      desc: 'Memungkinkan pengontrol pertama dipindahkan ke tengah, menonaktifkannya secara efektif.',
+      desc: translate(locale, 'simpleConfigurationsSider.sectionPDesc9', resources),
       toggleValue: freeFirstPlayer,
       onToggle: handleFreeFirstPlayer,
     },
     {
       id: 10,
       title: 'Black Bar',
-      desc: 'Matikan bilah hitam (<i>letterboxing</i>) di bagian atas dan bawah layar, atau di kiri/kanan.',
+      desc: translate(locale, 'simpleConfigurationsSider.sectionPDesc10', resources),
       toggleValue: blackBar,
       onToggle: handleBlackBar,
     },
     {
-      id: 12,
+      id: 11,
       title: 'Camera Dynamic Wide Angle',
-      desc: 'Mengaktifkan slider "Angle" untuk kamera "Dynamic Wide". Fitur ini agak eksperimental.',
+      desc: translate(locale, 'simpleConfigurationsSider.sectionPDesc11', resources),
       toggleValue: cameraDynamicWideAngle,
       onToggle: handleCameraDynamicWideAngle,
     },
@@ -121,24 +126,18 @@ export default function SimpleConfigurationsSider() {
   return (
     <>
       <h1 className="font-bold text-xl mb-1 px-3">Sider</h1>
-      <p className="text-sm mb-10 px-3">Config your Sider easily</p>
+      <p className="text-sm mb-10 px-3">{translate(locale, 'simpleConfigurationsSider.pText', resources)}</p>
 
       {simpleConfigs.map((config) => (
         <ConfigCardToggle {...config} key={config.id} />
       ))}
 
-      <section className="flex items-center mb-5 [&_code]:bg-indigo-950 [&_code]:px-1 [&_code]:py-0.5 [&_code]:rounded px-3 py-1.5 rounded-lg hover:bg-indigo-950 [&_code]:hover:bg-indigo-900 group">
-        <div className="flex-1 me-10">
-          <h2 className="font-semibold mb-1">Camera Sliders</h2>
-          <p className="text-sm opacity-70">Ini memungkinkan untuk memperluas jangkauan slider kamera: Zoom, Height, Angle. Saat ini, ini hanya berfungsi untuk kamera "Kustom". Setel ke <code>0</code> untuk menonaktifkan fitur ini.</p>
-        </div>
-        <input
-          type="text"
-          value={cameraSliders}
-          onChange={handleCameraSliders}
-          className="block w-14 px-3 py-2 outline-[3px] bg-indigo-950 rounded-lg outline outline-transparent focus:outline-offset-2 focus:outline-indigo-700 group-hover:bg-indigo-900"
-        />
-      </section>
+      <ConfigCardInput
+        title="Camera Sliders"
+        desc={translate(locale, 'simpleConfigurationsSider.sectionPDesc12', resources)}
+        toggleValue={cameraSliders}
+        onToggle={handleCameraSliders}
+      />
     </>
   );
 }
