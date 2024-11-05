@@ -170,6 +170,7 @@ export default function SettingsForm() {
           <button type="submit" className="font-medium rounded-lg px-4 py-3 bg-indigo-700 hover:bg-indigo-600 outline outline-transparent focus:outline-offset-2 focus:outline-indigo-700 shadow-lg transition-colors duration-100 ease-in">{translate(locale, 'settingsForm.submitBtnText', resources)}</button>
         </div>
       </form>
+      {(showSuccessAlert || errors.length > 0) ? 
       <div className="absolute bottom-0 right-0 left-0 text-left flex flex-col gap-2 w-3/4">
         {showSuccessAlert ?
           <Alert
@@ -186,6 +187,7 @@ export default function SettingsForm() {
           />
         )}
       </div>
+      : null}
     </div>
   );
 }
