@@ -19,7 +19,7 @@ export default function AddonInitializationApp() {
       <form className="flex justify-end">
         <button
           type="button"
-          className="py-2.5 px-4 me-2 font-medium rounded-lg outline outline-transparent focus:outline-offset-2 focus:outline-gray-600 bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700 transition-colors duration-300"
+          className="py-2.5 px-4 me-2 font-medium rounded-lg outline outline-transparent focus:outline-offset-2 focus:outline-gray-800 bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700 transition-colors duration-300"
         >
           {translate(locale, 'addonInitializationApp.cancelBtnText', resources)}
         </button>
