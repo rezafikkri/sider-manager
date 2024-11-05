@@ -1,5 +1,4 @@
-import { useEffect, useId, useState, useContext } from 'react';
-import PESDirectoryInput from './PESDirectoryInput';
+import { useEffect, useId, useState, useContext, useRef } from 'react';
 import Alert from './Alert';
 import LocaleContext from '../contexts/LocaleContext';
 import { translate } from '../../../main/utils';
@@ -8,12 +7,18 @@ export default function SettingsForm() {
   const {locale, resources} = useContext(LocaleContext);
   const keyInputPESExe = useId();
   const keyInputSiderExe = useId();
+  const keyInputDirectory = useId();
   const [pesDirectory, setPESDirectory] = useState('');
   const [pesExe, setPESExe] = useState('');
-  const [pesExeError, setPESExeError] = useState(null);
   const [siderExe, setSiderExe] = useState('');
-  const [siderExeError, setSiderExeError] = useState(null);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+
+  const [errors, setErrors] = useState([]);
+
+  const inputDirectoryRef = useRef(null);
+  useEffect(() => {
+    inputDirectoryRef.current.scrollLeft = inputDirectoryRef.current.scrollWidth;
+  }, [pesDirectory]);
 
   async function handleFormSubmit(e) {
     e.preventDefault();
@@ -21,12 +26,18 @@ export default function SettingsForm() {
     // check if executable file is in the pes directory
     let error = false;
     if (!await window.sm.isPESExecutableExist(pesDirectory, pesExe)) {
-      setPESExeError(translate(locale, 'settingsForm.error.pesExe', resources));
+      setErrors(errors => [
+        ...errors,
+        translate(locale, 'settingsForm.error.pesExe', resources),
+      ]);
       error = true;
     }
 
     if (!await window.sm.isPESExecutableExist(pesDirectory, siderExe)) {
-      setSiderExeError(translate(locale, 'settingsForm.error.siderExe', resources));
+      setErrors(errors => [
+        ...errors,
+        translate(locale, 'settingsForm.error.siderExe', resources),
+      ]);
       error = true;
     }
 
@@ -37,19 +48,16 @@ export default function SettingsForm() {
       pesExecutable: [pesExe, siderExe],
     });
     if (isSaved) {
-      setPESExeError(null);
-      setSiderExeError(null);
+      setErrors([]);
       setShowSuccessAlert(true);
     }
   }
 
   function handleOnChangePESExeInput(e) {
-    setPESExeError(null);
     setPESExe(e.target.value);
   }
 
   function handleOnChangeSiderExeInput(e) {
-    setSiderExeError(null);
     setSiderExe(e.target.value);
   }
 
@@ -66,65 +74,110 @@ export default function SettingsForm() {
   return (
     <div className="relative">
       <form onSubmit={handleFormSubmit}>
-        <PESDirectoryInput
-          onChange={setPESDirectory}
-          value={pesDirectory}
-          onChoosePESDirectory={window.sm.choosePESDirectory}
-        />
 
-        <label
-          htmlFor={keyInputPESExe}
-          className="inline-block font-semibold mb-3 text-white/90"
-        >
-          {translate(locale, 'settingsForm.pesExeLabelText', resources)}
-        </label>
-        <input
-          type="text"
-          id={keyInputPESExe}
-          className={`flex-auto block w-full p-4 outline-0 bg-indigo-950 rounded-lg outline outline-[3px] focus:outline-offset-2 mb-2 ${pesExeError ? 'outline-red-700' : 'outline-transparent focus:outline-indigo-700'}`}
-          name="pesExe"
-          placeholder={translate(locale, 'settingsForm.pesExeInputPlaceholder', resources)}
-          value={pesExe}
-          onChange={handleOnChangePESExeInput}
-          spellCheck="false"
-        />
-        <small className={`block mb-7 ${pesExeError ? 'text-red-400' : 'text-white/80'}`}>
-          {pesExeError ?? translate(locale, 'settingsForm.pesExeSmallText', resources)}
-        </small>
+        <div className="flex items-center mb-7">
+          <div className="flex-1 me-5">
+            <label
+              htmlFor={keyInputDirectory}
+              className="inline-block font-semibold mb-2 text-white/90"
+            >
+              {translate(locale, 'pesDirectoryInput.directoryLabelText', resources)}
+            </label>
+            <small className="block text-white/80">
+              {translate(locale, 'pesDirectoryInput.directorySmallText', resources)}
+            </small>
+          </div>
+          <div className="flex outline outline-transparent has-[:focus]:outline-offset-2 has-[:focus]:outline-indigo-700 rounded-lg w-80">
+            <input
+              ref={inputDirectoryRef}
+              id={keyInputDirectory}
+              type="text"
+              className="flex-auto block w-full px-3 py-2 outline-0 bg-indigo-950 rounded-l-lg"
+              placeholder={translate(locale, 'pesDirectoryInput.directoryInputPlaceholder', resources)}
+              spellCheck="false"
+              name="directory"
+              onBlur={(e) => e.target.scrollLeft = e.target.scrollWidth}
+              value={pesDirectory}
+              onChange={(e) => setPESDirectory(e.target.value)}
+            />
+            <button
+              type="button"
+              className="flex-none bg-[#24215D] hover:bg-[#2B286F] rounded-r-lg px-4 transition-colors duration-100 font-medium text-white/90"
+              onClick={window.sm.choosePESDirectory}
+            >
+              {translate(locale, 'pesDirectoryInput.chooseBtnText', resources)}
+            </button>
+          </div>
+        </div>
 
-        <label
-          htmlFor={keyInputSiderExe}
-          className="inline-block font-semibold mb-3 text-white/90"
-        >
-          {translate(locale, 'settingsForm.siderExeLabelText', resources)}
-        </label>
-        <input
-          type="text"
-          id={keyInputSiderExe}
-          className={`flex-auto block w-full p-4 outline-0 bg-indigo-950 rounded-lg outline outline-[3px] focus:outline-offset-2 mb-2 ${siderExeError ? 'outline-red-700' : 'outline-transparent focus:outline-indigo-700'}`}
-          name="pesExe"
-          placeholder={translate(locale, 'settingsForm.siderExeInputPlaceholder', resources)}
-          value={siderExe}
-          onChange={handleOnChangeSiderExeInput}
-          spellCheck="false"
-        />
-        <small className={`block ${siderExeError ? 'text-red-400' : 'text-white/80'}`}>
-          {siderExeError ?? translate(locale, 'settingsForm.siderExeSmallText', resources)}
-        </small>
+        <div className="flex items-center mb-7">
+          <div className="flex-1 me-5">
+            <label
+              htmlFor={keyInputPESExe}
+              className="inline-block font-semibold mb-3 text-white/90"
+            >
+              {translate(locale, 'settingsForm.pesExeLabelText', resources)}
+            </label>
+            <small className="block text-white/80">
+              {translate(locale, 'settingsForm.pesExeSmallText', resources)}
+            </small>
+          </div>
+          <input
+            type="text"
+            id={keyInputPESExe}
+            className="block w-60 px-3 py-2 outline-0 bg-indigo-950 rounded-lg outline outline-[3px] focus:outline-offset-2 outline-transparent focus:outline-indigo-700"
+            name="pesExe"
+            placeholder={translate(locale, 'settingsForm.pesExeInputPlaceholder', resources)}
+            value={pesExe}
+            onChange={handleOnChangePESExeInput}
+            spellCheck="false"
+          />
+        </div>
+
+        <div className="flex items-center mb-7">
+          <div className="flex-1 me-5">
+            <label
+              htmlFor={keyInputSiderExe}
+              className="inline-block font-semibold mb-3 text-white/90"
+            >
+              {translate(locale, 'settingsForm.siderExeLabelText', resources)}
+            </label>
+            <small className='block text-white/80'>
+              {translate(locale, 'settingsForm.siderExeSmallText', resources)}
+            </small>
+          </div>
+          <input
+            type="text"
+            id={keyInputSiderExe}
+            className="block w-60 px-3 py-2 outline-0 bg-indigo-950 rounded-lg outline outline-[3px] focus:outline-offset-2 mb-2 outline-transparent focus:outline-indigo-700"
+            name="pesExe"
+            placeholder={translate(locale, 'settingsForm.siderExeInputPlaceholder', resources)}
+            value={siderExe}
+            onChange={handleOnChangeSiderExeInput}
+            spellCheck="false"
+          />
+        </div>
 
         <div className="flex justify-end mt-8">
           <button type="submit" className="font-medium rounded-lg px-4 py-3 bg-indigo-700 hover:bg-indigo-600 outline outline-transparent focus:outline-offset-2 focus:outline-indigo-700 shadow-lg transition-colors duration-100 ease-in">{translate(locale, 'settingsForm.submitBtnText', resources)}</button>
         </div>
       </form>
-      {showSuccessAlert &&
-        <div className="absolute bottom-3 right-0 left-0 text-left">
+      <div className="absolute bottom-0 right-0 left-0 text-left flex flex-col gap-2 w-3/4">
+        {showSuccessAlert ?
           <Alert
             message={() => translate(locale, 'settingsForm.successAlertMsg', resources)}
             type="success"
             onClose={() => setShowSuccessAlert(false)}
           />
-        </div>
-      }
+        : errors.map((error, i) => 
+          <Alert
+            key={i}
+            message={() => error}
+            type="danger"
+            onClose={() => setErrors(errors => errors.filter((_, nowI) => nowI !== i))}
+          />
+        )}
+      </div>
     </div>
   );
 }

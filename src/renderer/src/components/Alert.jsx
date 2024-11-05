@@ -1,3 +1,5 @@
+import { useId } from 'react';
+
 export default function Alert({ message, onClose, type='danger' }) {
   let textColor = 'text-red-400';
   let closeButtonFocusColor = 'focus:ring-red-400';
@@ -9,6 +11,8 @@ export default function Alert({ message, onClose, type='danger' }) {
     icon = <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="icon flex-none" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/></svg>;
   }
 
+  const btnId = useId();
+
   return (
     <div className={`flex items-center p-4 rounded-lg bg-indigo-950 ${textColor}`}>
       {icon}
@@ -17,6 +21,7 @@ export default function Alert({ message, onClose, type='danger' }) {
         type="button"
         className={`ms-auto -mx-1.5 -my-1.5 rounded-lg focus:ring-2 ${closeButtonFocusColor} p-1.5 inline-flex items-center justify-center h-8 w-8 bg-indigo-950 ${textColor} hover:bg-indigo-900/50`}
         onClick={onClose}
+        id={btnId}
       >
         <span className="sr-only">Close</span>
         <svg className="w-2.5 h-2.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
