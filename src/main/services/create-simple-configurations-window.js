@@ -12,8 +12,8 @@ export default function createSimpleConfigurationsWindow(parentWindow) {
 
   // Create settings window
   const simpleConfigurationsWindow = new BrowserWindow({
-    width: 800,
-    height: 500,
+    width: 950,
+    height: 550,
     show: false,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {

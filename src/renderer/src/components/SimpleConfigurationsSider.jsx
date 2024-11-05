@@ -126,7 +126,7 @@ export default function SimpleConfigurationsSider() {
   return (
     <>
       <h1 className="font-bold text-xl mb-1 px-3">Sider</h1>
-      <p className="text-sm mb-10 px-3">{translate(locale, 'simpleConfigurationsSider.pText', resources)}</p>
+      <p className="text-sm mb-10 px-3 opacity-80">{translate(locale, 'simpleConfigurationsSider.pText', resources)}</p>
 
       {simpleConfigs.map((config) => (
         <ConfigCardToggle {...config} key={config.id} />

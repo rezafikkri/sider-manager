@@ -1,4 +1,4 @@
-import { app, ipcMain, Menu } from 'electron';
+import { app, ipcMain, Menu, net, protocol } from 'electron';
 import { electronApp, optimizer } from '@electron-toolkit/utils';
 import path from 'node:path';
 import { existsSync } from 'node:fs';
@@ -20,10 +20,14 @@ import checkUpdate from './services/check-update';
 import { initializeMainWindow } from './services/initializations';
 import createAboutWindow from './services/create-about-window';
 import createAddonInitializationWindow from './services/create-addon-initialization-window';
-import createSimpleConfigurationsWindow from './services/create-simple-settings-window';
+import createSimpleConfigurationsWindow from './services/create-simple-configurations-window';
 
 // for performance
 Menu.setApplicationMenu(null);
+
+protocol.registerSchemesAsPrivileged([
+  { scheme: 'sm', privileges: { bypassCSP: true } },
+]);
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -31,6 +35,11 @@ Menu.setApplicationMenu(null);
 app.whenReady().then(() => {
   // Set app user model id for windows
   electronApp.setAppUserModelId('RezaFikkri.SiderManager');
+
+  protocol.handle('sm', (request) => {
+    const filePath = request.url.replace('sm://', 'file://');
+    return net.fetch(filePath);
+  });
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
