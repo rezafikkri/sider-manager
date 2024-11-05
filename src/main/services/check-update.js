@@ -1,6 +1,6 @@
 import needle from 'needle';
 import path from 'node:path';
-import { writeFileSync, readFileSync, existsSync } from 'node:fs';
+import { writeFileSync, readFileSync, existsSync, mkdirSync } from 'node:fs';
 import { app, Notification } from 'electron';
 import log from 'electron-log/main';
 import os from 'node:os';
@@ -97,7 +97,13 @@ export default async function checkUpdate() {
 
   const currentAppVersion = app.getVersion();
 
-  const checkUpdateFilePath = path.join(getSettingsPath(), 'check-update.json');
+  const tempDirPath = path.join(app.getPath('temp'), '/sider-manager');
+  // create sider-manager temp dir if does not exist
+  if (!existsSync(tempDirPath)) {
+    mkdirSync(tempDirPath, { recursive: true });
+  }
+
+  const checkUpdateFilePath = path.join(tempDirPath, 'check-update.json');
   const isCheckUpdateExist = existsSync(checkUpdateFilePath);
   if (isCheckUpdateExist) {
     const latestCheckUpdateVersion = getCheckUpdate(checkUpdateFilePath).version;
