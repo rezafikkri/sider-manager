@@ -17,12 +17,7 @@ export default function AddonInitializationApp() {
         <code className="bg-indigo-950 p-1 rounded">PES 2017/backup</code>.
       </small>
       <form className="flex justify-end">
-        <button
-          type="button"
-          className="py-2.5 px-4 me-2 font-medium rounded-lg outline outline-transparent focus:outline-offset-2 focus:outline-gray-800 bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700 transition-colors duration-300"
-        >
-          {translate(locale, 'addonInitializationApp.cancelBtnText', resources)}
-        </button>
+        <input type="hidden" name="file" />
         <button
           type="submit"
           className="font-medium rounded-lg px-4 py-2.5 bg-indigo-700 hover:bg-indigo-600 outline outline-transparent focus:outline-offset-2 focus:outline-indigo-700 transition-colors duration-300"
