@@ -12,8 +12,8 @@ export default function createInitializationsWindow() {
   
   // Create initializations window
   const initializationsWindow = new BrowserWindow({
-    width: 400,
-    height: 500,
+    width: 350,
+    height: 490,
     show: false,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {

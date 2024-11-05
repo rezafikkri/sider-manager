@@ -24,7 +24,7 @@ export default function Initializations() {
   return (
     <>
       <Header type="initialization" />
-      <main className="p-8 mt-3">
+      <main className="py-8 px-6 mt-2">
         {step === 'activation' ? <ActivationForm onActivate={setStep} /> : <PESDirectoryForm /> } 
       </main>
     </>

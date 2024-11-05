@@ -28,7 +28,7 @@ export default function SettingsForm() {
     if (!await window.sm.isPESExecutableExist(pesDirectory, pesExe)) {
       setErrors(errors => [
         ...errors,
-        translate(locale, 'settingsForm.error.pesExe', resources),
+        { id: errors.length + 1, message: translate(locale, 'settingsForm.error.pesExe', resources) },
       ]);
       error = true;
     }
@@ -36,7 +36,7 @@ export default function SettingsForm() {
     if (!await window.sm.isPESExecutableExist(pesDirectory, siderExe)) {
       setErrors(errors => [
         ...errors,
-        translate(locale, 'settingsForm.error.siderExe', resources),
+        { id: errors + 1, message: translate(locale, 'settingsForm.error.siderExe', resources) },
       ]);
       error = true;
     }
@@ -50,6 +50,14 @@ export default function SettingsForm() {
     if (isSaved) {
       setErrors([]);
       setShowSuccessAlert(true);
+    }
+  }
+
+  async function handleChooseDirectory() {
+    const pesDirectory = await window.sm.choosePESDirectory();
+
+    if (pesDirectory) {
+      setPESDirectory(pesDirectory);
     }
   }
 
@@ -103,7 +111,7 @@ export default function SettingsForm() {
             <button
               type="button"
               className="flex-none bg-[#24215D] hover:bg-[#2B286F] rounded-r-lg px-4 transition-colors duration-100 font-medium text-white/90"
-              onClick={window.sm.choosePESDirectory}
+              onClick={handleChooseDirectory}
             >
               {translate(locale, 'pesDirectoryInput.chooseBtnText', resources)}
             </button>
@@ -169,12 +177,12 @@ export default function SettingsForm() {
             type="success"
             onClose={() => setShowSuccessAlert(false)}
           />
-        : errors.map((error, i) => 
+        : errors.map(error => 
           <Alert
-            key={i}
-            message={() => error}
+            key={error.id}
+            message={() => error.message}
             type="danger"
-            onClose={() => setErrors(errors => errors.filter((_, nowI) => nowI !== i))}
+            onClose={() => setErrors(errors => errors.filter(nowError => nowError.id !== error.id))}
           />
         )}
       </div>
