@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import Toggle from './Toggle';
 
-export default memo(function ConfigCardToggle({
+function ConfigCardToggle({
   title,
   desc,
   toggleValue,
@@ -16,4 +16,6 @@ export default memo(function ConfigCardToggle({
       <Toggle value={toggleValue} onToggle={onToggle} />
     </section>
   );
-});
+};
+
+export default memo(ConfigCardToggle);

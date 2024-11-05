@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-export default memo(function ConfigCardInput({
+function ConfigCardInput({
   title,
   desc,
   toggleValue,
@@ -20,4 +20,6 @@ export default memo(function ConfigCardInput({
       />
     </section>
   );
-});
+};
+
+export default memo(ConfigCardInput);
