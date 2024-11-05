@@ -9,7 +9,7 @@ export default function ConfigCardImg({
   const configId = useId();
   return (
     <label htmlFor={configId} className="cursor-pointer border border-gray-800 rounded-lg has-[:checked]:border-indigo-600">
-      <img src={img} alt={title} className="rounded-t-lg" />
+      <img src={img} alt={title} className="rounded-t-lg" loading="lazy" width="1360" height="768" decoding="async" />
       <div className="flex justify-between px-3 py-2 border-t border-gray-800">
         <div className="inline-flex items-center">
           <label className="relative flex items-center cursor-pointer">
