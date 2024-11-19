@@ -1,6 +1,6 @@
-import { shell, BrowserWindow } from 'electron'
-import { is } from '@electron-toolkit/utils'
-import { join } from 'path'
+import { shell, BrowserWindow } from 'electron';
+import { is } from '@electron-toolkit/utils';
+import { join } from 'path';
 import icon from '../../../resources/icon.png?asset';
 import { getLocaleResources } from './locale';
 import { getSettings } from './settings';
