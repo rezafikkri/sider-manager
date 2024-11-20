@@ -40,7 +40,7 @@ describe('SettingsForm component', () => {
   beforeEach(() => {
     window.sm = {
       getSettings: async () => oldSettings,
-      choosePESDirectory: () => {},
+      choosePESDirectory: vi.fn(),
       isPESExecutableExist: vi.fn(),
       saveSettings: vi.fn(),
     };
@@ -68,6 +68,13 @@ describe('SettingsForm component', () => {
     expect(pesDirectoryInput).toHaveValue(oldSettings.pesDirectory);
     expect(pesExeInput).toHaveValue(oldSettings.pesExecutable[0]);
     expect(siderExeInput).toHaveValue(oldSettings.pesExecutable[1]);
+  });
+
+  it('should call choosePESDirectory function when choose PES directory button clicked', async () => {
+    const chooseButton = await screen.findByText(resources.id.pesDirectoryInput.chooseBtnText);
+    await userEvent.click(chooseButton);
+    
+    expect(window.sm.choosePESDirectory).toHaveBeenCalled();
   });
 
   it('should show pesExe error when pesExe is not in pesDirectory and submit button clicked', async () => {
