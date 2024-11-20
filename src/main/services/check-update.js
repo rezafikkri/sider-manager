@@ -50,7 +50,7 @@ async function getFolders() {
 
     return res.body.files;
   } catch (err) {
-    if (!err instanceof UnauthorizeError) {
+    if (!(err instanceof UnauthorizeError)) {
       log.error(generateErrorLogMessage(
         app.getVersion(),
         os.version(),
@@ -97,7 +97,7 @@ export default async function checkUpdate() {
 
   const currentAppVersion = app.getVersion();
 
-  const tempDirPath = path.join(app.getPath('temp'), '/sider-manager');
+  const tempDirPath = path.join(app.getPath('temp'), 'sider-manager');
   // create sider-manager temp dir if does not exist
   if (!existsSync(tempDirPath)) {
     mkdirSync(tempDirPath, { recursive: true });
@@ -137,7 +137,6 @@ export default async function checkUpdate() {
 
   const versions = await getFolders();
   if (!versions) return false;
-
   const latestReleaseVersion = versions[0].name.replace('v', '');
 
   // if (currentAppVersion < latestReleaseVersion) {
@@ -154,3 +153,5 @@ export default async function checkUpdate() {
     }));
   }
 }
+
+export { checkSmallerThanVersion };
