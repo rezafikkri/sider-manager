@@ -8,6 +8,10 @@ export default function PESDirectoryForm() {
 
   const keyInputDirectory = useId();
   const inputDirectoryRef = useRef(null);
+
+  useEffect(() => {
+    inputDirectoryRef.current.scrollLeft = inputDirectoryRef.current.scrollWidth;
+  }, [pesDirectory]);
   
   async function handleChooseDirectory() {
     const pesDirectory = await window.sm.choosePESDirectory();
@@ -16,11 +20,6 @@ export default function PESDirectoryForm() {
       setPESDirectory(pesDirectory);
     }
   }
-
-  useEffect(() => {
-    inputDirectoryRef.current.scrollLeft = inputDirectoryRef.current.scrollWidth;
-  }, [pesDirectory]);
-
 
   function handleSubmit(e) {
     e.preventDefault();
