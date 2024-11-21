@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import LocaleContext from '../contexts/LocaleContext';
 import { translate } from '../../../main/utils';
 
-export default function AddonInitializationChoose() {
+export default function AddonInitializationChoose({ onChoose }) {
   const {locale, resources} = useContext(LocaleContext);
 
   return (
@@ -14,6 +14,7 @@ export default function AddonInitializationChoose() {
         {translate(locale, 'addonInitializationChoose.pChooseFileText2', resources)}
       </p>
       <button
+        onClick={onChoose}
         type="button"
         className="font-medium rounded-lg text-sm px-4 py-2.5 bg-indigo-900 hover:bg-indigo-800 transition-colors duration-300 outline outline-transparent focus:outline-offset-2 focus:outline-indigo-900"
       >

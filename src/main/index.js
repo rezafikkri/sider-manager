@@ -6,7 +6,7 @@ import createMainWindow from './services/create-main-window';
 import createInitializationsWindow from './services/create-initializations-window';
 import createSettingsWindow from './services/create-settings-window';
 import { initializeLocale, getLocaleResources } from './services/locale';
-import { handleSetTitle } from './services';
+import { getFileSize, handleSetTitle } from './services';
 import {
   choosePESDirectory,
   getSettings,
@@ -21,6 +21,7 @@ import { initializeMainWindow } from './services/initializations';
 import createAboutWindow from './services/create-about-window';
 import createAddonInitializationWindow from './services/create-addon-initialization-window';
 import createSimpleConfigurationsWindow from './services/create-simple-configurations-window';
+import { addonInitialization, backup, chooseInitializationFile } from './services/addon-initialization';
 
 // for performance
 Menu.setApplicationMenu(null);
@@ -79,6 +80,10 @@ app.whenReady().then(() => {
   ipcMain.handle('isPESExecutableExist', (_, pesDirectory, pesExe) => existsSync(path.join(pesDirectory, pesExe)));
   ipcMain.handle('createAboutWindow', () => createAboutWindow(mainWindowObj.mainWindow));
   ipcMain.handle('getAppVersion', () => app.getVersion());
+
+  ipcMain.handle('backup', backup);
+  ipcMain.handle('chooseInitializationFile', chooseInitializationFile);
+  ipcMain.handle('addonInitialization', (_, fileName, filePath) => addonInitialization(fileName, filePath));
 
   // check-update in background
   checkUpdate();

@@ -114,6 +114,7 @@ const resources = {
       pChooseFileText1: 'Pilih berkas',
       pChooseFileText2: 'yang telah kamu unduh.',
       chooseFileBtnText: 'Pilih',
+      dialogTitle: 'Pilih berkas addon-initialization.zip yang telah kamu unduh.',
     },
     simpleConfigurationsSider: {
       pText: 'Konfigurasi Sider kamu dengan mudah.',
@@ -233,9 +234,10 @@ const resources = {
       initializationBtnText: 'Initialization',
     },
     addonInitializationChoose: {
-      pChooseFileText1: 'Choose file',
-      pChooseFileText2: 'that you have downloaded.',
+      pChooseFileText1: 'Choose',
+      pChooseFileText2: 'file that you have downloaded.',
       chooseFileBtnText: 'Choose',
+      dialogTitle: 'Choose addon-initialization.zip file that have you downloaded.',
     },
     simpleConfigurationsSider: {
       pText: 'Config your Sider easyly.',
