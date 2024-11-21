@@ -68,6 +68,10 @@ async function chooseInitializationFile() {
 }
 
 async function addonInitialization(fileName, filePath) {
+  // run backup
+  backup();
+
+  // extract zip file
   const folderName = fileName.split('.')[0];
   await decompress(filePath, path.join(path.dirname(filePath), folderName));
 }
