@@ -16,10 +16,9 @@ function getSKeyCheck(sKeyActivate) {
   const sKeyActivateSnippet = sKeyActivate.substring(1, 20);
   const hostname = os.hostname();
   const cpuModel = os.cpus()[0].model;
-  const totalMem = os.totalmem();
   const version = os.version();
 
-  const sKeyCheck = sKeyActivateSnippet + hostname + cpuModel + totalMem + version;
+  const sKeyCheck = sKeyActivateSnippet + hostname + cpuModel + version;
   return sKeyCheck.replace(/[\s,\(,\),.,#,@,:]/g, '');
 }
 
