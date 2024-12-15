@@ -109,6 +109,8 @@ const resources = {
       smallText: 'berkas Sider yang lama akan dibackup di',
       cancelBtnText: 'Batal',
       initializationBtnText: 'Inisialisasi',
+      successAlertMsg: 'Inisialisasi Addon selesai.',
+      errorAlertMsg: 'Inisialisasi Addon gagal, silahkan coba lagi!',
     },
     addonInitializationChoose: {
       pChooseFileText1: 'Pilih berkas',
@@ -232,6 +234,8 @@ const resources = {
       smallText: 'old Sider file will be backed up in',
       cancelBtnText: 'Cancel',
       initializationBtnText: 'Initialization',
+      successAlertMsg: 'Addon initialization complete.',
+      errorAlertMsg: 'Addon initialization failed, please try again!',
     },
     addonInitializationChoose: {
       pChooseFileText1: 'Choose',

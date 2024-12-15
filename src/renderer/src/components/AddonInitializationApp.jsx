@@ -3,11 +3,14 @@ import LocaleContext from '../contexts/LocaleContext';
 import { translate } from '../../../main/utils';
 import AddonInitializationChoose from './AddonInitializationChoose';
 import AddonInitializationFile from './AddonInitializationFile';
+import Alert from './Alert';
 
 export default function AddonInitializationApp() {
   const {locale, resources} = useContext(LocaleContext);
   const [initializationFile, setInitializationFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [showErrorAlert, setShowErrorAlert] = useState(false);
 
   async function handleChooseFile() {
     const newFile = await window.sm.chooseInitializationFile();
@@ -18,6 +21,7 @@ export default function AddonInitializationApp() {
   }
 
   function handleRemoveFile() {
+    if (isLoading) return false;
     setInitializationFile(null);
   }
 
@@ -29,16 +33,22 @@ export default function AddonInitializationApp() {
     // show loading
     setIsLoading(true);
 
-    await window.sm.addonInitialization(initializationFile.fileName, initializationFile.filePath);
-
+    const isInitialized = await window.sm.addonInitialization(initializationFile.filePath);
+    if (isInitialized) {
+      setShowErrorAlert(false);
+      setShowSuccessAlert(true);
+    } else {
+      setShowErrorAlert(true);
+    }
     // hide loading
     setIsLoading(false);
   }
 
   return (
-    <main className="p-5">
+    <main className="p-5 h-screen">
+    <div className="relative h-full">
       { initializationFile ?
-        <AddonInitializationFile {...initializationFile} onRemove={handleRemoveFile} /> :
+        <AddonInitializationFile {...initializationFile} onRemove={handleRemoveFile} isLoading={isLoading} /> :
         <AddonInitializationChoose onChoose={handleChooseFile} />
       }
       <small className="mb-6 block">
@@ -61,6 +71,24 @@ export default function AddonInitializationApp() {
           </button>
         </div>
       </form>
+      {(showSuccessAlert || showErrorAlert) &&
+        <div className="absolute bottom-10 right-0 left-0 text-left flex flex-col gap-2 w-full">
+          {showSuccessAlert ?
+            <Alert
+              message={() => translate(locale, 'addonInitializationApp.successAlertMsg', resources)}
+              type="success"
+              onClose={() => setShowSuccessAlert(false)}
+            />
+          : showErrorAlert &&
+            <Alert
+              message={() => translate(locale, 'addonInitializationApp.errorAlertMsg', resources)}
+              type="danger"
+              onClose={() => setShowErrorAlert(false)}
+            />
+          }
+        </div>
+      }
+    </div>
     </main>
   );
 }
