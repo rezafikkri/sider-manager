@@ -11,7 +11,7 @@ function handleSetTitle(event, title) {
 function getFileSize(filePath) {
   const { locale } = getSettings();
   const stats = statSync(filePath);
-  let oSize = stats.size / (1000**2);
+  let oSize = stats.size / (1000**2); // original size
   let fSize;
   if (oSize < 1) {
     oSize = stats.size / 1000;
