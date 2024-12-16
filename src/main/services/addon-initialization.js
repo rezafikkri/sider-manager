@@ -1,4 +1,4 @@
-import { dialog } from 'electron';
+import { dialog, app } from 'electron';
 import {
   existsSync,
   mkdirSync,
@@ -12,8 +12,8 @@ import os from 'node:os';
 import log from 'electron-log/main';
 import { getSettings, getSettingsPath } from './settings';
 import { getLocaleResources } from './locale';
-import { translate } from '../utils';
-import { getFileSize } from '.';
+import { translate, generateErrorLogMessage } from '../utils';
+import { getFileSize, isFile } from '.';
 import decompress from 'decompress';
 
 const ignoreList = new Set([
@@ -36,32 +36,6 @@ const ignoreList = new Set([
   'backup',
 ]);
 
-function backup(settings) {
-  ignoreList.add(settings.pesExecutable[0]);
-
-  const pesDirectory = settings.pesDirectory;
-  const backupPath = path.join(pesDirectory, 'backup');
-  if (!existsSync(backupPath)) {
-    mkdirSync(backupPath);
-  }
-
-  readdirSync(pesDirectory).forEach((fileName) => {
-    // if file or folder is not in ignore list, then backup
-    if (!ignoreList.has(fileName)) {
-      const extname = path.extname(fileName);
-      const fullPath = path.join(pesDirectory, fileName);
-      const dest = path.join(backupPath, fileName);
-
-      if (extname !== '') {
-        renameSync(fullPath, dest);
-      } else {
-        cpSync(fullPath, dest, { recursive: true });
-        rmSync(fullPath, { recursive: true, force: true });
-      }
-    }
-  });
-}
-
 async function chooseInitializationFile() {
   const { locale } = getSettings();
   const localeResources = getLocaleResources();
@@ -83,12 +57,36 @@ async function chooseInitializationFile() {
   return false;
 }
 
+function backup(settings) {
+  ignoreList.add(settings.pesExecutable[0]);
+
+  const pesDirectory = settings.pesDirectory;
+  const backupPath = path.join(pesDirectory, 'backup');
+  if (!existsSync(backupPath)) {
+    mkdirSync(backupPath);
+  }
+
+  readdirSync(pesDirectory).forEach((fileName) => {
+    // if file or folder is not in ignore list, then backup
+    if (!ignoreList.has(fileName)) {
+      const fullPath = path.join(pesDirectory, fileName);
+      const dest = path.join(backupPath, fileName);
+
+      if (isFile(fullPath)) {
+        renameSync(fullPath, dest);
+      } else {
+        cpSync(fullPath, dest, { recursive: true });
+        rmSync(fullPath, { recursive: true, force: true });
+      }
+    }
+  });
+}
+
 async function addonInitialization(filePath) {
   const settings = getSettings();
   const pesDirectory = settings.pesDirectory;
 
   try {
-    return true;
     // run backup
     backup(settings);
 
@@ -102,19 +100,20 @@ async function addonInitialization(filePath) {
     const extractMlManagerPath = path.join(extractPath, 'Ml Manager');
     const extractGraphicsMenuPath = path.join(extractPath, 'Graphics Menu');
     const extractTeamPressRoomPath = path.join(extractPath, 'Team Press Room');
+    const settingsPath = getSettingsPath();
     cpSync(
       extractMlManagerPath,
-      path.join(getSettingsPath(), 'ml-manager'),
+      path.join(settingsPath, 'ml-manager'),
       { recursive: true },
     );
     cpSync(
       extractGraphicsMenuPath,
-      path.join(getSettingsPath(), 'graphics-menu'),
+      path.join(settingsPath, 'graphics-menu'),
       { recursive: true },
     );
     cpSync(
       extractTeamPressRoomPath,
-      path.join(getSettingsPath(), 'team-press-room'),
+      path.join(settingsPath, 'team-press-room'),
       { recursive: true },
     );
     rmSync(extractMlManagerPath, { recursive: true, force: true });
@@ -123,11 +122,10 @@ async function addonInitialization(filePath) {
 
     // move folder and file to PES 2017 installation directory
     readdirSync(extractPath).forEach((fileName) => {
-      const extname = path.extname(fileName);
       const fullPath = path.join(extractPath, fileName);
       const dest = path.join(pesDirectory, fileName);
 
-      if (extname !== '') {
+      if (isFile(fullPath)) {
         renameSync(fullPath, dest);
       } else {
         cpSync(fullPath, dest, { recursive: true });

@@ -1,5 +1,5 @@
 import { BrowserWindow } from 'electron';
-import { statSync } from 'node:fs';
+import { lstatSync, statSync } from 'node:fs';
 import { getSettings } from './settings';
 
 function handleSetTitle(event, title) {
@@ -24,7 +24,12 @@ function getFileSize(filePath) {
   return fSize;
 }
 
+function isFile(filePath) {
+  return lstatSync(filePath).isFile();
+}
+
 export {
   handleSetTitle,
   getFileSize,
+  isFile,
 };
