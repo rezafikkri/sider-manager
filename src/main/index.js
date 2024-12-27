@@ -6,7 +6,7 @@ import createMainWindow from './services/create-main-window';
 import createInitializationsWindow from './services/create-initializations-window';
 import createSettingsWindow from './services/create-settings-window';
 import { initializeLocale, getLocaleResources } from './services/locale';
-import { getFileSize, handleSetTitle } from './services';
+import { handleSetTitle } from './services';
 import {
   choosePESDirectory,
   getSettings,
