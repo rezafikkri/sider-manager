@@ -1,47 +1,80 @@
-import { useCallback, useState, useContext } from 'react';
+import { useCallback, useState, useContext, useEffect } from 'react';
 import ConfigCardToggle from './ConfigCardToggle';
 import LocaleContext from '../contexts/LocaleContext';
 import { translate } from '../../../main/utils';
 import ConfigCardInput from './ConfigCardInput';
+import useSiderIni from '../hooks/useSiderIni';
 
 export default function SimpleConfigurationsSider() {
   const {locale, resources} = useContext(LocaleContext);
 
-  const [debug, setDebug] = useState(false);
-  const handleDebug = useCallback(() => setDebug((debug) => !debug), []);
+  const [debug, setDebug, handleDebug] = useSiderIni();
+  const [luaModule, setLuaModule, handleLuaModule] = useSiderIni();
+  const [liveCpk, setLiveCpk, handleLiveCpk] = useSiderIni();
+  const [lookUpCache, setLookUpCache, handleLookUpCache] = useSiderIni();
+  const [closeOnExit, setCloseOnExit, handleCloseOnExit] = useSiderIni();
+  const [startMinimized, setStartMinimized, handleStartMinimized] = useSiderIni();
+  const [addressCache, setAddressCache, handleAddressCache] = useSiderIni();
+  const [freeSelectSides, setFreeSelectSides, handleFreeSelectSides] = useSiderIni();
+  const [freeFirstPlayer, setFreeFirstPlayer, handleFreeFirstPlayer] = useSiderIni();
+  const [blackBar, setBlackBar, handleBlackBar] = useSiderIni();
+  const [cameraDynamicWideAngle, setCameraDynamicWideAngle, handleCameraDynamicWideAngle] = useSiderIni();
 
-  const [luaModule, setLuaModule] = useState(true);
-  const handleLuaModule = useCallback(() => setLuaModule((luaModule) => !luaModule), []);
+  const [cameraSliders, setCameraSliders] = useState(null);
+  const handleCameraSliders = useCallback((value) => {
+    const newCameraSliders = { ...cameraSliders, value };
+    window.sm.saveSiderIni(newCameraSliders);
+    setCameraSliders(newCameraSliders);
+  }, [cameraSliders]);
 
-  const [liveCpk, setLiveCpk] = useState(true);
-  const handleLiveCpk = useCallback(() => setLiveCpk((liveCpk) => !liveCpk), []);
+  useEffect(() => {
+    async function loadSiderIni() {
+      const { pesDirectory } = await window.sm.getSettings();
+      const siderIni = await window.sm.readSiderIni(pesDirectory);
 
-  const [lookUpCache, setLookUpCache] = useState(true);
-  const handleLookUpCache = useCallback(() => setLookUpCache((lookUpCache) => !lookUpCache), []);
+      for (const ini of siderIni) {
+        let [, iniValue] = ini.split('=');
+        if (!isNaN(iniValue)) iniValue = +iniValue; // convert to int
 
-  const [closeOnExit, setCloseOnExit] = useState(true);
-  const handleCloseOnExit = useCallback(() => setCloseOnExit((closeOnExit) => !closeOnExit), []);
+        if (/^debug =/.test(ini)) {
+          setDebug({ key: 'debug', value: iniValue });
+        } else if (/^lua\.enabled =/.test(ini)) {
+          setLuaModule({ key: 'lua.enabled', value: iniValue })
+        } else if (/^livecpk\.enabled =/.test(ini)) {
+          setLiveCpk({ key: 'livecpk.enabled', value: iniValue });
+        } else if (/^lookup-cache\.enabled =/.test(ini)) {
+          setLookUpCache({ key: 'lookup-cache.enabled', value: iniValue });
+        } else if (/^close\.on\.exit =/.test(ini)) {
+          setCloseOnExit({ key: 'close.on.exit', value: iniValue });
+        } else if (/^start\.minimized =/.test(ini)) {
+          setStartMinimized({ key: 'start.minimized', value: iniValue });
+        } else if (/^address-cache\.enabled =/.test(ini)) {
+          setAddressCache({ key: 'address-cache.enabled', value: iniValue });
+        } else if (/^free.select.sides =/.test(ini)) {
+          setFreeSelectSides({ key: 'free.select.sides', value: iniValue });
+        } else if (/^free\.first\.player =/.test(ini)) {
+          setFreeFirstPlayer({ key: 'free.first.player', value: iniValue});
+        } else if (/^black\.bars\.off =/.test(ini)) {
+          setBlackBar({ key: 'black.bars.off', value: iniValue });
+        } else if (/^camera\.sliders\.max =/.test(ini)) {
+          setCameraSliders({ key: 'camera.sliders.max', value: iniValue });
+        } else if (/^camera\.dynamic-wide\.angle\.enabled =/.test(ini)) {
+          setCameraDynamicWideAngle({ key: 'camera.dynamic-wide.angle.enabled', value: iniValue });
+        }
+      }
+    }
 
-  const [startMinimized, setStartMinimized] = useState(true);
-  const handleStartMinimized = useCallback(() => setStartMinimized((startMinimized) => !startMinimized), []);
+    loadSiderIni();
+  }, []);
 
-  const [addressCache, setAddressCache] = useState(true);
-  const handleAddressCache = useCallback(() => setAddressCache((addressCache) => !addressCache), []);
+  const header = (
+    <>
+      <h1 className="font-bold text-xl mb-1 px-3">Sider</h1>
+      <p className="text-sm mb-10 px-3 opacity-80">{translate(locale, 'simpleConfigurationsSider.pText', resources)}</p>
+    </>
+  );
 
-  const [freeSelectSides, setFreeSelectSides] = useState(true);
-  const handleFreeSelectSides = useCallback(() => setFreeSelectSides((freeSelectSides) => !freeSelectSides), []);
-
-  const [freeFirstPlayer, setFreeFirstPlayer] = useState(true);
-  const handleFreeFirstPlayer = useCallback(() => setFreeFirstPlayer((freeFirstPlayer) => !freeFirstPlayer), []);
-
-  const [blackBar, setBlackBar] = useState(true);
-  const handleBlackBar = useCallback(() => setBlackBar((blackBar) => !blackBar), []);
-
-  const [cameraSliders, setCameraSliders] = useState(50);
-  const handleCameraSliders = useCallback((e) => setCameraSliders(e.target.value), []);
-
-  const [cameraDynamicWideAngle, setCameraDynamicWideAngle] = useState(true);
-  const handleCameraDynamicWideAngle = useCallback(() => setCameraDynamicWideAngle((cameraSliders) => !cameraSliders), []);
+  if (!debug) return header;
 
   const simpleConfigs = [
     {
@@ -125,8 +158,7 @@ export default function SimpleConfigurationsSider() {
 
   return (
     <>
-      <h1 className="font-bold text-xl mb-1 px-3">Sider</h1>
-      <p className="text-sm mb-10 px-3 opacity-80">{translate(locale, 'simpleConfigurationsSider.pText', resources)}</p>
+      {header}
 
       {simpleConfigs.map((config) => (
         <ConfigCardToggle {...config} key={config.id} />
@@ -135,8 +167,8 @@ export default function SimpleConfigurationsSider() {
       <ConfigCardInput
         title="Camera Sliders"
         desc={translate(locale, 'simpleConfigurationsSider.sectionPDesc12', resources)}
-        toggleValue={cameraSliders}
-        onToggle={handleCameraSliders}
+        inputValue={cameraSliders}
+        onInput={handleCameraSliders}
       />
     </>
   );

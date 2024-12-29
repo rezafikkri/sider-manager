@@ -22,6 +22,7 @@ import createAboutWindow from './services/create-about-window';
 import createAddonInitializationWindow from './services/create-addon-initialization-window';
 import createSimpleConfigurationsWindow from './services/create-simple-configurations-window';
 import { addonInitialization, backup, chooseInitializationFile } from './services/addon-initialization';
+import { readSiderIni, saveSiderIni } from './services/simple-config';
 
 // for performance
 Menu.setApplicationMenu(null);
@@ -84,6 +85,8 @@ app.whenReady().then(() => {
   ipcMain.handle('backup', backup);
   ipcMain.handle('chooseInitializationFile', chooseInitializationFile);
   ipcMain.handle('addonInitialization', (_, fileName, filePath) => addonInitialization(fileName, filePath));
+  ipcMain.handle('readSiderIni', (_, pesDirectory) => readSiderIni(pesDirectory));
+  ipcMain.handle('saveSiderIni', (_, siderIni) => saveSiderIni(siderIni));
 
   // check-update in background
   checkUpdate();

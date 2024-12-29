@@ -15,13 +15,7 @@ function saveSiderIni(newSiderIni) {
   for (const [SIIndex, SIVal] of siderIni.entries()) {
     const regexp = new RegExp(`^${newSiderIni.key} =`);
     if (regexp.test(SIVal)) {
-      const [, oVal] = SIVal.split('=');
-      // if original value of siderIni is not a NaN, then convert newSiderIni value to integer
-      if (!isNaN(oVal)) {
-        siderIni[SIIndex] = `${newSiderIni.key} = ${parseInt(newSiderIni.value)}`;
-      } else {
-        siderIni[SIIndex] = `${newSiderIni.key} = ${newSiderIni.value}`;
-      }
+      siderIni[SIIndex] = `${newSiderIni.key} = ${newSiderIni.value}`;
 
       break;
     }

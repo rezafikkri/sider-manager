@@ -13,7 +13,7 @@ function ConfigCardToggle({
         <h2 className="font-semibold mb-1">{title}</h2>
         <div className="text-sm opacity-80" dangerouslySetInnerHTML={{ __html: desc }} />
       </div>
-      <Toggle value={toggleValue} onToggle={onToggle} />
+      <Toggle value={!!toggleValue.value} onToggle={onToggle} />
     </section>
   );
 };

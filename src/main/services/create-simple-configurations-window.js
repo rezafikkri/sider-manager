@@ -17,7 +17,7 @@ export default function createSimpleConfigurationsWindow(parentWindow) {
     show: false,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
-      preload: join(__dirname, '../preload/settings.js'),
+      preload: join(__dirname, '../preload/simple-configurations.js'),
       sandbox: false,
     },
     title: translate(locale, 'simpleConfigurationsWindow.title', localeResources),
