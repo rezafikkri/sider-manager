@@ -5,7 +5,6 @@ const sm = {
   getLocaleResources: () => ipcRenderer.invoke('getLocaleResources'),
   getSettings: () => ipcRenderer.invoke('getSettings'),
   saveSettings: (settings) => ipcRenderer.invoke('saveSettings', settings),
-  backup: () => ipcRenderer.invoke('backup'),
   chooseInitializationFile: () => ipcRenderer.invoke('chooseInitializationFile'),
   addonInitialization: (fileName, filePath) => ipcRenderer.invoke('addonInitialization', fileName, filePath),
 };

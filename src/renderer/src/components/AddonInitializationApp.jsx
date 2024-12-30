@@ -64,6 +64,7 @@ export default function AddonInitializationApp() {
             </div>
           }
           <button
+            data-testid="initialization"
             type="submit"
             className="font-medium rounded-lg px-4 py-2.5 bg-indigo-700 hover:bg-indigo-600 outline outline-transparent focus:outline-offset-2 focus:outline-indigo-700 transition-colors duration-300"
           >

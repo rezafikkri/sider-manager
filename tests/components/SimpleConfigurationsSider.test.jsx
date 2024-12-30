@@ -65,7 +65,7 @@ describe('SimpleConfigurationsSider function', () => {
   });
 
   afterEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
     cleanup();
   });
 

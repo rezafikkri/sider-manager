@@ -4,6 +4,7 @@ const sm = {
   windowName: 'simpleConfigurations',
   getLocaleResources: () => ipcRenderer.invoke('getLocaleResources'),
   getSettings: () => ipcRenderer.invoke('getSettings'),
+  saveSettings: (settings) => ipcRenderer.invoke('saveSettings', settings),
   readSiderIni: (pesDirectory) => ipcRenderer.invoke('readSiderIni', pesDirectory),
   saveSiderIni: (siderIni) => ipcRenderer.invoke('saveSiderIni', siderIni),
 };

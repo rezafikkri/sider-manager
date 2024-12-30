@@ -19,7 +19,7 @@ const resources = {
 };
 
 describe('SimpleConfigurationButton component', () => {
-  it('should call createSimpleConfigurationsWindow fucntion when simple config button clicked', async () => {
+  it('should call createSimpleConfigurationsWindow function when simple config button clicked', async () => {
     window.sm = { createSimpleConfigurationsWindow: vi.fn() };
     render(
       <Locale
