@@ -5,13 +5,14 @@ function ConfigCardInput({
   desc,
   inputValue,
   onInput,
+  testid,
 }) {
   const [value, setValue] = useState(inputValue.value);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => onInput(value), 500);
 
-    return () => clearTimeout((timeoutId));
+    return () => clearTimeout(timeoutId);
   }, [value]);
 
   return (
@@ -21,10 +22,11 @@ function ConfigCardInput({
         <div className="text-sm opacity-70" dangerouslySetInnerHTML={{ __html: desc }} />
       </div>
       <input
-        type="text"
+        type="number"
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        className="block w-14 px-3 py-2 outline-[3px] bg-indigo-950 rounded-lg outline outline-transparent focus:outline-offset-2 focus:outline-indigo-700 group-hover:bg-indigo-900"
+        className="block w-20 px-3 py-2 outline-[3px] bg-indigo-950 rounded-lg outline outline-transparent focus:outline-offset-2 focus:outline-indigo-700 group-hover:bg-indigo-900"
+        data-testid={testid}
       />
     </section>
   );

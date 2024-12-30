@@ -169,6 +169,7 @@ export default function SimpleConfigurationsSider() {
         desc={translate(locale, 'simpleConfigurationsSider.sectionPDesc12', resources)}
         inputValue={cameraSliders}
         onInput={handleCameraSliders}
+        testid={cameraSliders.key + cameraSliders.value}
       />
     </>
   );
