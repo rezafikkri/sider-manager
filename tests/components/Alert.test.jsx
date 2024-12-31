@@ -49,4 +49,14 @@ describe('Alert component', () => {
     expect(closeButton).toHaveClass('text-green-400', 'focus:ring-green-400');
     expect(alertDiv).toHaveClass('text-green-400');
   });
+
+  it('should show warning alert when alert type is warning', () => {
+    render(<Alert message={() => "This is warning"} onClose={() => {}} type="warning" />);
+    const alertMessageDiv = screen.getByText('This is warning');
+    const closeButton = alertMessageDiv.nextElementSibling;
+    const alertDiv = alertMessageDiv.parentElement;
+
+    expect(closeButton).toHaveClass('text-yellow-300', 'focus:ring-yellow-400');
+    expect(alertDiv).toHaveClass('text-yellow-300');
+  });
 });

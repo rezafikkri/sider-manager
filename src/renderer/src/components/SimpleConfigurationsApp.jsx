@@ -1,9 +1,14 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import SimpleConfigurationsSider from './SimpleConfigurationsSider';
 import SimpleConfigurationsMLManager from './SimpleConfigurationsMLManager';
+import Alert from './Alert';
+import LocaleContext from '../contexts/LocaleContext';
+import { translate } from '../../../main/utils';
 
 export default function SimpleConfigurationsApp() {
+  const {locale, resources} = useContext(LocaleContext);
   const [config, setConfig] = useState('ml-manager');
+  const [warning, setWarning] = useState('warning');
 
   function handleConfig(e) {
     e.preventDefault();
@@ -17,6 +22,15 @@ export default function SimpleConfigurationsApp() {
 
   return (
     <>
+      {warning &&
+        <div className="absolute bottom-5 right-5 left-5 text-left">
+          <Alert
+            message={() => translate(locale, 'simpleConfigurationsApp.warning', resources)}
+            type="warning"
+            onClose={() => setWarning(null)}
+          />
+        </div>
+      }
       <header>
         <nav className="p-3 w-40 min-h-screen sticky top-0">
           <ul className="[&_a]:px-3 [&_a]:py-1.5 [&_a]:my-2 [&_a]:block [&_a]:rounded-lg text-sm [&_a]">

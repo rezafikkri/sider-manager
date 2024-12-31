@@ -28,6 +28,9 @@ const resources = {
     simpleConfigurationsWindow: {
       title: 'Konfigurasi Sederhana - Sider Manager',
     },
+    simpleConfigurationsApp: {
+      warning: 'Pastikan menutup PES 2017 Kamu jika ingin menggunakan fitur Konfigurasi Sederhana!',
+    },
     header: {
       toggleLocaleBtn: {
         title: 'Ubah bahasa ke bahasa Inggris',
@@ -152,6 +155,9 @@ const resources = {
     },
     simpleConfigurationsWindow: {
       title: 'Simple Configurations - Sider Manager',
+    },
+    simpleConfigurationsApp: {
+      warning: 'Make sure to close your PES 2017 if you want to use the Simple Configuration feature!',
     },
     header: {
       toggleLocaleBtn: {
