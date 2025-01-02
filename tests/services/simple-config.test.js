@@ -1,6 +1,7 @@
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
-import { saveSiderIni } from '../../src/main/services/simple-config';
+import { readSiderIni, saveSiderIni } from '../../src/main/services/simple-config';
 import path from 'node:path';
+import log from 'electron-log/main';
 
 const siderIni = [
   '[sider]',
@@ -28,21 +29,28 @@ const siderIni = [
   '; lua.module = "Effect - Condition.lua"',
 ];
 
+beforeAll(() => {
+  vi.mock('../../src/main/services/settings', () => ({
+    getSettings: () => ({ pesDirectory: 'pesDirectory' }),
+  }));
+  vi.mock('node:fs', () => ({
+    writeFileSync: vi.fn(),
+    readFileSync: vi.fn(),
+  }));
+  vi.mock('electron', () => {
+    return {
+      app: {
+        getVersion: () => '',
+      },
+    };
+  });
+});
+
+afterEach(() => {
+  vi.resetAllMocks();
+});
+
 describe('saveSiderIni function', () => {
-  beforeAll(() => {
-    vi.mock('../../src/main/services/settings', () => ({
-      getSettings: () => ({ pesDirectory: 'pesDirectory' }),
-    }));
-    vi.mock('node:fs', () => ({
-      writeFileSync: vi.fn(),
-      readFileSync: vi.fn(),
-    }));
-  });
-
-  afterEach(() => {
-    vi.resetAllMocks();
-  });
-
   it('should call writeFileSync correctly and return true when what need to be update is common sider', async () => {
     const { writeFileSync, readFileSync } = await import('node:fs');
     readFileSync.mockReturnValue(siderIni.join('\n'));
@@ -60,7 +68,7 @@ describe('saveSiderIni function', () => {
   it('should call writeFileSync correctly and return true when what need to be update is lua.module and from enabled to disabled', async () => {
     const { writeFileSync, readFileSync } = await import('node:fs');
     readFileSync.mockReturnValue(siderIni.join('\n'));
-    
+
     const result = saveSiderIni({ key: 'lua.module', value: '"Server - Scoreboard Plus.lua"' });
 
     const newSiderIni = siderIni.map((ini) => {
@@ -102,7 +110,7 @@ describe('saveSiderIni function', () => {
   it('should call writeFileSync correctly and return true when what need to be update is cpk.root and from enabled to disabled', async () => {
     const { writeFileSync, readFileSync } = await import('node:fs');
     readFileSync.mockReturnValue(siderIni.join('\n'));
-    
+
     const result = saveSiderIni({ key: 'cpk.root', value: '".\\content\\Live CPK\\Font"' });
 
     const newSiderIni = siderIni.map((ini) => {
@@ -140,5 +148,34 @@ describe('saveSiderIni function', () => {
     const newSiderIni = siderIni.toSpliced(15, 0, 'cpk.root = ".\\content\\Live CPK\\Test"').join('\n');
     expect(writeFileSync).toHaveBeenCalledWith(path.join('pesDirectory', 'sider.ini'), newSiderIni);
     expect(result).toBe(true);
+  });
+});
+
+describe('readSiderIni function', () => {
+  beforeAll(() => {
+    vi.mock('../../src/main/utils', () => ({
+      generateErrorLogMessage: () => 'This is the right error',
+    }));
+  });
+
+  it('should call readFileSync function correctly and return array of sider.ini', async () => {
+    const { readFileSync } = await import('node:fs');
+    readFileSync.mockReturnValue(siderIni.join('\n'));
+
+    const result = readSiderIni('pesDirectory');
+
+    expect(readFileSync).toHaveBeenCalledWith(path.join('pesDirectory', 'sider.ini'), { encoding: 'utf-8' });
+    expect(result).toEqual(siderIni);
+  });
+
+  it('should call log.error function correctly and return empty aray when sider.ini file is not found', async () => {
+    const { readFileSync } = await import('node:fs');
+    readFileSync.mockImplementation(() => { throw new Error('This is error') });
+    log.error = vi.fn();
+
+    const result = readSiderIni('pesDirectory');
+
+    expect(log.error).toHaveBeenCalledWith('This is the right error');
+    expect(result).toEqual([]);
   });
 });

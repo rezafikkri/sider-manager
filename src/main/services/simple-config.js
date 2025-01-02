@@ -1,10 +1,24 @@
 import { readFileSync, writeFileSync } from 'node:fs';
-import { getSettings } from './settings';
+import os from 'node:os';
 import path from 'node:path';
+import log from 'electron-log/main';
+import { app } from 'electron';
+import { generateErrorLogMessage } from '../utils';
+import { getSettings } from './settings';
 
 function readSiderIni(pesDirectory) {
-  const ini = readFileSync(path.join(pesDirectory, 'sider.ini'), { encoding: 'utf-8' });
-  return ini.split('\n');
+  try {
+    const ini = readFileSync(path.join(pesDirectory, 'sider.ini'), { encoding: 'utf-8' });
+    return ini.split('\n');
+  } catch (err) {
+    log.error(generateErrorLogMessage(
+      app.getVersion(),
+      os.version(),
+      process.versions.electron,
+      err.stack,
+    ));
+    return [];
+  }
 }
 
 function editCommonSiderIni(siderIni, newSiderIni) {
