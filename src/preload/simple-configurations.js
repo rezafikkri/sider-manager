@@ -7,6 +7,8 @@ const sm = {
   saveSettings: (settings) => ipcRenderer.invoke('saveSettings', settings),
   readSiderIni: (pesDirectory) => ipcRenderer.invoke('readSiderIni', pesDirectory),
   saveSiderIni: (siderIni) => ipcRenderer.invoke('saveSiderIni', siderIni),
+  readModules: (pesDirectory) => ipcRenderer.invoke('readModules', pesDirectory),
+  readLiveCpks: (pesDirectory) => ipcRenderer.invoke('readLiveCpks', pesDirectory),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

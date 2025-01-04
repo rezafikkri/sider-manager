@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import log from 'electron-log/main';
@@ -19,6 +19,15 @@ function readSiderIni(pesDirectory) {
     ));
     return [];
   }
+}
+
+function readLiveCpks(pesDirectory) {
+  return readdirSync(path.join(pesDirectory, 'content', 'Live CPK'));
+}
+
+function readModules(pesDirectory) {
+  const modules = readdirSync(path.join(pesDirectory, 'modules'));
+  return modules.filter((module) => /\.lua$/.test(module));
 }
 
 function editCommonSiderIni(siderIni, newSiderIni) {
@@ -81,5 +90,7 @@ function saveSiderIni(newSiderIni) {
 
 export {
   readSiderIni,
+  readModules,
+  readLiveCpks,
   saveSiderIni,
 };

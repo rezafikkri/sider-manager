@@ -4,6 +4,7 @@ import LocaleContext from '../contexts/LocaleContext';
 import { translate } from '../../../main/utils';
 import ConfigCardInput from './ConfigCardInput';
 import useSiderIni from '../hooks/useSiderIni';
+import useModulesLiveCpks from '../hooks/useModulesLiveCpks';
 
 export default function SimpleConfigurationsSider() {
   const {locale, resources} = useContext(LocaleContext);
@@ -27,10 +28,32 @@ export default function SimpleConfigurationsSider() {
     setCameraSliders(newCameraSliders);
   }, [cameraSliders]);
 
+  const [modules, setModules, handleModules] = useModulesLiveCpks();
+  const [liveCpks, setLiveCpks, handleLiveCpks] = useModulesLiveCpks();
+
+  function modulesLiveCpksInitializations(key, dataset, dataSiderIni) {
+    return dataset.map((data) => {
+      let value = `"${data}"`;
+      if (key === 'cpk.root') value = `".\\content\\Live CPK\\${data}"`;
+
+      for (const ini of dataSiderIni) {
+        const regexp = new RegExp(data);
+        if (regexp.test(ini) && /^;/.test(ini)) {
+          return { key, value, checked: false };
+        } else if (regexp.test(ini) && !/^;/.test(ini)) {
+          return { key, value, checked: true };
+        }
+      }
+      return { key, value, checked: false };
+    })
+  }
+
   useEffect(() => {
     async function loadSiderIni() {
       const { pesDirectory } = await window.sm.getSettings();
       const siderIni = await window.sm.readSiderIni(pesDirectory);
+      let modulesSiderIni = [];
+      let liveCpksSiderIni = [];
 
       for (const ini of siderIni) {
         let [, iniValue] = ini.split('=');
@@ -60,8 +83,18 @@ export default function SimpleConfigurationsSider() {
           setCameraSliders({ key: 'camera.sliders.max', value: iniValue });
         } else if (/^camera\.dynamic-wide\.angle\.enabled =/.test(ini)) {
           setCameraDynamicWideAngle({ key: 'camera.dynamic-wide.angle.enabled', value: iniValue });
+        } else if (/lua\.module =/.test(ini)) {
+          modulesSiderIni.push(ini);
+        } else if (/cpk\.root/.test(ini)) {
+          liveCpksSiderIni.push(ini);
         }
       }
+
+      const modules = await window.sm.readModules(pesDirectory); 
+      setModules(modulesLiveCpksInitializations('lua.module', modules, modulesSiderIni));
+      
+      const liveCpks = await window.sm.readLiveCpks(pesDirectory);
+      setLiveCpks(modulesLiveCpksInitializations('cpk.root', liveCpks, liveCpksSiderIni))
     }
 
     loadSiderIni();
@@ -75,7 +108,7 @@ export default function SimpleConfigurationsSider() {
   );
 
   if (!debug) return header;
-
+  
   const simpleConfigs = [
     {
       id: 1,
@@ -171,6 +204,28 @@ export default function SimpleConfigurationsSider() {
         onInput={handleCameraSliders}
         testid={cameraSliders.key + cameraSliders.value}
       />
+
+      <h2 className="font-bold text-lg px-3 mt-9 mb-7">Extension Modules</h2>
+      {modules && modules.map((module) => (
+        <ConfigCardToggle
+          key={module.value}
+          title={module.value.replace('.lua', '').replace(/"/g, '')}
+          desc={null}
+          toggleValue={module}
+          onToggle={handleModules}
+        />
+      ))}
+
+      <h2 className="font-bold text-lg px-3 mt-9 mb-7">Live CPK</h2>
+      {liveCpks && liveCpks.map((liveCpk) => (
+        <ConfigCardToggle
+          key={liveCpk.value}
+          title={liveCpk.value.replace('.\\content\\Live CPK\\', '').replace(/"/g, '')}
+          desc={null}
+          toggleValue={liveCpk}
+          onToggle={handleLiveCpks}
+        />
+      ))}
     </>
   );
 }
