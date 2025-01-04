@@ -22,7 +22,8 @@ function readSiderIni(pesDirectory) {
 }
 
 function readLiveCpks(pesDirectory) {
-  return readdirSync(path.join(pesDirectory, 'content', 'Live CPK'));
+  const liveCpks = readdirSync(path.join(pesDirectory, 'content', 'Live CPK'));
+  return liveCpks.filter((liveCpk) => !['ML Manager', 'Graphics Menu', 'Press Room'].includes(liveCpk));
 }
 
 function readModules(pesDirectory) {
