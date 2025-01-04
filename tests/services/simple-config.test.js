@@ -139,7 +139,7 @@ describe('saveSiderIni function', () => {
     expect(result).toBe(true);
   });
 
-  it('should call writeFileSync correctly and return true when what need to be update is cpk.root and lua.module is not found', async () => {
+  it('should call writeFileSync correctly and return true when what need to be update is cpk.root and cpk.root is not found', async () => {
     const { writeFileSync, readFileSync } = await import('node:fs');
     readFileSync.mockReturnValue(siderIni.join('\n'));
 

@@ -45,7 +45,7 @@ export default function SimpleConfigurationsSider() {
         }
       }
       return { key, value, checked: false };
-    })
+    });
   }
 
   useEffect(() => {

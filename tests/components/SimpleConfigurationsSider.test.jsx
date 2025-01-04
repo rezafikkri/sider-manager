@@ -40,8 +40,31 @@ const siderIni = [
   'camera.sliders.max = 50',
   'camera.dynamic-wide.angle.enabled = 0',
   'black.bars.off = 1',
+  'cpk.root = ".\\content\\Live CPK\\Font"',
+  'cpk.root = ".\\content\\Live CPK\\CompSong"',
+  'cpk.root = ".\\content\\Live CPK\\MLManager"',
+  'cpk.root = ".\\content\\Live CPK\\GraphicsMenu"',
   'lua.enabled = 1',
-]
+  'lua.module = "Effect - NoRealEye.lua"',
+  'lua.module = "Server - Scoreboard Plus.lua"',
+  'lua.module = "Server - Scoreboard.lua"',
+  'lua.module = "Server - TrophyServer.lua"',
+  'lua.module = "Server - Stadium.lua"',
+  '; lua.module = "Event Tracer.lua"',
+  '; lua.module = "Effect - Condition.lua"',
+];
+
+const modules = [
+  'Server - GKKit2nd.lua',
+  'Server - Scoreboard Plus.lua',
+  'Server - Scoreboard.lua',
+];
+
+const liveCpks = [
+  'CompSong',
+  'Font',
+  'Test',
+];
 
 describe('SimpleConfigurationsSider function', () => {
   beforeAll(() => {
@@ -49,6 +72,8 @@ describe('SimpleConfigurationsSider function', () => {
       getSettings: async () => ({ pesDirectory: 'pesDirectory' }),
       readSiderIni: async () => siderIni,
       saveSiderIni: vi.fn(),
+      readModules: async () => modules,
+      readLiveCpks: async () => liveCpks,
     };
   });
 
@@ -69,23 +94,40 @@ describe('SimpleConfigurationsSider function', () => {
     cleanup();
   });
 
-  it('should show old sider.ini configuration', async () => {
-    const debugToggle = await screen.findByTestId(siderIni[1].replace(' = ', ''));
-    const liveCpkToggle = await screen.findByTestId(siderIni[2].replace(' = ', ''));
+  it('should show sider.ini configuration', async () => {
+    const debug = await screen.findByTestId(siderIni[1].replace(' = ', ''));
+    const liveCpk = await screen.findByTestId(siderIni[2].replace(' = ', ''));
     const cameraSlidersMax = await screen.findByTestId(siderIni[9].replace(' = ', ''));
+    const luaModulesServerScoreboardPlus = await screen.findByTestId(`lua.module"${modules[1]}"`);
+    const luaModulesServerGKKit2nd = await screen.findByTestId(`lua.module"${modules[0]}"`);
+    const liveCpksFont = await screen.findByTestId(`cpk.root".\\content\\Live CPK\\${liveCpks[1]}"`);
+    const liveCpksTest = await screen.findByTestId(`cpk.root".\\content\\Live CPK\\${liveCpks[2]}"`);
 
-    expect(debugToggle).not.toBeChecked();
-    expect(liveCpkToggle).toBeChecked();
+    expect(debug).not.toBeChecked();
+    expect(liveCpk).toBeChecked();
     expect(cameraSlidersMax).toHaveValue(50);
+    expect(luaModulesServerScoreboardPlus).toBeChecked();
+    expect(luaModulesServerGKKit2nd).not.toBeChecked();
+    expect(liveCpksFont).toBeChecked();
+    expect(liveCpksTest).not.toBeChecked();
   });
 
-  it('should call saveSiderIni function and show toggle correctly based on new toggle value when toggle button clicked', async () => {
-    const debugToggle = await screen.findByTestId(siderIni[1].replace(' = ', ''));
+  it('should call saveSiderIni function and show toggle correctly based on new toggle value when toggle button of common sider clicked and from disabled to enabled', async () => {
+    const debug = await screen.findByTestId(siderIni[1].replace(' = ', ''));
 
-    await userEvent.click(debugToggle);
+    await userEvent.click(debug);
 
     expect(window.sm.saveSiderIni).toHaveBeenCalledWith({ key: 'debug', value: 1 });
-    expect(debugToggle).toBeChecked();
+    expect(debug).toBeChecked();
+  });
+
+  it('should call saveSiderIni function and show toggle correctly based on new toggle value when toggle button of sommon sider clicked and from enabled to disabled', async () => {
+    const liveCpk = await screen.findByTestId(siderIni[2].replace(' = ', ''));
+
+    await userEvent.click(liveCpk);
+
+    expect(window.sm.saveSiderIni).toHaveBeenCalledWith({ key: 'livecpk.enabled', value: 0 });
+    expect(liveCpk).not.toBeChecked();
   });
 
   it('should call saveSiderIni function correctly, settimeout and clearTimeout function and show new input value when value of input is changed', async () => {
@@ -99,5 +141,47 @@ describe('SimpleConfigurationsSider function', () => {
     expect(setTimeoutSpy).toHaveBeenCalled();
     expect(clearTimeoutSpy).toHaveBeenCalled();
     expect(cameraSlidersMax).toHaveValue(30);
+  });
+
+  it('should call saveSiderIni function and show toggle correctly based on new toggle value when toggle button of lua.module clicked and from enabled to disabled', async () => {
+    const luaModulesServerScoreboardPlus = await screen.findByTestId(`lua.module"${modules[1]}"`);
+
+    await userEvent.click(luaModulesServerScoreboardPlus);
+
+    expect(window.sm.saveSiderIni).toHaveBeenCalledWith({ key: 'lua.module', value: `"${modules[1]}"` });
+    expect(luaModulesServerScoreboardPlus).not.toBeChecked();
+  });
+
+  it('should call saveSiderIni function and show toggle correctly based on new toggle value when toggle button of lua.module clicked, module is new and from disabled to enabled', async () => {
+    const luaModulesServerGKKit2nd = await screen.findByTestId(`lua.module"${modules[0]}"`);
+
+    await userEvent.click(luaModulesServerGKKit2nd);
+
+    expect(window.sm.saveSiderIni).toHaveBeenCalledWith({ key: 'lua.module', value: `"${modules[0]}"` });
+    expect(luaModulesServerGKKit2nd).toBeChecked();
+  });
+
+  it('should call saveSiderIni function and show toggle correctly based on new toggle value when toggle button of cpk.root clicked and from enabled to disabled', async () => {
+    const liveCpksFont = await screen.findByTestId(`cpk.root".\\content\\Live CPK\\${liveCpks[1]}"`);
+
+    await userEvent.click(liveCpksFont);
+
+    expect(window.sm.saveSiderIni).toHaveBeenCalledWith({
+      key: 'cpk.root',
+      value: `".\\content\\Live CPK\\${liveCpks[1]}"`,
+    });
+    expect(liveCpksFont).not.toBeChecked();
+  });
+
+  it('should call saveSiderIni function and show toggle correctly based on new toggle value when toggle button of cpk.root clicked and from disabled to enabled', async () => {
+    const liveCpksTest = await screen.findByTestId(`cpk.root".\\content\\Live CPK\\${liveCpks[2]}"`);
+
+    await userEvent.click(liveCpksTest);
+
+    expect(window.sm.saveSiderIni).toHaveBeenCalledWith({
+      key: 'cpk.root',
+      value: `".\\content\\Live CPK\\${liveCpks[2]}"`,
+    });
+    expect(liveCpksTest).toBeChecked();
   });
 });
