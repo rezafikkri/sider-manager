@@ -18,12 +18,12 @@ const siderIni = [
   'cpk.root = ".\\content\\Live CPK\\Font"',
   'cpk.root = ".\\content\\Live CPK\\CompSong"',
   'cpk.root = ".\\content\\Live CPK\\MLManager"',
-  'cpk.root = ".\\content\\Live CPK\\GraphicsMenu"',
+  '; cpk.root = ".\\content\\Live CPK\\GraphicsMenu"',
   'lua.enabled = 1',
   'lua.module = "Effect - NoRealEye.lua"',
   'lua.module = "Server - Scoreboard Plus.lua"',
   'lua.module = "Server - Scoreboard.lua"',
-  'lua.module = "Server - TrophyServer.lua"',
+  '; lua.module = "Server - TrophyServer.lua"',
   'lua.module = "Server - Stadium.lua"',
   '; lua.module = "Event Tracer.lua"',
   '; lua.module = "Effect - Condition.lua"',
@@ -81,15 +81,13 @@ describe('saveSiderIni function', () => {
 
   it('should call writeFileSync correctly and return true when what need to be update is lua.module and from disabled to enabled', async () => {
     const { writeFileSync, readFileSync } = await import('node:fs');
-    readFileSync.mockReturnValue(siderIni.map((ini) => {
-      if (ini === 'lua.module = "Server - TrophyServer.lua"') return '; lua.module = "Server - TrophyServer.lua"';
-      return ini;
-    }).join('\n'));
+    readFileSync.mockReturnValue(siderIni.join('\n'));
 
     const result = saveSiderIni({ key: 'lua.module', value: '"Server - TrophyServer.lua"' });
 
+    const targetSiderIni = 'lua.module = "Server - TrophyServer.lua"';
     const newSiderIni = siderIni.map((ini) => {
-      if (ini === '; lua.module = "Server - TrophyServer.lua"') return 'lua.module = "Server - TrophyServer.lua"';
+      if (ini === `; ${targetSiderIni}`) return targetSiderIni;
       return ini;
     }).join('\n');
     expect(writeFileSync).toHaveBeenCalledWith(path.join('pesDirectory', 'sider.ini'), newSiderIni);
@@ -123,11 +121,8 @@ describe('saveSiderIni function', () => {
 
   it('should call writeFileSync correctly and return true when what need to be update is cpk.root and from disabled to enabled', async () => {
     const { writeFileSync, readFileSync } = await import('node:fs');
+    readFileSync.mockReturnValue(siderIni.join('\n'));
     const targetSiderIni = 'cpk.root = ".\\content\\Live CPK\\GraphicsMenu"';
-    readFileSync.mockReturnValue(siderIni.map((ini) => {
-      if (ini === targetSiderIni) return `; ${targetSiderIni}`;
-      return ini;
-    }).join('\n'));
 
     const result = saveSiderIni({ key: 'cpk.root', value: '".\\content\\Live CPK\\GraphicsMenu"' });
 
@@ -145,7 +140,7 @@ describe('saveSiderIni function', () => {
 
     const result = saveSiderIni({ key: 'cpk.root', value: '".\\content\\Live CPK\\Test"' });
 
-    const newSiderIni = siderIni.toSpliced(15, 0, 'cpk.root = ".\\content\\Live CPK\\Test"').join('\n');
+    const newSiderIni = siderIni.toSpliced(14, 0, 'cpk.root = ".\\content\\Live CPK\\Test"').join('\n');
     expect(writeFileSync).toHaveBeenCalledWith(path.join('pesDirectory', 'sider.ini'), newSiderIni);
     expect(result).toBe(true);
   });
