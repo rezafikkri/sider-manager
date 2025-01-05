@@ -97,9 +97,9 @@ async function addonInitialization(filePath) {
     await decompress(filePath, fileDir);
 
     // move folder to appData
-    const extractMlManagerPath = path.join(extractPath, 'Ml Manager');
+    const extractMlManagerPath = path.join(extractPath, 'ML Manager');
     const extractGraphicsMenuPath = path.join(extractPath, 'Graphics Menu');
-    const extractTeamPressRoomPath = path.join(extractPath, 'Team Press Room');
+    const extractTeamPressRoomPath = path.join(extractPath, 'Press Room');
     const settingsPath = getSettingsPath();
     cpSync(
       extractMlManagerPath,
@@ -113,7 +113,7 @@ async function addonInitialization(filePath) {
     );
     cpSync(
       extractTeamPressRoomPath,
-      path.join(settingsPath, 'team-press-room'),
+      path.join(settingsPath, 'press-room'),
       { recursive: true },
     );
     rmSync(extractMlManagerPath, { recursive: true, force: true });
