@@ -206,7 +206,7 @@ export default function SimpleConfigurationsSider() {
       />
 
       <h2 className="font-bold text-lg px-3 mt-9 mb-7">Extension Modules</h2>
-      {modules && modules.map((module) => (
+      {modules.map((module) => (
         <ConfigCardToggle
           key={module.value}
           title={module.value.replace('.lua', '').replace(/"/g, '')}
@@ -217,7 +217,7 @@ export default function SimpleConfigurationsSider() {
       ))}
 
       <h2 className="font-bold text-lg px-3 mt-9 mb-7">Live CPK</h2>
-      {liveCpks && liveCpks.map((liveCpk) => (
+      {liveCpks.map((liveCpk) => (
         <ConfigCardToggle
           key={liveCpk.value}
           title={liveCpk.value.replace('.\\content\\Live CPK\\', '').replace(/"/g, '')}
