@@ -5,6 +5,7 @@ import {
   readFileSync,
   writeFileSync,
   rmSync,
+  cpSync,
 } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -12,7 +13,7 @@ import url from 'node:url';
 import log from 'electron-log/main';
 import { app } from 'electron';
 import { generateErrorLogMessage } from '../utils';
-import { getSettings, getSettingsPath } from './settings';
+import { getSettings, getSettingsPath, saveSettings } from './settings';
 
 function readSiderIni(pesDirectory) {
   try {
@@ -150,6 +151,26 @@ function readMLManager() {
   });
 }
 
+function chooseMLManager(mlManager) {
+  const settings = getSettings();
+  const dest = path.join(settings.pesDirectory, 'content', 'Live CPK', 'ML Manager');
+
+  // remove common directory if exist
+  const prevCommonDir = path.join('common');
+  if (existsSync(prevCommonDir)) rmSync(prevCommonDir, { recursive: true, force: true });
+
+  cpSync(path.join(mlManager.path, 'common'), dest, { recursive: true });
+
+  saveSettings({ activeMLManager: { ...mlManager } });
+
+  return true;
+}
+
+function getActiveMLManager() {
+  const settings = getSettings();
+  return settings.activeMLManager;
+}
+
 export {
   readSiderIni,
   readModules,
@@ -158,4 +179,6 @@ export {
   toggleMLManagerConfig,
   isMLManagerConfigActivated,
   readMLManager,
+  chooseMLManager,
+  getActiveMLManager,
 };

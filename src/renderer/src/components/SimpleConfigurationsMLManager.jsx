@@ -10,8 +10,6 @@ export default function SimpleConfigurationsMLManager() {
   const [mlManagerActive, setMLManagerActive] = useState(null);
   const [mlManagers, setMLManagers] = useState([]);
 
-  // const imgPath1 = 'sm:///home/rezafikkri/.config/sider-manager/ml-manager/Preview1.png';
-
   async function loadMLManagers() {
     const mlManagers = await window.sm.readMLManager();
     setMLManagers(mlManagers);
