@@ -134,6 +134,12 @@ const resources = {
       sectionPDesc11: 'Mengaktifkan slider "Angle" untuk kamera "Dynamic Wide". Fitur ini agak eksperimental.',
       sectionPDesc12: 'Ini memungkinkan untuk memperluas jangkauan slider kamera: Zoom, Height, Angle. Saat ini, ini hanya berfungsi untuk kamera "Kustom". Setel ke <code>0</code> untuk menonaktifkan fitur ini.',
     },
+    simpleConfigurationsMLManager: {
+      desc: 'Pilih manager tim yang ingin kamu gunakan ketika memainkan Master League.',
+      statusOn: 'Hidup',
+      statusOff: 'Mati',
+      addMLManagerBtnText: 'Tambah Manager',
+    },
   },
 
   en: {
@@ -261,6 +267,12 @@ const resources = {
       sectionPDesc10: 'Turn off the black bar (<i>letterboxing</i>) at the top and bottom of the screen, or left/right.',
       sectionPDesc11: 'Enable "Angle" slider for "Dynamic Wide" camera. This feature is somewhat experimental.',
       sectionPDesc12: 'Allows to extend the range of camera sliders: Zoom, Height, Angle. Currently, it only works for "Custom" camera. Set to <code>0</code> for disable this feature.',
+    },
+    simpleConfigurationsMLManager: {
+      desc: 'Choose team manager that you want to use when play Master League.',
+      statusOn: 'On',
+      statusOff: 'Off',
+      addMLManagerBtnText: 'Add Manager',
     },
   },
 };
