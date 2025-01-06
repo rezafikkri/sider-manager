@@ -7,7 +7,7 @@ import { translate } from '../../../main/utils';
 
 export default function SimpleConfigurationsApp() {
   const {locale, resources} = useContext(LocaleContext);
-  const [config, setConfig] = useState('ml-manager');
+  const [config, setConfig] = useState('sider');
   const [warning, setWarning] = useState('warning');
 
   function handleConfig(e) {
