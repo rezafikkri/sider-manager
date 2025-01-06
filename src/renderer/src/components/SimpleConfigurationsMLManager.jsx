@@ -3,12 +3,14 @@ import ConfigCardImg from './ConfigCardImg';
 
 export default function SimpleConfigurationsMLManager() {
   const [status, setStatus] = useState(false);
+  const [mlManagerActive, setMLManagerActive] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const imgPath1 = 'sm:///home/rezafikkri/.config/sider-manager/ml-manager/Preview1.png';
   const imgPath2 = 'sm:///home/rezafikkri/.config/sider-manager/ml-manager/Preview2.png';
   const imgPath3 = 'sm:///home/rezafikkri/.config/sider-manager/ml-manager/Preview3.png';
 
-  const [mlManager, setMLManager] = useState('');
+  const [mlManager, setMLManager] = useState(null);
   function handleMLManager(mlManager) {
     setMLManager(mlManager);
   }

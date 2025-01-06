@@ -1,10 +1,17 @@
-import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import {
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  writeFileSync,
+  rmSync,
+} from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import log from 'electron-log/main';
 import { app } from 'electron';
 import { generateErrorLogMessage } from '../utils';
-import { getSettings } from './settings';
+import { getSettings, getSettingsPath } from './settings';
 
 function readSiderIni(pesDirectory) {
   try {
@@ -46,7 +53,7 @@ function editCommonSiderIni(siderIni, newSiderIni) {
   return false;
 }
 
-function editLuaModuleCpkLiveSiderIni(siderIni, newSiderIni) {
+function editLuaModuleLiveCpkSiderIni(siderIni, newSiderIni) {
   if (newSiderIni.key !== 'lua.module' && newSiderIni.key !== 'cpk.root') return false;
 
   let lastIndex = 0;
@@ -82,11 +89,61 @@ function saveSiderIni(newSiderIni) {
   const siderIni = readSiderIni(settings.pesDirectory);
 
   editCommonSiderIni(siderIni, newSiderIni);
-  editLuaModuleCpkLiveSiderIni(siderIni, newSiderIni);
+  editLuaModuleLiveCpkSiderIni(siderIni, newSiderIni);
 
   writeFileSync(path.join(settings.pesDirectory, 'sider.ini'), siderIni.join('\n'));
 
   return true;
+}
+
+function activateMLManagerConfig() {
+  const settings = getSettings();
+  const pesDirectory = settings.pesDirectory;
+
+  const mlManagerPath = path.join(pesDirectory, 'content', 'Live CPK', 'ML Manager');
+  if (!existsSync(mlManagerPath)) {
+    mkdirSync(mlManagerPath);
+  }
+
+  saveSiderIni({ key: 'cpk.root', value: '".\\content\\Live CPK\\ML Manager"' });
+}
+
+function unactivateMLManagerConfig() {
+  const settings = getSettings();
+  const pesDirectory = settings.pesDirectory;
+
+  const mlManagerPath = path.join(pesDirectory, 'content', 'Live CPK', 'ML Manager');
+  if (existsSync(mlManagerPath)) {
+    rmSync(mlManagerPath, { recursive: true, force: true });
+  }
+
+  // comment lua code of ML Manager cpk.root in sider.ini
+  saveSiderIni({ key: 'cpk.root', value: '".\\content\\Live CPK\\ML Manager"' });
+}
+
+function isMLManagerConfigActivated() {
+  const settings = getSettings();
+  const pesDirectory = settings.pesDirectory;
+  const siderIni = readSiderIni(pesDirectory);
+
+  const checkMLManagerFolder = existsSync(path.join(pesDirectory, 'content', 'Live CPK', 'ML Manager'));
+  let checkMLManagerSiderIni = false;
+  for (const ini of siderIni) {
+    if (/^cpk\.root = "\.\\content\\Live CPK\\ML Manager"/.test(ini)) {
+      checkMLManagerSiderIni = true;
+      break;
+    }
+  }
+
+  if (checkMLManagerFolder && checkMLManagerSiderIni) return true;
+  return false;
+}
+
+function readMLManager() {
+  const settingsPath = getSettingsPath();
+  return readdirSync(path.join(settingsPath, 'ml-manager')).map((mlManager) => {
+    return path.join(settingsPath, 'ml-manager', mlManager);
+  });
 }
 
 export {
@@ -94,4 +151,8 @@ export {
   readModules,
   readLiveCpks,
   saveSiderIni,
+  activateMLManagerConfig,
+  unactivateMLManagerConfig,
+  isMLManagerConfigActivated,
+  readMLManager,
 };

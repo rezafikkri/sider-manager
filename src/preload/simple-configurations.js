@@ -9,6 +9,10 @@ const sm = {
   saveSiderIni: (siderIni) => ipcRenderer.invoke('saveSiderIni', siderIni),
   readModules: (pesDirectory) => ipcRenderer.invoke('readModules', pesDirectory),
   readLiveCpks: (pesDirectory) => ipcRenderer.invoke('readLiveCpks', pesDirectory),
+  readMLManager: () => ipcRenderer.invoke('readMLManager'),
+  isMLManagerConfigActivated: () => ipcRenderer.invoke('isMLManagerConfigActivated'),
+  activateMLManagerConfig: () => ipcRenderer.invoke('activateMLManagerConfig'),
+  unactivateMLManagerConfig: () => ipcRenderer.invoke('unactivateMLManagerConfig'),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to
