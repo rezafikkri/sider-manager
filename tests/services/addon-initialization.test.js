@@ -194,12 +194,12 @@ describe('addonInitialization function', () => {
     const filePath = path.join('/others','addon-initialization.zip');
     const result = await addonInitialization(filePath);
 
-    const srcMLManager = path.join(extractPath, 'Ml Manager');
+    const srcMLManager = path.join(extractPath, 'ML Manager');
     const destMLManager = path.join('settingsPath', 'ml-manager');
     const srcGraphicsMenu = path.join(extractPath, 'Graphics Menu');
     const destGraphicsMenu = path.join('settingsPath', 'graphics-menu');
-    const srcTeamPressRoom = path.join(extractPath, 'Team Press Room');
-    const destTeamPresRoom = path.join('settingsPath', 'team-press-room');
+    const srcTeamPressRoom = path.join(extractPath, 'Press Room');
+    const destTeamPresRoom = path.join('settingsPath', 'press-room');
 
     expect(decompress).toHaveBeenCalledWith(filePath, path.dirname(filePath));
     expect(cpSync).toHaveBeenCalledWith(srcMLManager, destMLManager, { recursive: true });

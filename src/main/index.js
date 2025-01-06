@@ -22,7 +22,15 @@ import createAboutWindow from './services/create-about-window';
 import createAddonInitializationWindow from './services/create-addon-initialization-window';
 import createSimpleConfigurationsWindow from './services/create-simple-configurations-window';
 import { addonInitialization, backup, chooseInitializationFile } from './services/addon-initialization';
-import { readModules, readSiderIni, saveSiderIni, readLiveCpks, readMLManager, isMLManagerConfigActivated, activateMLManagerConfig, unactivateMLManagerConfig } from './services/simple-config';
+import {
+  readModules,
+  readSiderIni,
+  saveSiderIni,
+  readLiveCpks,
+  readMLManager,
+  isMLManagerConfigActivated,
+  toggleMLManagerConfig,
+} from './services/simple-config';
 
 // for performance
 Menu.setApplicationMenu(null);
@@ -91,14 +99,10 @@ app.whenReady().then(() => {
   ipcMain.handle('readLiveCpks', (_, pesDirectory) => readLiveCpks(pesDirectory));
   ipcMain.handle('readMLManager', readMLManager);
   ipcMain.handle('isMLManagerConfigActivated', isMLManagerConfigActivated);
-  ipcMain.handle('activateMLManagerConfig', activateMLManagerConfig);
-  ipcMain.handle('unactivateMLManagerConfig', unactivateMLManagerConfig);
+  ipcMain.handle('toggleMLManagerConfig', toggleMLManagerConfig);
 
   // check-update in background
   checkUpdate();
-
-  activateMLManagerConfig();
-  // unactivateMLManagerConfig();
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common

@@ -96,29 +96,20 @@ function saveSiderIni(newSiderIni) {
   return true;
 }
 
-function activateMLManagerConfig() {
+function toggleMLManagerConfig() {
   const settings = getSettings();
   const pesDirectory = settings.pesDirectory;
 
   const mlManagerPath = path.join(pesDirectory, 'content', 'Live CPK', 'ML Manager');
   if (!existsSync(mlManagerPath)) {
     mkdirSync(mlManagerPath);
-  }
-
-  saveSiderIni({ key: 'cpk.root', value: '".\\content\\Live CPK\\ML Manager"' });
-}
-
-function unactivateMLManagerConfig() {
-  const settings = getSettings();
-  const pesDirectory = settings.pesDirectory;
-
-  const mlManagerPath = path.join(pesDirectory, 'content', 'Live CPK', 'ML Manager');
-  if (existsSync(mlManagerPath)) {
+  } else {
     rmSync(mlManagerPath, { recursive: true, force: true });
   }
 
-  // comment lua code of ML Manager cpk.root in sider.ini
+  // add new or comment lua code of ML Manager cpk.root in sider.ini
   saveSiderIni({ key: 'cpk.root', value: '".\\content\\Live CPK\\ML Manager"' });
+  return true;
 }
 
 function isMLManagerConfigActivated() {
@@ -126,7 +117,7 @@ function isMLManagerConfigActivated() {
   const pesDirectory = settings.pesDirectory;
   const siderIni = readSiderIni(pesDirectory);
 
-  const checkMLManagerFolder = existsSync(path.join(pesDirectory, 'content', 'Live CPK', 'ML Manager'));
+  const checkMLManagerPath = existsSync(path.join(pesDirectory, 'content', 'Live CPK', 'ML Manager'));
   let checkMLManagerSiderIni = false;
   for (const ini of siderIni) {
     if (/^cpk\.root = "\.\\content\\Live CPK\\ML Manager"/.test(ini)) {
@@ -135,7 +126,7 @@ function isMLManagerConfigActivated() {
     }
   }
 
-  if (checkMLManagerFolder && checkMLManagerSiderIni) return true;
+  if (checkMLManagerPath && checkMLManagerSiderIni) return true;
   return false;
 }
 
@@ -151,8 +142,7 @@ export {
   readModules,
   readLiveCpks,
   saveSiderIni,
-  activateMLManagerConfig,
-  unactivateMLManagerConfig,
+  toggleMLManagerConfig,
   isMLManagerConfigActivated,
   readMLManager,
 };

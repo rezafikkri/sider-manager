@@ -11,8 +11,7 @@ const sm = {
   readLiveCpks: (pesDirectory) => ipcRenderer.invoke('readLiveCpks', pesDirectory),
   readMLManager: () => ipcRenderer.invoke('readMLManager'),
   isMLManagerConfigActivated: () => ipcRenderer.invoke('isMLManagerConfigActivated'),
-  activateMLManagerConfig: () => ipcRenderer.invoke('activateMLManagerConfig'),
-  unactivateMLManagerConfig: () => ipcRenderer.invoke('unactivateMLManagerConfig'),
+  toggleMLManagerConfig: () => ipcRenderer.invoke('toggleMLManagerConfig'),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

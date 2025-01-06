@@ -1,5 +1,5 @@
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
-import { readSiderIni, saveSiderIni } from '../../src/main/services/simple-config';
+import { isMLManagerConfigActivated, readMLManager, readSiderIni, saveSiderIni, toggleMLManagerConfig } from '../../src/main/services/simple-config';
 import path from 'node:path';
 import log from 'electron-log/main';
 
@@ -32,10 +32,15 @@ const siderIni = [
 beforeAll(() => {
   vi.mock('../../src/main/services/settings', () => ({
     getSettings: () => ({ pesDirectory: 'pesDirectory' }),
+    getSettingsPath: () => 'settingsPath',
   }));
   vi.mock('node:fs', () => ({
     writeFileSync: vi.fn(),
     readFileSync: vi.fn(),
+    mkdirSync: vi.fn(),
+    existsSync: vi.fn(),
+    rmSync: vi.fn(),
+    readdirSync: vi.fn(),
   }));
   vi.mock('electron', () => {
     return {
@@ -172,5 +177,90 @@ describe('readSiderIni function', () => {
 
     expect(log.error).toHaveBeenCalledWith('This is the right error');
     expect(result).toEqual([]);
+  });
+});
+
+describe('toggleMLManagerConfig function', () => {
+  it('should call mkdirSync function correctly, writeFileSync function for sider.ini correctly and return true when ML Manager config is non active', async () => {
+    const { writeFileSync, existsSync, mkdirSync, readFileSync } = await import('node:fs');
+    readFileSync.mockReturnValue(siderIni.join('\n'));
+    existsSync.mockReturnValue(false);
+
+    const result = toggleMLManagerConfig();
+
+    expect(mkdirSync).toHaveBeenCalledWith(path.join('pesDirectory', 'content', 'Live CPK', 'ML Manager'));
+    const newSiderIni = siderIni.toSpliced(14, 0, 'cpk.root = ".\\content\\Live CPK\\ML Manager"').join('\n');
+    expect(writeFileSync).toHaveBeenCalledWith(path.join('pesDirectory', 'sider.ini'), newSiderIni);
+    expect(result).toBe(true);
+  });
+
+  it('should call rmSync function correctly, writeFileSync function for sider.ini correctly and return true when ML Manager config is active', async () => {
+    const { writeFileSync, existsSync, rmSync, readFileSync } = await import('node:fs');
+    const newSiderIni = siderIni.toSpliced(14, 0, 'cpk.root = ".\\content\\Live CPK\\ML Manager"');
+    readFileSync.mockReturnValue(newSiderIni.join('\n'));
+    existsSync.mockReturnValue(true);
+
+    const result = toggleMLManagerConfig();
+
+    const mlManagerPath = path.join('pesDirectory', 'content', 'Live CPK', 'ML Manager');
+    expect(rmSync).toHaveBeenCalledWith(mlManagerPath, { recursive: true, force: true });
+    
+    expect(writeFileSync).toHaveBeenCalledWith(
+      path.join('pesDirectory', 'sider.ini'),
+      newSiderIni.map((ini) => {
+        const targetSiderIni = 'cpk.root = ".\\content\\Live CPK\\ML Manager"';
+        if (ini === targetSiderIni) return `; ${targetSiderIni}`;
+        return ini;
+      }).join('\n'),
+    );
+    expect(result).toBe(true);
+  });
+});
+
+describe('isMLManagerConfigActivated function', () => {
+  it('should return true when ML Manager path exist and ML Manager code exist in sider.ini', async () => {
+    const { existsSync, readFileSync } = await import('node:fs');
+    const newSiderIni = siderIni.toSpliced(14, 0, 'cpk.root = ".\\content\\Live CPK\\ML Manager"');
+    readFileSync.mockReturnValue(newSiderIni.join('\n'));
+    existsSync.mockReturnValue(true);
+
+    const result = isMLManagerConfigActivated();
+
+    expect(result).toBe(true);
+  });
+
+  it('should return false when ML Manager path not exist and ML Manager code exist in sider.ini', async () => {
+    const { existsSync, readFileSync } = await import('node:fs');
+    const newSiderIni = siderIni.toSpliced(14, 0, 'cpk.root = ".\\content\\Live CPK\\ML Manager"');
+    readFileSync.mockReturnValue(newSiderIni.join('\n'));
+    existsSync.mockReturnValue(false);
+
+    const result = isMLManagerConfigActivated();
+
+    expect(result).toBe(false);
+  });
+
+  it('should return false when ML Manager path exist and ML Manager code not exist in sider.ini', async () => {
+    const { existsSync, readFileSync } = await import('node:fs');
+    readFileSync.mockReturnValue(siderIni);
+    existsSync.mockReturnValue(false);
+
+    const result = isMLManagerConfigActivated();
+
+    expect(result).toBe(false);
+  });
+});
+
+describe('readMLManager function', () => {
+  it('should return correctly ML Managers', async () => {
+    const { readdirSync } = await import('node:fs');
+    const mlManagers = ['Alex Ferguson', 'Arrigo Sacchi', 'Bill Shankly'];
+    readdirSync.mockReturnValue(mlManagers);
+
+    const result = readMLManager();
+
+    expect(result).toEqual(mlManagers.map((mlManager) => {
+      return path.join('settingsPath', 'ml-manager', mlManager);
+    }));
   });
 });
