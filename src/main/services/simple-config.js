@@ -8,6 +8,7 @@ import {
 } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import url from 'node:url';
 import log from 'electron-log/main';
 import { app } from 'electron';
 import { generateErrorLogMessage } from '../utils';
@@ -133,7 +134,19 @@ function isMLManagerConfigActivated() {
 function readMLManager() {
   const settingsPath = getSettingsPath();
   return readdirSync(path.join(settingsPath, 'ml-manager')).map((mlManager) => {
-    return path.join(settingsPath, 'ml-manager', mlManager);
+    let mlManagerpath = path.join(settingsPath, 'ml-manager', mlManager);
+    let preview = path.join(mlManagerpath, 'preview');
+    if (existsSync(`${preview}.png`)) {
+      preview = url.pathToFileURL(`${preview}.png`).toString();
+    } else if (existsSync(`${preview}.jpg`)) {
+      preview = url.pathToFileURL(`sm://${preview}.jpg`).toString();
+    }
+
+    return {
+      name: mlManager,
+      path: mlManagerpath,
+      preview,
+    };
   });
 }
 

@@ -3,6 +3,7 @@ import { useId } from "react";
 export default function ConfigCardImg({
   title,
   img,
+  path,
   isChecked,
   onChecked,
 }) {

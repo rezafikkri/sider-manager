@@ -1,19 +1,43 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ConfigCardImg from './ConfigCardImg';
 
 export default function SimpleConfigurationsMLManager() {
   const [status, setStatus] = useState(false);
   const [mlManagerActive, setMLManagerActive] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [mlManagers, setMLManagers] = useState([]);
 
-  const imgPath1 = 'sm:///home/rezafikkri/.config/sider-manager/ml-manager/Preview1.png';
-  const imgPath2 = 'sm:///home/rezafikkri/.config/sider-manager/ml-manager/Preview2.png';
-  const imgPath3 = 'sm:///home/rezafikkri/.config/sider-manager/ml-manager/Preview3.png';
+  // const imgPath1 = 'sm:///home/rezafikkri/.config/sider-manager/ml-manager/Preview1.png';
 
-  const [mlManager, setMLManager] = useState(null);
-  function handleMLManager(mlManager) {
-    setMLManager(mlManager);
+  async function loadMLManagers() {
+    const mlManagers = await window.sm.readMLManager();
+    setMLManagers(mlManagers);
   }
+
+  function handleToggleMLManagerConfig() {
+    window.sm.toggleMLManagerConfig();
+    setStatus((prevStatus) => {
+      const newStatus = !prevStatus;
+      if (newStatus) {
+        loadMLManagers();
+      } else {
+        setMLManagers([]);
+      }
+      return newStatus;
+    });
+  }
+
+  useEffect(() => {
+    // check is ml manager config is activated or not yet
+    async function checkStatus() {
+      const check = await window.sm.isMLManagerConfigActivated();
+      setStatus(check);
+      if (check) {
+        loadMLManagers();
+      }
+    }
+
+    checkStatus();
+  }, []);
 
   return (
     <>
@@ -25,8 +49,8 @@ export default function SimpleConfigurationsMLManager() {
         <label className="inline-flex items-center cursor-pointer w-28">
           <input
             type="checkbox"
-            value={status}
-            onChange={() => setStatus(status => !status)}
+            checked={status}
+            onChange={handleToggleMLManagerConfig}
             className="sr-only peer"
           />
           <div className="relative w-11 h-6 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 peer-focus:ring-indigo-800 rounded-full peer bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-indigo-600"></div>
@@ -44,24 +68,16 @@ export default function SimpleConfigurationsMLManager() {
       </button>
 
       <section className="px-3 mt-10 grid grid-cols-3 gap-4">
-        <ConfigCardImg
-          title={'Alex Ferguson'}
-          img={imgPath1}
-          isChecked={mlManager === 'Alex Ferguson' ? true : false}
-          onChecked={handleMLManager}
-        />
-        <ConfigCardImg
-          title={'Jose Mourinho'}
-          img={imgPath2}
-          isChecked={mlManager === 'Jose Mourinho' ? true : false}
-          onChecked={handleMLManager}
-        />
-        <ConfigCardImg
-          title={'Jurgen Klopp'}
-          img={imgPath3}
-          isChecked={mlManager === 'Jurgen Klopp' ? true : false}
-          onChecked={handleMLManager}
-        />
+        {mlManagers.map((mlManager) => 
+          <ConfigCardImg
+            key={mlManager.name}
+            title={mlManager.name}
+            img={mlManager.preview.replace('file', 'sm')}
+            path={mlManager.path}
+            isChecked="false"
+            onChecked=""
+          />
+        )}
       </section>
     </>
   );
