@@ -156,7 +156,7 @@ function chooseMLManager(mlManager) {
   const dest = path.join(settings.pesDirectory, 'content', 'Live CPK', 'ML Manager');
 
   // remove common directory if exist
-  const prevCommonDir = path.join('common');
+  const prevCommonDir = path.join(dest, 'common');
   if (existsSync(prevCommonDir)) rmSync(prevCommonDir, { recursive: true, force: true });
 
   cpSync(path.join(mlManager.path, 'common'), dest, { recursive: true });
