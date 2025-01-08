@@ -12,6 +12,7 @@ const sm = {
   readMLManager: () => ipcRenderer.invoke('readMLManager'),
   isMLManagerConfigActivated: () => ipcRenderer.invoke('isMLManagerConfigActivated'),
   toggleMLManagerConfig: () => ipcRenderer.invoke('toggleMLManagerConfig'),
+  chooseMLManager: (mlManager) => ipcRenderer.invoke('chooseMLManager', mlManager),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

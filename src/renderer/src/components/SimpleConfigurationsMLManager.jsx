@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useCallback } from 'react';
 import LocaleContext from '../contexts/LocaleContext';
 import { translate } from '../../../main/utils';
 import ConfigCardImg from './ConfigCardImg';
@@ -7,7 +7,6 @@ export default function SimpleConfigurationsMLManager() {
   const {locale, resources} = useContext(LocaleContext);
 
   const [status, setStatus] = useState(null);
-  const [mlManagerActive, setMLManagerActive] = useState(null);
   const [mlManagers, setMLManagers] = useState([]);
 
   async function loadMLManagers() {
@@ -27,6 +26,28 @@ export default function SimpleConfigurationsMLManager() {
       return newStatus;
     });
   }
+
+  const handleChooseMLManager = useCallback(async (mlManager) => {
+    await window.sm.chooseMLManager({ ...mlManager, active: true });
+
+    setMLManagers((prevMLManagers) => {
+      const nextMLManagers = [...prevMLManagers];
+      let mlManagerChanged = 0;
+      for (const [index, nextMLManager] of nextMLManagers.entries()) {
+        if (nextMLManager.name === mlManager.name) {
+          nextMLManagers[index] = { ...nextMLManager, active: true };
+          mlManagerChanged++;
+        } else if (nextMLManager.active) {
+          nextMLManagers[index] = { ...nextMLManager, active: false };
+          mlManagerChanged++;
+        }
+
+        if (mlManagerChanged === 2) break;
+      }
+      
+      return nextMLManagers;
+    });
+  }, []);
 
   useEffect(() => {
     // check is ml manager config is activated or not yet
@@ -84,9 +105,9 @@ export default function SimpleConfigurationsMLManager() {
             key={mlManager.name}
             title={mlManager.name}
             img={mlManager.preview.replace('file', 'sm')}
-            path={mlManager.path}
-            isChecked="false"
-            onChecked=""
+            isChecked={mlManager.active}
+            onChoose={handleChooseMLManager}
+            mlManager={mlManager}
           />
         )}
       </section>

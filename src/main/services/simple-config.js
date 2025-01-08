@@ -134,7 +134,9 @@ function isMLManagerConfigActivated() {
 
 function readMLManager() {
   const settingsPath = getSettingsPath();
-  return readdirSync(path.join(settingsPath, 'ml-manager')).map((mlManager) => {
+  const activeMLManager = getActiveMLManager();
+
+  const mlManagers = readdirSync(path.join(settingsPath, 'ml-manager')).map((mlManager) => {
     let mlManagerpath = path.join(settingsPath, 'ml-manager', mlManager);
     let preview = path.join(mlManagerpath, 'preview');
     if (existsSync(`${preview}.png`)) {
@@ -147,17 +149,26 @@ function readMLManager() {
       name: mlManager,
       path: mlManagerpath,
       preview,
+      active: false,
     };
   });
+
+  if (activeMLManager) {
+    return [
+      activeMLManager,
+      ...mlManagers.filter((mlManager) => mlManager.name !== activeMLManager?.name)
+    ];
+  }
+
+  return mlManagers;
 }
 
 function chooseMLManager(mlManager) {
   const settings = getSettings();
-  const dest = path.join(settings.pesDirectory, 'content', 'Live CPK', 'ML Manager');
+  const dest = path.join(settings.pesDirectory, 'content', 'Live CPK', 'ML Manager', 'common');
 
   // remove common directory if exist
-  const prevCommonDir = path.join(dest, 'common');
-  if (existsSync(prevCommonDir)) rmSync(prevCommonDir, { recursive: true, force: true });
+  if (existsSync(dest)) rmSync(dest, { recursive: true, force: true });
 
   cpSync(path.join(mlManager.path, 'common'), dest, { recursive: true });
 

@@ -30,6 +30,7 @@ import {
   readMLManager,
   isMLManagerConfigActivated,
   toggleMLManagerConfig,
+  chooseMLManager,
 } from './services/simple-config';
 
 // for performance
@@ -100,6 +101,7 @@ app.whenReady().then(() => {
   ipcMain.handle('readMLManager', readMLManager);
   ipcMain.handle('isMLManagerConfigActivated', isMLManagerConfigActivated);
   ipcMain.handle('toggleMLManagerConfig', toggleMLManagerConfig);
+  ipcMain.handle('chooseMLManager', (_, mlManager) => chooseMLManager(mlManager));
 
   // check-update in background
   checkUpdate();
