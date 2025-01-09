@@ -19,10 +19,10 @@ function getSettings() {
 }
 
 function isPESDirectorySetup() {
-  const settingFilePath = getSettingsFilePath();
+  const settingsFilePath = getSettingsFilePath();
 
-  const setting = JSON.parse(readFileSync(settingFilePath));
-  if (setting.pesDirectory) {
+  const settings = JSON.parse(readFileSync(settingsFilePath));
+  if (settings.pesDirectory) {
     return true;
   } else {
     return false;

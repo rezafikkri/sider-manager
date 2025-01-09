@@ -46,7 +46,7 @@ describe('getSettingsFilePath function', () => {
 });
 
 describe('isPESDirectorySetup function', () => {
-  it('should return true when pesDirectory is in the setting object', async () => {
+  it('should return true when pesDirectory is in the settings object', async () => {
     const { existsSync, readFileSync } = await import('node:fs');
     existsSync.mockReturnValue(true);
     readFileSync.mockReturnValue(JSON.stringify({ pesDirectory: 'pes-directory' }));
@@ -56,7 +56,7 @@ describe('isPESDirectorySetup function', () => {
     expect(result).toBe(true);
   });
 
-  it('should return false when pesDirecotry is not in the setting object', async () => {
+  it('should return false when pesDirecotry is not in the settings object', async () => {
     const { existsSync, readFileSync } = await import('node:fs');
     existsSync.mockReturnValue(true);
     readFileSync.mockReturnValue(JSON.stringify({ wrong: 'wrong' }));
