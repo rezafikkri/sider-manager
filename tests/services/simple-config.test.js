@@ -42,6 +42,7 @@ beforeAll(() => {
     getSettings: vi.fn(),
     getSettingsPath: () => 'settingsPath',
     saveSettings: vi.fn(),
+    deleteSetting: vi.fn(),
   }));
   vi.mock('node:fs', () => ({
     writeFileSync: vi.fn(),
@@ -214,17 +215,18 @@ describe('toggleMLManagerConfig function', () => {
     expect(result).toBe(true);
   });
 
-  it('should call rmSync function correctly, writeFileSync function for sider.ini correctly and return true when ML Manager config is active', async () => {
+  it('should call rmSync function correctly, deleteSetting, writeFileSync function for sider.ini correctly and return true when ML Manager config is active', async () => {
     const { writeFileSync, existsSync, rmSync, readFileSync } = await import('node:fs');
     const newSiderIni = siderIni.toSpliced(14, 0, 'cpk.root = ".\\content\\Live CPK\\ML Manager"');
     readFileSync.mockReturnValue(newSiderIni.join('\n'));
     existsSync.mockReturnValue(true);
+    const { deleteSetting } = await import('../../src/main/services/settings');
 
     const result = toggleMLManagerConfig();
 
     const mlManagerPath = path.join('pesDirectory', 'content', 'Live CPK', 'ML Manager');
     expect(rmSync).toHaveBeenCalledWith(mlManagerPath, { recursive: true, force: true });
-    
+    expect(deleteSetting).toHaveBeenCalledWith('activeMLManager');
     expect(writeFileSync).toHaveBeenCalledWith(
       path.join('pesDirectory', 'sider.ini'),
       newSiderIni.map((ini) => {

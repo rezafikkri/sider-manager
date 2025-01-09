@@ -7,6 +7,7 @@ import {
   getSettings,
   saveSettings,
   initializeSettings,
+  deleteSetting,
 } from '../../src/main/services/settings';
 import path from 'node:path';
 
@@ -153,4 +154,27 @@ describe('initializeSettings function', () => {
     expect(mainWindowObj.mainWindow).toBe('main-window');
     expect(initialize).toBe(true);
   });
-})
+});
+
+describe('deleteSetting function', () => {
+  it('should call writeFileSync function correctly and return true', async () => {
+    const { readFileSync, writeFileSync } = await import('node:fs');
+    const oldSettings = {
+      language: 'id',
+      pesDirectory: 'pes-directory',
+      pesExecutable: ['pes-exe', 'sider-exe'],
+      activeMLManager: { name: 'Test' },
+    };
+    readFileSync.mockReturnValue(JSON.stringify(oldSettings));
+
+    const result = deleteSetting('activeMLManager');
+
+    const newSettings = oldSettings;
+    delete newSettings.activeMLManager;
+    expect(writeFileSync).toHaveBeenCalledWith(
+      path.join('sider-manager', 'settings.json'),
+      JSON.stringify(newSettings),
+    );
+    expect(result).toBe(true);
+  });
+});

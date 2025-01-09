@@ -51,6 +51,13 @@ function saveSettings(settings) {
   return true;
 }
 
+function deleteSetting(setting) {
+  const settings = getSettings();
+  delete settings[setting];
+  writeFileSync(getSettingsFilePath(), JSON.stringify(settings));
+  return true;
+}
+
 function initializeSettings(pesDirectory, mainWindowObj) {
   const settings = {
     pesDirectory: pesDirectory,
@@ -72,4 +79,5 @@ export {
   choosePESDirectory,
   initializeSettings,
   saveSettings,
+  deleteSetting,
 };

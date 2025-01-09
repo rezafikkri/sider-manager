@@ -13,7 +13,7 @@ import url from 'node:url';
 import log from 'electron-log/main';
 import { app } from 'electron';
 import { generateErrorLogMessage } from '../utils';
-import { getSettings, getSettingsPath, saveSettings } from './settings';
+import { deleteSetting, getSettings, getSettingsPath, saveSettings } from './settings';
 
 function readSiderIni(pesDirectory) {
   try {
@@ -107,6 +107,7 @@ function toggleMLManagerConfig() {
     mkdirSync(mlManagerPath);
   } else {
     rmSync(mlManagerPath, { recursive: true, force: true });
+    deleteSetting('activeMLManager');
   }
 
   // add new or comment lua code of ML Manager cpk.root in sider.ini
