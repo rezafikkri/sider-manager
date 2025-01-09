@@ -142,7 +142,7 @@ function readMLManagers() {
     if (existsSync(`${preview}.png`)) {
       preview = url.pathToFileURL(`${preview}.png`).toString();
     } else if (existsSync(`${preview}.jpg`)) {
-      preview = url.pathToFileURL(`sm://${preview}.jpg`).toString();
+      preview = url.pathToFileURL(`${preview}.jpg`).toString();
     }
 
     return {

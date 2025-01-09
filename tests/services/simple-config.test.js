@@ -1,13 +1,14 @@
-import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeAll, describe, expect, it, vi, beforeEach } from 'vitest';
 import {
   chooseMLManager,
   isMLManagerConfigActivated,
-  readMLManager,
+  readMLManagers,
   readSiderIni,
   saveSiderIni,
   toggleMLManagerConfig,
 } from '../../src/main/services/simple-config';
 import path from 'node:path';
+import url from 'node:url';
 import log from 'electron-log/main';
 
 const siderIni = [
@@ -38,7 +39,7 @@ const siderIni = [
 
 beforeAll(() => {
   vi.mock('../../src/main/services/settings', () => ({
-    getSettings: () => ({ pesDirectory: 'pesDirectory' }),
+    getSettings: vi.fn(),
     getSettingsPath: () => 'settingsPath',
     saveSettings: vi.fn(),
   }));
@@ -65,6 +66,11 @@ afterEach(() => {
 });
 
 describe('saveSiderIni function', () => {
+  beforeEach(async () => {
+    const { getSettings } = await import('../../src/main/services/settings');
+    getSettings.mockReturnValue({ pesDirectory: 'pesDirectory' });
+  });
+
   it('should call writeFileSync correctly and return true when what need to be update is common sider', async () => {
     const { writeFileSync, readFileSync } = await import('node:fs');
     readFileSync.mockReturnValue(siderIni.join('\n'));
@@ -190,6 +196,11 @@ describe('readSiderIni function', () => {
 });
 
 describe('toggleMLManagerConfig function', () => {
+  beforeEach(async () => {
+    const { getSettings } = await import('../../src/main/services/settings');
+    getSettings.mockReturnValue({ pesDirectory: 'pesDirectory' });
+  });
+
   it('should call mkdirSync function correctly, writeFileSync function for sider.ini correctly and return true when ML Manager config is non active', async () => {
     const { writeFileSync, existsSync, mkdirSync, readFileSync } = await import('node:fs');
     readFileSync.mockReturnValue(siderIni.join('\n'));
@@ -227,6 +238,11 @@ describe('toggleMLManagerConfig function', () => {
 });
 
 describe('isMLManagerConfigActivated function', () => {
+  beforeEach(async () => {
+    const { getSettings } = await import('../../src/main/services/settings');
+    getSettings.mockReturnValue({ pesDirectory: 'pesDirectory' });
+  });
+
   it('should return true when ML Manager path exist and ML Manager code exist in sider.ini', async () => {
     const { existsSync, readFileSync } = await import('node:fs');
     const newSiderIni = siderIni.toSpliced(14, 0, 'cpk.root = ".\\content\\Live CPK\\ML Manager"');
@@ -261,20 +277,60 @@ describe('isMLManagerConfigActivated function', () => {
 });
 
 describe('readMLManager function', () => {
-  it.skip('should return correctly ML Managers', async () => {
-    const { readdirSync } = await import('node:fs');
+  it('should return correctly ML Managers when active ml manager not exist', async () => {
+    const { getSettings } = await import('../../src/main/services/settings');
+    getSettings.mockReturnValue({ pesDirectory: 'pesDirectory' });
+    const { readdirSync, existsSync } = await import('node:fs');
+    existsSync.mockImplementation((preview) => {
+      if (/\.jpg$/.test(preview)) return true;
+      return false;
+    });
     const mlManagers = ['Alex Ferguson', 'Arrigo Sacchi', 'Bill Shankly'];
     readdirSync.mockReturnValue(mlManagers);
 
-    const result = readMLManager();
+    const result = readMLManagers();
 
-    expect(result).toEqual(mlManagers.map((mlManager) => {
-      return path.join('settingsPath', 'ml-manager', mlManager);
+    expect(result).toEqual(mlManagers.map((mlManager) => ({
+      path: path.join('settingsPath', 'ml-manager', mlManager),
+      name: mlManager,
+      preview: url.pathToFileURL(path.join('settingsPath', 'ml-manager', mlManager, 'preview.jpg')).toString(),
+      active: false,
+    })));
+  });
+
+  it('should return correctly ML Managers when active ml manager exist', async () => {
+    const mlManagers = ['Arrigo Sacchi', 'Alex Ferguson', 'Bill Shankly'];
+    const mlManagerPath = path.join('settingsPath', 'ml-manager', mlManagers[1]);
+    const { getSettings } = await import('../../src/main/services/settings');
+    const activeMLManager = {
+      name: mlManagers[1],
+      path: mlManagerPath,
+      preview: url.pathToFileURL(path.join(mlManagerPath, 'preview.png')).toString(),
+      active: true,
+    };
+    getSettings.mockReturnValue({ pesDirectory: 'pesDirectory', activeMLManager });
+    const { readdirSync, existsSync } = await import('node:fs');
+    existsSync.mockReturnValue(true);
+    readdirSync.mockReturnValue(mlManagers);
+
+    const result = readMLManagers();
+
+    const newMLManagers = mlManagers.filter((mlManager) => mlManager !== mlManagers[1]).map((mlManager) => ({
+      path: path.join('settingsPath', 'ml-manager', mlManager),
+      name: mlManager,
+      preview: url.pathToFileURL(path.join('settingsPath', 'ml-manager', mlManager, 'preview.png')).toString(),
+      active: false,
     }));
+    expect(result).toEqual([ activeMLManager, ...newMLManagers ]);
   });
 });
 
 describe('chooseMLManager function', () => {
+  beforeEach(async () => {
+    const { getSettings } = await import('../../src/main/services/settings');
+    getSettings.mockReturnValue({ pesDirectory: 'pesDirectory' });
+  });
+
   it('should call cpSync and saveSettings function correctly and return true when active ML Manager not available yet', async () => {
     const { cpSync, existsSync } = await import('node:fs');
     existsSync.mockReturnValue(false);
@@ -284,7 +340,7 @@ describe('chooseMLManager function', () => {
       path: path.join('others', 'ml-manager-path'),
       preview: path.join('others', 'preview.jpg'),
     };
-    const dest = path.join('pesDirectory', 'content', 'Live CPK', 'ML Manager');
+    const dest = path.join('pesDirectory', 'content', 'Live CPK', 'ML Manager', 'common');
 
     const result = chooseMLManager(mlManager);
 
@@ -302,11 +358,11 @@ describe('chooseMLManager function', () => {
       path: path.join('others', 'ml-manager-path'),
       preview: path.join('others', 'preview.jpg'),
     };
-    const dest = path.join('pesDirectory', 'content', 'Live CPK', 'ML Manager');
+    const dest = path.join('pesDirectory', 'content', 'Live CPK', 'ML Manager', 'common');
 
     const result = chooseMLManager(mlManager);
 
-    expect(rmSync).toHaveBeenCalledWith(path.join(dest, 'common'), { recursive: true, force: true });
+    expect(rmSync).toHaveBeenCalledWith(dest, { recursive: true, force: true });
     expect(cpSync).toHaveBeenCalledWith(path.join(mlManager.path, 'common'), dest, { recursive: true });
     expect(saveSettings).toHaveBeenCalledWith({ activeMLManager: { ...mlManager } });
     expect(result).toBe(true);
