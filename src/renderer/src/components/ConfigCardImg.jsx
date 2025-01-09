@@ -56,4 +56,4 @@ function ConfigCardImg({
   );
 }
 
-export default ConfigCardImg;
+export default memo(ConfigCardImg);
