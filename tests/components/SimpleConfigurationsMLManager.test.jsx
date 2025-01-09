@@ -134,21 +134,30 @@ describe('SimpleConfigurationsMLManager component', () => {
     expect(addMLManagerBtn).toBeDisabled();
   });
 
-  it('should call chooseMLManager function correctly and activate card of ml manager choosed correctly when card clicked', async () => {
+  it('should show loading and call chooseMLManager function correctly and activate card of ml manager choosed correctly when card clicked', async () => {
     window.sm.isMLManagerConfigActivated.mockResolvedValue(true);
     renderSimpleConfigurationsMLManager();
     window.sm.readMLManagers.mockResolvedValue(mlManagers);
+    window.sm.chooseMLManager.mockReturnValue(new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(false);
+      }, 300);
+    }));
     const mlManagerCard = await screen.findByTestId(`config-card-${mlManagers[3].name}`);
 
     await userEvent.click(mlManagerCard);
-
+    
+    const loadingEl = screen.queryByTestId(`loading-${mlManagers[3].name}`);
+    expect(loadingEl).toBeInTheDocument();
     expect(window.sm.chooseMLManager).toHaveBeenCalledWith({ ...mlManagers[3], active: true });
-    expect(mlManagerCard).not.toHaveClass('cursor-pointer');
-    expect(mlManagerCard.querySelector('input[name="config"]')).toBeChecked();
-    expect(mlManagerCard.querySelector('button')).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(mlManagerCard).not.toHaveClass('cursor-pointer');
+      expect(mlManagerCard.querySelector('input[name="config"]')).toBeChecked();
+      expect(mlManagerCard.querySelector('button')).not.toBeInTheDocument();
+    });
   });
 
-  it('should not call chooseMLManager function when card clicked and the clicked card is card of ml manager has been active', async () => {
+  it('should not show loading and not call chooseMLManager function when card clicked and the clicked card is card of ml manager has been active', async () => {
     window.sm.isMLManagerConfigActivated.mockResolvedValue(true);
     renderSimpleConfigurationsMLManager();
     window.sm.readMLManagers.mockResolvedValue(mlManagers.map((mlManager) => {
@@ -159,30 +168,42 @@ describe('SimpleConfigurationsMLManager component', () => {
 
     await userEvent.click(mlManagerCard);
 
+    const loadingEl = screen.queryByTestId('loading-Alex Ferguson');
+    expect(loadingEl).not.toBeInTheDocument();
     expect(window.sm.chooseMLManager).not.toHaveBeenCalled();
     expect(mlManagerCard).not.toHaveClass('cursor-pointer');
     expect(mlManagerCard.querySelector('input[name="config"]')).toBeChecked();
     expect(mlManagerCard.querySelector('button')).not.toBeInTheDocument();
   });
 
-  it('should call chooseMLManager function correctly, unactive card of ml manager has been active and activate card of ml manager choosed when it card clicked', async () => {
+  it('should show loading and call chooseMLManager function correctly, unactive card of ml manager has been active and activate card of ml manager choosed when it card clicked', async () => {
     window.sm.isMLManagerConfigActivated.mockResolvedValue(true);
     renderSimpleConfigurationsMLManager();
     window.sm.readMLManagers.mockResolvedValue(mlManagers.map((mlManager) => {
       if (mlManager.name === 'Alex Ferguson') return { ...mlManager, active: true };
       return mlManager;
     }));
+    window.sm.chooseMLManager.mockReturnValue(new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(false);
+      }, 300);
+    }));
     const mlManagerCardAlex = await screen.findByTestId('config-card-Alex Ferguson');
     const mlManagerCardBill = await screen.findByTestId('config-card-Bill Shankly');
 
     await userEvent.click(mlManagerCardBill);
 
+    const loadingEl = screen.queryByTestId('loading-Bill Shankly');
+    expect(loadingEl).toBeInTheDocument();
     expect(window.sm.chooseMLManager).toHaveBeenCalledWith({ ...mlManagers[2], active: true });
-    expect(mlManagerCardAlex).toHaveClass('cursor-pointer');
-    expect(mlManagerCardBill).not.toHaveClass('cursor-pointer');
-    expect(mlManagerCardAlex.querySelector('input[name="config"]')).not.toBeChecked();
-    expect(mlManagerCardBill.querySelector('input[name="config"]')).toBeChecked();
-    expect(mlManagerCardAlex.querySelector('button')).toBeInTheDocument();
-    expect(mlManagerCardBill.querySelector('button')).not.toBeInTheDocument();
+
+    await waitFor(() => {
+      expect(mlManagerCardAlex).toHaveClass('cursor-pointer');
+      expect(mlManagerCardBill).not.toHaveClass('cursor-pointer');
+      expect(mlManagerCardAlex.querySelector('input[name="config"]')).not.toBeChecked();
+      expect(mlManagerCardBill.querySelector('input[name="config"]')).toBeChecked();
+      expect(mlManagerCardAlex.querySelector('button')).toBeInTheDocument();
+      expect(mlManagerCardBill.querySelector('button')).not.toBeInTheDocument();
+    });
   });
 });

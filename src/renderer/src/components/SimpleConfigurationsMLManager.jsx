@@ -28,7 +28,7 @@ export default function SimpleConfigurationsMLManager() {
     });
   }
 
-  const handleChooseMLManager = useCallback(async (mlManager) => {
+  const handleChooseMLManager = async (mlManager) => {
     await window.sm.chooseMLManager({ ...mlManager, active: true });
 
     setMLManagers((prevMLManagers) => {
@@ -48,7 +48,7 @@ export default function SimpleConfigurationsMLManager() {
       
       return nextMLManagers;
     });
-  }, []);
+  };
 
   useEffect(() => {
     // check is ml manager config is activated or not yet
