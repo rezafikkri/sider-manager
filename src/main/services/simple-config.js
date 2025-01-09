@@ -132,7 +132,7 @@ function isMLManagerConfigActivated() {
   return false;
 }
 
-function readMLManager() {
+function readMLManagers() {
   const settingsPath = getSettingsPath();
   const activeMLManager = getActiveMLManager();
 
@@ -189,7 +189,7 @@ export {
   saveSiderIni,
   toggleMLManagerConfig,
   isMLManagerConfigActivated,
-  readMLManager,
+  readMLManagers,
   chooseMLManager,
   getActiveMLManager,
 };

@@ -66,7 +66,7 @@ const liveCpks = [
   'Test',
 ];
 
-describe('SimpleConfigurationsSider function', () => {
+describe('SimpleConfigurationsSider component', () => {
   beforeAll(() => {
     window.sm = {
       getSettings: async () => ({ pesDirectory: 'pesDirectory' }),

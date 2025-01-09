@@ -10,7 +10,7 @@ export default function SimpleConfigurationsMLManager() {
   const [mlManagers, setMLManagers] = useState([]);
 
   async function loadMLManagers() {
-    const mlManagers = await window.sm.readMLManager();
+    const mlManagers = await window.sm.readMLManagers();
     setMLManagers(mlManagers);
   }
 
@@ -23,6 +23,7 @@ export default function SimpleConfigurationsMLManager() {
       } else {
         setMLManagers([]);
       }
+
       return newStatus;
     });
   }
@@ -69,7 +70,10 @@ export default function SimpleConfigurationsMLManager() {
           <h1 className="font-bold text-xl mb-1">ML Manager</h1>
           <p className="text-sm opacity-80">{translate(locale, 'simpleConfigurationsMLManager.desc', resources)}</p>
         </div>
-        <label className="inline-flex items-center cursor-pointer w-28">
+        <label
+          className="inline-flex items-center cursor-pointer w-28"
+          data-testid="toggle-ml-manager-config-btn"
+        >
           { status !== null ? (
             <>
               <input
@@ -90,6 +94,7 @@ export default function SimpleConfigurationsMLManager() {
 
       { status !== null ? (
         <button
+          data-testid="add-ml-manager-btn"
           disabled={status ? false : true}
           type="button"
           className="ms-3 text-sm font-medium rounded-lg px-3 py-2 bg-gray-800 hover:bg-indigo-700 outline outline-transparent focus:outline-offset-2 focus:outline-indigo-700 transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-65 disabled:hover:bg-gray-800"

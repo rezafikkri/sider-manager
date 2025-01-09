@@ -27,7 +27,7 @@ import {
   readSiderIni,
   saveSiderIni,
   readLiveCpks,
-  readMLManager,
+  readMLManagers,
   isMLManagerConfigActivated,
   toggleMLManagerConfig,
   chooseMLManager,
@@ -98,7 +98,7 @@ app.whenReady().then(() => {
   ipcMain.handle('saveSiderIni', (_, siderIni) => saveSiderIni(siderIni));
   ipcMain.handle('readModules', (_, pesDirectory) => readModules(pesDirectory));
   ipcMain.handle('readLiveCpks', (_, pesDirectory) => readLiveCpks(pesDirectory));
-  ipcMain.handle('readMLManager', readMLManager);
+  ipcMain.handle('readMLManagers', readMLManagers);
   ipcMain.handle('isMLManagerConfigActivated', isMLManagerConfigActivated);
   ipcMain.handle('toggleMLManagerConfig', toggleMLManagerConfig);
   ipcMain.handle('chooseMLManager', (_, mlManager) => chooseMLManager(mlManager));
