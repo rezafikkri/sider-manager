@@ -62,8 +62,8 @@ export default function ActivationForm({ onActivate }) {
         <div className="flex justify-end">
           <div className="relative">
             {isLoading && 
-              <div className="absolute z-20 bg-indigo-600/90 top-0 bottom-0 left-0 right-0 rounded-lg flex justify-center items-center">
-                <div className="w-5 h-5 border-4 border-t-white border-s-white/50 border-e-white/50 border-b-white/50 rounded-full animate-spin" data-testid="loading"/>
+              <div className="absolute z-20 bg-indigo-600/90 top-0 bottom-0 left-0 right-0 rounded-lg flex justify-center items-center" data-testid="loading">
+                <div className="w-5 h-5 border-4 border-t-white border-s-white/50 border-e-white/50 border-b-white/50 rounded-full animate-spin"/>
               </div>
             }
             <button

@@ -47,7 +47,7 @@ describe('ActivationForm component', () => {
   });
 
   afterEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
     cleanup();
   });
 
@@ -86,21 +86,19 @@ describe('ActivationForm component', () => {
   });
 
   it('should show loading when next button clicked and activation-input is not empty', async () => {
-    window.sm.activate.mockImplementation(() => {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(true);
-        }, 2000);
-      });
-    });
+    window.sm.activate.mockReturnValue(new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(true);
+      }, 500);
+    }));
     const submitButton = await screen.findByText(resources.id.activationForm.submitBtnText);
     const activationInput = screen.getByRole('textbox');
     await userEvent.type(activationInput, 'This is activation key');
 
-    userEvent.click(submitButton);
+    await userEvent.click(submitButton);
 
-    const loading = await screen.findByTestId('loading');
-    expect(loading).toBeInTheDocument();
+    const loadingEl = screen.queryByTestId('loading');
+    expect(loadingEl).toBeInTheDocument();
   });
 
   it('should show error message (with activationKeyIsInvalid) when next button clicked and activation key is invalid', async () => {
