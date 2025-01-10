@@ -3,6 +3,8 @@ import LocaleContext from '../contexts/LocaleContext';
 import { translate } from '../../../main/utils';
 import ConfigCardImg from './ConfigCardImg';
 import Alert from './Alert';
+import ModalWithSimpleConfigForm from './ModalWithSimpleConfigForm';
+import ModalPrompt from './ModalPrompt';
 
 export default function SimpleConfigurationsMLManager() {
   const {locale, resources} = useContext(LocaleContext);
@@ -144,6 +146,9 @@ export default function SimpleConfigurationsMLManager() {
           />
         : null}
       </div>
+
+      <ModalWithSimpleConfigForm />
+      {/* <ModalPrompt /> */}
     </>
   );
 }
