@@ -2,12 +2,15 @@ import { useEffect, useState, useContext, useCallback } from 'react';
 import LocaleContext from '../contexts/LocaleContext';
 import { translate } from '../../../main/utils';
 import ConfigCardImg from './ConfigCardImg';
+import Alert from './Alert';
 
 export default function SimpleConfigurationsMLManager() {
   const {locale, resources} = useContext(LocaleContext);
 
   const [status, setStatus] = useState(null);
   const [mlManagers, setMLManagers] = useState([]);
+  const [hasActiveMLManager, setHasActiveMLManager] = useState(false);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
   async function loadMLManagers() {
     const mlManagers = await window.sm.readMLManagers();
@@ -22,6 +25,7 @@ export default function SimpleConfigurationsMLManager() {
         loadMLManagers();
       } else {
         setMLManagers([]);
+        setHasActiveMLManager(false);
       }
 
       return newStatus;
@@ -32,6 +36,13 @@ export default function SimpleConfigurationsMLManager() {
     await window.sm.chooseMLManager({ ...mlManager, active: true });
 
     setMLManagers((prevMLManagers) => {
+      for (const prevMLManager of prevMLManagers) {
+        if (prevMLManager.active) {
+          setHasActiveMLManager(true);
+          break;
+        }
+      }
+
       const nextMLManagers = [...prevMLManagers];
       let mlManagerChanged = 0;
       for (const [index, nextMLManager] of nextMLManagers.entries()) {
@@ -48,7 +59,8 @@ export default function SimpleConfigurationsMLManager() {
       
       return nextMLManagers;
     });
-  });
+    setShowSuccessAlert(true);
+  }, []);
 
   useEffect(() => {
     // check is ml manager config is activated or not yet
@@ -116,6 +128,22 @@ export default function SimpleConfigurationsMLManager() {
           />
         )}
       </section>
+
+      <div className="fixed bottom-5 right-5 left-5 text-left flex flex-col gap-2 w-3/4 z-30">
+        {(showSuccessAlert && !hasActiveMLManager) ? 
+          <Alert
+            message={() => translate(locale, 'simpleConfigurationsMLManager.successAlertMsg.choosed', resources)}
+            type="success"
+            onClose={() => setShowSuccessAlert(false)}
+          />
+        : (showSuccessAlert && hasActiveMLManager) ?
+          <Alert
+            message={() => translate(locale, 'simpleConfigurationsMLManager.successAlertMsg.changed', resources)}
+            type="success"
+            onClose={() => setShowSuccessAlert(false)}
+          />
+        : null}
+      </div>
     </>
   );
 }

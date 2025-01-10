@@ -23,7 +23,7 @@ export default function SimpleConfigurationsApp() {
   return (
     <>
       {warning &&
-        <div className="fixed bottom-5 right-5 left-5 text-left z-10">
+        <div className="fixed bottom-5 right-5 left-5 text-left z-30">
           <Alert
             message={() => translate(locale, 'simpleConfigurationsApp.warning', resources)}
             type="warning"

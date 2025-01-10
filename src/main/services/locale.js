@@ -139,6 +139,10 @@ const resources = {
       statusOn: 'Hidup',
       statusOff: 'Mati',
       addMLManagerBtnText: 'Tambah Manager',
+      successAlertMsg: {
+        choosed: 'Manager berhasil dipilih.',
+        changed: 'Manager berhasil diubah.',
+      },
     },
   },
 
@@ -273,6 +277,10 @@ const resources = {
       statusOn: 'On',
       statusOff: 'Off',
       addMLManagerBtnText: 'Add Manager',
+      successAlertMsg: {
+        choosed: 'Manager successfully choosed.',
+        changed: 'Manager successfully changed.',
+      },
     },
   },
 };
