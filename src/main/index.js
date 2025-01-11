@@ -31,6 +31,7 @@ import {
   isMLManagerConfigActivated,
   toggleMLManagerConfig,
   chooseMLManager,
+  saveMLManager,
 } from './services/simple-config';
 
 // for performance
@@ -105,6 +106,9 @@ app.whenReady().then(() => {
 
   // check-update in background
   checkUpdate();
+
+  // console.log(saveMLManager('Reza Fikkri', '/home/rezafikkri/Documents/Sider-Manager/FOR REZA/ML Manager/Reza Fikkri'));
+  console.log(saveMLManager('Reza Fikkri', '/home/rezafikkri/Documents/Sider-Manager/FOR REZA/ML Manager/Test'));
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common

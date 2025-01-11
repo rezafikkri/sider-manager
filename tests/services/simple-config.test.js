@@ -4,6 +4,7 @@ import {
   isMLManagerConfigActivated,
   readMLManagers,
   readSiderIni,
+  saveMLManager,
   saveSiderIni,
   toggleMLManagerConfig,
 } from '../../src/main/services/simple-config';
@@ -60,6 +61,9 @@ beforeAll(() => {
       },
     };
   });
+  vi.mock('../../src/main/services', () => ({
+    isFile: vi.fn(),
+  }));
 });
 
 afterEach(() => {
@@ -325,6 +329,38 @@ describe('readMLManager function', () => {
     }));
     expect(result).toEqual([ activeMLManager, ...newMLManagers ]);
   });
+
+  it('should return correctly ML Managers when one of ml manager not have preview', async () => {
+    const { getSettings } = await import('../../src/main/services/settings');
+    getSettings.mockReturnValue({ pesDirectory: 'pesDirectory' });
+    const { readdirSync, existsSync } = await import('node:fs');
+    existsSync.mockImplementation((preview) => {
+      const arrigoMLManagerPath = path.join('settingsPath', 'ml-manager', 'Arrigo Sacchi');
+      if (
+        preview === path.join(arrigoMLManagerPath, 'preview.png')
+        || preview === path.join(arrigoMLManagerPath, 'preview.jpg')
+      ) {
+        return false;
+      }
+      return true;
+    });
+    const mlManagers = ['Alex Ferguson', 'Arrigo Sacchi', 'Bill Shankly'];
+    readdirSync.mockReturnValue(mlManagers);
+
+    const result = readMLManagers();
+
+    expect(result).toEqual(mlManagers.map((mlManager) => {
+      const mlManagerPath = path.join('settingsPath', 'ml-manager', mlManager);
+      let preview = url.pathToFileURL(path.join(mlManagerPath, 'preview.png')).toString();
+      if(mlManager === 'Arrigo Sacchi') preview = null;
+      return {
+        path: mlManagerPath,
+        name: mlManager,
+        preview,
+        active: false,
+      };
+    }));
+  });
 });
 
 describe('chooseMLManager function', () => {
@@ -368,5 +404,101 @@ describe('chooseMLManager function', () => {
     expect(cpSync).toHaveBeenCalledWith(path.join(mlManager.path, 'common'), dest, { recursive: true });
     expect(saveSettings).toHaveBeenCalledWith({ activeMLManager: { ...mlManager } });
     expect(result).toBe(true);
+  });
+});
+
+describe('saveMLManager function', () => {
+  it('should return new ml manager object and call cpSync function correctly when new ml manager valid', async () => {
+    const { readdirSync, existsSync, cpSync } = await import('node:fs');
+    existsSync.mockReturnValue(true);
+    readdirSync.mockImplementation((directoryPath) => {
+      if (directoryPath === 'Manager Reza') return ['common', 'preview.png'];
+      const commonPath = path.join('Manager Reza', 'common');
+      if (directoryPath === commonPath) return ['test1', 'test2', 'test.txt'];
+      if (directoryPath === path.join(commonPath, 'test1')) return ['mod.cpks'];
+      if (directoryPath === path.join(commonPath, 'test2')) return ['gege.txt'];
+    });
+    const { isFile } = await import('../../src/main/services');
+    isFile.mockImplementation((filePath) => {
+      const commonPath = path.join('Manager Reza', 'common');
+      if (filePath === commonPath) return false;
+      const test1Path = path.join(commonPath, 'test1');
+      if (filePath === test1Path) return false;
+      if (filePath === path.join(test1Path, 'mod.cpks')) return true;
+      const test2Path = path.join(commonPath, 'test2');
+      if (filePath === test2Path) return false;
+      if (filePath === path.join(test2Path, 'gege.txt')) return true;
+      if (filePath === path.join(commonPath, 'test.txt')) return true;
+      if (filePath === path.join('Manager Reza', 'preview.png')) return true;
+    });
+
+    const result = saveMLManager('RezaFikkri', 'Manager Reza');
+
+    const dest = path.join('settingsPath', 'ml-manager', 'RezaFikkri');
+    expect(result).toEqual({
+      name: 'RezaFikkri',
+      path: dest,
+      preview: url.pathToFileURL(path.join(dest, 'preview.png')).toString(),
+      active: false,
+    });
+    expect(cpSync).toHaveBeenCalledWith('Manager Reza', dest, { recursive: true });
+  });
+
+  it('should return false when after new ml manager directory direct in it is not common directory', async () => {
+    const { existsSync } = await import('node:fs');
+    existsSync.mockReturnValue(false);
+
+    const result = saveMLManager('RezaFikkri', 'Manager Reza');
+
+    expect(result).toBe(false);
+  });
+
+  it('should return false when in new ml manager directory found .cpk file direct in ml manager directory and have empty folder', async () => {
+    const { readdirSync, existsSync } = await import('node:fs');
+    existsSync.mockReturnValue(true);
+    readdirSync.mockImplementation((directoryPath) => {
+      if (directoryPath === 'New Manager') return ['common', 'live.cpk', 'preview.png'];
+      if (directoryPath === path.join('New Manager', 'common')) return [];
+    });
+    const { isFile } = await import('../../src/main/services');
+    isFile.mockImplementation((filePath) => {
+      const commonPath = path.join('New Manager', 'common');
+      if (filePath === commonPath) return false;
+      if (filePath === path.join('New Manager', 'live.cpk')) return true;
+      if (filePath === path.join('New Manager', 'preview.png')) return true;
+    });
+
+    const result = saveMLManager('Adelina', 'New Manager');
+
+    expect(result).toBe(false);
+  });
+
+  it('should return false when in new ml manager directory found .cpk file in sub directory in common directory', async () => {
+    const { readdirSync, existsSync } = await import('node:fs');
+    existsSync.mockReturnValue(true);
+    readdirSync.mockImplementation((directoryPath) => {
+      if (directoryPath === 'Reza New') return ['common', 'preview.png'];
+      const commonPath = path.join('Reza New', 'common');
+      if (directoryPath === commonPath) return ['test1', 'test2', 'test.txt'];
+      if (directoryPath === path.join(commonPath, 'test1')) return ['gege.txt'];
+      if (directoryPath === path.join(commonPath, 'test2')) return ['mod.cpk'];
+    });
+    const { isFile } = await import('../../src/main/services');
+    isFile.mockImplementation((filePath) => {
+      const commonPath = path.join('Reza New', 'common');
+      if (filePath === commonPath) return false;
+      const test1Path = path.join(commonPath, 'test1');
+      if (filePath === test1Path) return false;
+      if (filePath === path.join(test1Path, 'gege.txt')) return true;
+      const test2Path = path.join(commonPath, 'test2');
+      if (filePath === test2Path) return false;
+      if (filePath === path.join(test2Path, 'mod.cpk')) return true;
+      if (filePath === path.join(commonPath, 'test.txt')) return true;
+      if (filePath === path.join('Reza New', 'preview.png')) return true;
+    });
+
+    const result = saveMLManager('Dian', 'Reza New');
+
+    expect(result).toBe(false);
   });
 });

@@ -14,6 +14,7 @@ import log from 'electron-log/main';
 import { app } from 'electron';
 import { generateErrorLogMessage } from '../utils';
 import { deleteSetting, getSettings, getSettingsPath, saveSettings } from './settings';
+import { isFile } from '.';
 
 function readSiderIni(pesDirectory) {
   try {
@@ -133,23 +134,30 @@ function isMLManagerConfigActivated() {
   return false;
 }
 
+function getMLManagerPreview(mlManagerpath) {
+  let preview = path.join(mlManagerpath, 'preview');
+  if (existsSync(`${preview}.png`)) {
+    preview = url.pathToFileURL(`${preview}.png`).toString();
+  } else if (existsSync(`${preview}.jpg`)) {
+    preview = url.pathToFileURL(`${preview}.jpg`).toString();
+  } else {
+    return null;
+  }
+
+  return preview;
+}
+
 function readMLManagers() {
   const settingsPath = getSettingsPath();
   const activeMLManager = getActiveMLManager();
 
   const mlManagers = readdirSync(path.join(settingsPath, 'ml-manager')).map((mlManager) => {
     let mlManagerpath = path.join(settingsPath, 'ml-manager', mlManager);
-    let preview = path.join(mlManagerpath, 'preview');
-    if (existsSync(`${preview}.png`)) {
-      preview = url.pathToFileURL(`${preview}.png`).toString();
-    } else if (existsSync(`${preview}.jpg`)) {
-      preview = url.pathToFileURL(`${preview}.jpg`).toString();
-    }
 
     return {
       name: mlManager,
       path: mlManagerpath,
-      preview,
+      preview: getMLManagerPreview(mlManagerpath),
       active: false,
     };
   });
@@ -183,6 +191,42 @@ function getActiveMLManager() {
   return settings.activeMLManager;
 }
 
+function hasCpkFileInDirecotry(directoryPath) {
+  const contents = readdirSync(directoryPath);
+
+  for (const [index, content] of contents.entries()) {
+    const fullPath = path.join(directoryPath, content);
+    if(isFile(fullPath)) {
+      if (/\.cpk$/.test(content)) {
+        return true;
+      }
+    } else {
+      const isHas = hasCpkFileInDirecotry(fullPath);
+      if (index === contents.length - 1 || isHas) return isHas;
+    }
+  }
+
+  return false;
+}
+
+function saveMLManager(name, directoryPath) {
+  const settingsPath = getSettingsPath();
+  const dest = path.join(settingsPath, 'ml-manager', name);
+
+  // if after directory direct in it is common directory
+  if (!existsSync(path.join(directoryPath, 'common'))) return false;
+  // if file .cpk exist in directory
+  if (hasCpkFileInDirecotry(directoryPath)) return false;
+
+  cpSync(directoryPath, dest, { recursive: true });
+  return {
+    name: name,
+    path: dest,
+    preview: getMLManagerPreview(dest),
+    active: false,
+  };
+}
+
 export {
   readSiderIni,
   readModules,
@@ -193,4 +237,5 @@ export {
   readMLManagers,
   chooseMLManager,
   getActiveMLManager,
+  saveMLManager,
 };
