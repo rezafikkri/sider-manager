@@ -453,6 +453,17 @@ describe('saveMLManager function', () => {
     expect(result).toBe(false);
   });
 
+  it('should return false when common is file', async () => {
+    const { existsSync } = await import('node:fs');
+    existsSync.mockReturnValue(true);
+    const { isFile } = await import('../../src/main/services');
+    isFile.mockReturnValue(true);
+
+    const result = saveMLManager('RezaFikkri', 'Manager Reza');
+
+    expect(result).toBe(false);
+  });
+
   it('should return false when in new ml manager directory found .cpk file direct in ml manager directory and have empty folder', async () => {
     const { readdirSync, existsSync } = await import('node:fs');
     existsSync.mockReturnValue(true);

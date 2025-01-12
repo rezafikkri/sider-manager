@@ -213,7 +213,7 @@ function saveMLManager(name, directory) {
   const settingsPath = getSettingsPath();
   const dest = path.join(settingsPath, 'ml-manager', name);
 
-  // if after directory direct in it is common directory
+  // if after directory direct in it is not common directory or common is file
   const commonPath = path.join(directory, 'common');
   if (!existsSync(commonPath) || isFile(commonPath)) return false;
   // if file .cpk exist in directory
