@@ -1,9 +1,10 @@
-import { app, dialog, BrowserWindow } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import path from 'node:path';
 import { readFileSync, writeFileSync } from 'node:fs';
 import createMainWindow from './create-main-window';
 import { getLocaleResources } from './locale';
 import { translate } from '../utils';
+import { chooseDirectory } from '.';
 
 function getSettingsPath() {
   return path.join(app.getPath('appData'), 'sider-manager');
@@ -32,17 +33,8 @@ function isPESDirectorySetup() {
 async function choosePESDirectory() {
   const { locale } = getSettings();
   const localeResources = getLocaleResources();
-
-  const pesDirectoryObj = await dialog.showOpenDialog({
-    title: translate(locale, 'pesDirectoryInput.dialogTitle', localeResources),
-    properties: ['openDirectory'],
-  });
-  if (!pesDirectoryObj.canceled) {
-    const pesDirectory = pesDirectoryObj.filePaths[0];
-    return pesDirectory;
-  }
-
-  return false;
+  const title = translate(locale, 'pesDirectoryInput.dialogTitle', localeResources);
+  return await chooseDirectory(title);
 }
 
 function saveSettings(settings) {

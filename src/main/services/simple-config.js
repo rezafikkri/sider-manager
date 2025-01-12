@@ -14,7 +14,7 @@ import log from 'electron-log/main';
 import { app } from 'electron';
 import { generateErrorLogMessage } from '../utils';
 import { deleteSetting, getSettings, getSettingsPath, saveSettings } from './settings';
-import { isFile } from '.';
+import { chooseDirectory, isFile } from '.';
 
 function readSiderIni(pesDirectory) {
   try {
@@ -191,11 +191,11 @@ function getActiveMLManager() {
   return settings.activeMLManager;
 }
 
-function hasCpkFileInDirecotry(directoryPath) {
-  const contents = readdirSync(directoryPath);
+function hasCpkFileInDirecotry(directory) {
+  const contents = readdirSync(directory);
 
   for (const [index, content] of contents.entries()) {
-    const fullPath = path.join(directoryPath, content);
+    const fullPath = path.join(directory, content);
     if(isFile(fullPath)) {
       if (/\.cpk$/.test(content)) {
         return true;
@@ -209,22 +209,36 @@ function hasCpkFileInDirecotry(directoryPath) {
   return false;
 }
 
-function saveMLManager(name, directoryPath) {
+function saveMLManager(name, directory) {
   const settingsPath = getSettingsPath();
   const dest = path.join(settingsPath, 'ml-manager', name);
 
   // if after directory direct in it is common directory
-  if (!existsSync(path.join(directoryPath, 'common'))) return false;
+  const commonPath = path.join(directory, 'common');
+  if (!existsSync(commonPath) || isFile(commonPath)) return false;
   // if file .cpk exist in directory
-  if (hasCpkFileInDirecotry(directoryPath)) return false;
+  if (hasCpkFileInDirecotry(directory)) return false;
 
-  cpSync(directoryPath, dest, { recursive: true });
+  cpSync(directory, dest, { recursive: true });
   return {
     name: name,
     path: dest,
     preview: getMLManagerPreview(dest),
     active: false,
   };
+}
+
+async function chooseNewSimpleConfigDirectory(title) {
+  const directory = await chooseDirectory(title);
+  if (directory) {
+    return {
+      name: path.basename(directory),
+      directory,
+      preview: getMLManagerPreview(directory),
+    };
+  }
+
+  return directory;
 }
 
 export {
@@ -238,4 +252,5 @@ export {
   chooseMLManager,
   getActiveMLManager,
   saveMLManager,
+  chooseNewSimpleConfigDirectory,
 };

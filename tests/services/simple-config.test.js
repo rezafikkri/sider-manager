@@ -411,12 +411,12 @@ describe('saveMLManager function', () => {
   it('should return new ml manager object and call cpSync function correctly when new ml manager valid', async () => {
     const { readdirSync, existsSync, cpSync } = await import('node:fs');
     existsSync.mockReturnValue(true);
-    readdirSync.mockImplementation((directoryPath) => {
-      if (directoryPath === 'Manager Reza') return ['common', 'preview.png'];
+    readdirSync.mockImplementation((directory) => {
+      if (directory === 'Manager Reza') return ['common', 'preview.png'];
       const commonPath = path.join('Manager Reza', 'common');
-      if (directoryPath === commonPath) return ['test1', 'test2', 'test.txt'];
-      if (directoryPath === path.join(commonPath, 'test1')) return ['mod.cpks'];
-      if (directoryPath === path.join(commonPath, 'test2')) return ['gege.txt'];
+      if (directory === commonPath) return ['test1', 'test2', 'test.txt'];
+      if (directory === path.join(commonPath, 'test1')) return ['mod.cpks'];
+      if (directory === path.join(commonPath, 'test2')) return ['gege.txt'];
     });
     const { isFile } = await import('../../src/main/services');
     isFile.mockImplementation((filePath) => {
@@ -456,9 +456,9 @@ describe('saveMLManager function', () => {
   it('should return false when in new ml manager directory found .cpk file direct in ml manager directory and have empty folder', async () => {
     const { readdirSync, existsSync } = await import('node:fs');
     existsSync.mockReturnValue(true);
-    readdirSync.mockImplementation((directoryPath) => {
-      if (directoryPath === 'New Manager') return ['common', 'live.cpk', 'preview.png'];
-      if (directoryPath === path.join('New Manager', 'common')) return [];
+    readdirSync.mockImplementation((directory) => {
+      if (directory === 'New Manager') return ['common', 'live.cpk', 'preview.png'];
+      if (directory === path.join('New Manager', 'common')) return [];
     });
     const { isFile } = await import('../../src/main/services');
     isFile.mockImplementation((filePath) => {
@@ -476,12 +476,12 @@ describe('saveMLManager function', () => {
   it('should return false when in new ml manager directory found .cpk file in sub directory in common directory', async () => {
     const { readdirSync, existsSync } = await import('node:fs');
     existsSync.mockReturnValue(true);
-    readdirSync.mockImplementation((directoryPath) => {
-      if (directoryPath === 'Reza New') return ['common', 'preview.png'];
+    readdirSync.mockImplementation((directory) => {
+      if (directory === 'Reza New') return ['common', 'preview.png'];
       const commonPath = path.join('Reza New', 'common');
-      if (directoryPath === commonPath) return ['test1', 'test2', 'test.txt'];
-      if (directoryPath === path.join(commonPath, 'test1')) return ['gege.txt'];
-      if (directoryPath === path.join(commonPath, 'test2')) return ['mod.cpk'];
+      if (directory === commonPath) return ['test1', 'test2', 'test.txt'];
+      if (directory === path.join(commonPath, 'test1')) return ['gege.txt'];
+      if (directory === path.join(commonPath, 'test2')) return ['mod.cpk'];
     });
     const { isFile } = await import('../../src/main/services');
     isFile.mockImplementation((filePath) => {

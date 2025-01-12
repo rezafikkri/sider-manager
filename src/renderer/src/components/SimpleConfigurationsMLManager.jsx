@@ -4,7 +4,7 @@ import { translate } from '../../../main/utils';
 import ConfigCardImg from './ConfigCardImg';
 import Alert from './Alert';
 import ModalWithSimpleConfigForm from './ModalWithSimpleConfigForm';
-import ModalPrompt from './ModalPrompt';
+import notFoundImage from '../assets/not-found-image.svg';
 
 export default function SimpleConfigurationsMLManager() {
   const {locale, resources} = useContext(LocaleContext);
@@ -13,6 +13,7 @@ export default function SimpleConfigurationsMLManager() {
   const [mlManagers, setMLManagers] = useState([]);
   const [hasActiveMLManager, setHasActiveMLManager] = useState(false);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [showModalWithSimpleConfigForm, setShowModalWithSimpleConfigForm] = useState(false);
 
   async function loadMLManagers() {
     const mlManagers = await window.sm.readMLManagers();
@@ -64,6 +65,24 @@ export default function SimpleConfigurationsMLManager() {
     setShowSuccessAlert(true);
   }, []);
 
+  async function handleAddMLManager(name, directory) {
+    const mlManager = await window.sm.saveMLManager(name, directory);
+    if (mlManager) {
+      setMLManagers([ ...mlManagers, mlManager ]);
+      return true;
+    }
+    return false;
+  }
+
+  function getMLManagerPreview(preview) {
+    if (preview) return preview.replace('file', 'sm');
+    return notFoundImage;    
+  }
+
+  useEffect(() => {
+    document.querySelector('body').classList.toggle('overflow-hidden');
+  }, [showModalWithSimpleConfigForm]);
+
   useEffect(() => {
     // check is ml manager config is activated or not yet
     async function checkStatus() {
@@ -108,6 +127,7 @@ export default function SimpleConfigurationsMLManager() {
 
       { status !== null ? (
         <button
+          onClick={() => setShowModalWithSimpleConfigForm(true)}
           data-testid="add-ml-manager-btn"
           disabled={status ? false : true}
           type="button"
@@ -123,7 +143,7 @@ export default function SimpleConfigurationsMLManager() {
           <ConfigCardImg
             key={mlManager.name}
             title={mlManager.name}
-            img={mlManager.preview.replace('file', 'sm')}
+            img={getMLManagerPreview(mlManager.preview)}
             isChecked={mlManager.active}
             onChoose={handleChooseMLManager}
             mlManager={mlManager}
@@ -147,8 +167,12 @@ export default function SimpleConfigurationsMLManager() {
         : null}
       </div>
 
-      <ModalWithSimpleConfigForm />
-      {/* <ModalPrompt /> */}
+      {showModalWithSimpleConfigForm && 
+        <ModalWithSimpleConfigForm
+          onClose={() => setShowModalWithSimpleConfigForm(false)}
+          onSubmit={handleAddMLManager}
+          getPreview={getMLManagerPreview}
+        />}
     </>
   );
 }

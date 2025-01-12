@@ -1,4 +1,4 @@
-import { BrowserWindow } from 'electron';
+import { BrowserWindow, dialog } from 'electron';
 import { lstatSync, statSync } from 'node:fs';
 import { getSettings } from './settings';
 
@@ -28,8 +28,21 @@ function isFile(filePath) {
   return lstatSync(filePath).isFile();
 }
 
+async function chooseDirectory(title) {
+  const directoryObj = await dialog.showOpenDialog({
+    title,
+    properties: ['openDirectory'],
+  });
+  if (!directoryObj.canceled) {
+    return directoryObj.filePaths[0];
+  }
+
+  return false;
+}
+
 export {
   handleSetTitle,
   getFileSize,
   isFile,
+  chooseDirectory,
 };

@@ -32,6 +32,7 @@ import {
   toggleMLManagerConfig,
   chooseMLManager,
   saveMLManager,
+  chooseNewSimpleConfigDirectory,
 } from './services/simple-config';
 
 // for performance
@@ -103,12 +104,11 @@ app.whenReady().then(() => {
   ipcMain.handle('isMLManagerConfigActivated', isMLManagerConfigActivated);
   ipcMain.handle('toggleMLManagerConfig', toggleMLManagerConfig);
   ipcMain.handle('chooseMLManager', (_, mlManager) => chooseMLManager(mlManager));
+  ipcMain.handle('saveMLManager', (_, name, directory) => saveMLManager(name, directory));
+  ipcMain.handle('chooseNewSimpleConfigDirectory', (_, title) => chooseNewSimpleConfigDirectory(title));
 
   // check-update in background
   checkUpdate();
-
-  // console.log(saveMLManager('Reza Fikkri', '/home/rezafikkri/Documents/Sider-Manager/FOR REZA/ML Manager/Reza Fikkri'));
-  console.log(saveMLManager('Reza Fikkri', '/home/rezafikkri/Documents/Sider-Manager/FOR REZA/ML Manager/Test'));
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
