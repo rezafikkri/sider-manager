@@ -1,6 +1,5 @@
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import {
-  choosePESDirectory,
   getSettingsFilePath,
   isPESDirectorySetup,
   choosePESDirectory,
@@ -72,26 +71,17 @@ describe('choosePESDirectory function', () => {
     vi.mock('../../src/main/utils', () => ({
       translate: () => 'translate',
     }));
+    vi.mock('../../src/main/services', () => ({
+      chooseDirectory: vi.fn(),
+    }));
   });
   
-  it('should call showOpenDialog function correctly and return pes directory when choose pes directory not canceled', async () => {
-    const pesDirectory = 'pes-directory';
-    const { dialog } = await import('electron');
-    dialog.showOpenDialog.mockReturnValue({ canceled: false, filePaths: [pesDirectory] });
+  it('should call chooseDirectory function correctly', async () => {
+    const { chooseDirectory } = await import('../../src/main/services');
 
-    const result = await choosePESDirectory();
+    await choosePESDirectory();
 
-    expect(dialog.showOpenDialog).toHaveBeenCalledWith({title: 'translate', properties: ['openDirectory']});
-    expect(result).toBe(pesDirectory);
-  });
-
-  it('should return false when choose pes directory canceled', async () => {
-    const { dialog } = await import('electron');
-    dialog.showOpenDialog.mockReturnValue({ canceled: true });
-
-    const result = await choosePESDirectory();
-
-    expect(result).toBe(false);
+    expect(chooseDirectory).toHaveBeenCalledWith('translate');
   });
 });
 

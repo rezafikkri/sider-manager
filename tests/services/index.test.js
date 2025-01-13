@@ -1,6 +1,9 @@
-import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
-import { getSettings } from '../../src/main/services/settings';
-import { getFileSize } from '../../src/main/services';
+import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
+import { chooseDirectory, getFileSize } from '../../src/main/services';
+
+afterEach(() => {
+  vi.clearAllMocks();
+});
 
 describe('getFileSize function', () => {
   beforeAll(() => {
@@ -62,3 +65,34 @@ describe('getFileSize function', () => {
   });
 });
 
+describe('chooseDirectory function', () => {
+  beforeAll(() => {
+    vi.mock('electron', () => {
+      return {
+        dialog: {
+          showOpenDialog: vi.fn(),
+        },
+      };
+    });
+  });
+
+  it('should call showOpenDialog function correctly and return the directory when choose pes directory not canceled', async () => {
+    const directory = 'directory';
+    const { dialog } = await import('electron');
+    dialog.showOpenDialog.mockReturnValue({ canceled: false, filePaths: [directory] });
+
+    const result = await chooseDirectory('title');
+
+    expect(dialog.showOpenDialog).toHaveBeenCalledWith({title: 'title', properties: ['openDirectory']});
+    expect(result).toBe(directory);
+  });
+
+  it('should return false when choose directory canceled', async () => {
+    const { dialog } = await import('electron');
+    dialog.showOpenDialog.mockReturnValue({ canceled: true });
+
+    const result = await chooseDirectory('title');
+
+    expect(result).toBe(false);
+  });
+});

@@ -6,6 +6,8 @@ import * as matchers from '@testing-library/jest-dom/matchers';
 import userEvent from '@testing-library/user-event';
 import Locale from '../../src/renderer/src/components/Locale';
 import SimpleConfigurationsMLManager from '../../src/renderer/src/components/SimpleConfigurationsMLManager';
+import path from 'node:path';
+import url from 'node:url';
 
 expect.extend(matchers);
 
@@ -20,6 +22,19 @@ const resources = {
         choosed: 'Manager berhasil dipilih.',
         changed: 'Manager berhasil diubah.',
       },
+    },
+    modalWithSimpleConfigForm: {
+      dialogTitle: 'Pilih direktori ML Manager baru yang ingin ditambahkan.',
+      errorAlertMsg: 'ML Manager salah. Pastikan setelah nama direktori adalah direktori common (Reza Fikkri\\common) dan pastikan di dalam direktori common tidak terdapat file .cpk!',
+      successAlertMsg: 'ML Manager berhasil ditambahkan.',
+      directoryLabelText: 'Direktori',
+      directoryInputPlaceholder: 'Masukkan direktori',
+      directoryBtnText: 'Pilih',
+      directorySmallText: 'Silahkan pilih lokasi direktori ML Manager baru yang ingin ditambahkan.',
+      nameLabelText: 'Nama',
+      nameInputPlaceholder: 'Masukkan nama ML Manager',
+      previewSmallText: 'Jika ingin ada preview, sertakan file gambar berkestensi .png/.jpg pada direktori ML Manager.',
+      submitBtnText: 'Simpan',
     },
   },
 };
@@ -40,7 +55,7 @@ const mlManagers = [
   {
     name: 'Bill Shankly',
     path: '/home/rezafikkri/.config/sider-manager/ml-manager/Bill Shankly',
-    preview: 'file:///home/rezafikkri/.config/sider-manager/ml-manager/Bill%20Shankly/preview.png',
+    preview: null,
     active: false,
   },
   {
@@ -58,7 +73,13 @@ describe('SimpleConfigurationsMLManager component', () => {
       toggleMLManagerConfig: vi.fn(),
       chooseMLManager: vi.fn(),
       isMLManagerConfigActivated: vi.fn(),
+      saveMLManager: vi.fn(),
+      chooseNewSimpleConfigDirectory: vi.fn(),
     };
+
+    vi.mock('../../src/renderer/src/assets/not-found-image.svg', () => ({
+      default: 'not-found-image.svg',
+    }))
   });
 
   function renderSimpleConfigurationsMLManager() {
@@ -82,7 +103,7 @@ describe('SimpleConfigurationsMLManager component', () => {
     window.sm.isMLManagerConfigActivated.mockResolvedValue(false);
     renderSimpleConfigurationsMLManager();
     window.sm.readMLManagers.mockResolvedValue(mlManagers);
-    const addMLManagerBtn = await screen.findByTestId('add-ml-manager-btn');
+    const addMLManagerBtn = await screen.findByTestId('show-modal-add-ml-manager-btn');
     const mlManagerCard = screen.queryByTestId('config-card-Arrigo Sacchi');
 
     expect(mlManagerCard).not.toBeInTheDocument();
@@ -93,7 +114,7 @@ describe('SimpleConfigurationsMLManager component', () => {
     window.sm.isMLManagerConfigActivated.mockResolvedValue(true);
     renderSimpleConfigurationsMLManager();
     window.sm.readMLManagers.mockResolvedValue(mlManagers);
-    const addMLManagerBtn = await screen.findByTestId('add-ml-manager-btn');
+    const addMLManagerBtn = await screen.findByTestId('show-modal-add-ml-manager-btn');
 
     for (const mlManager of mlManagers) {
       const mlManagerCard = await screen.findByTestId(`config-card-${mlManager.name}`);
@@ -101,6 +122,13 @@ describe('SimpleConfigurationsMLManager component', () => {
       expect(mlManagerCard).toHaveClass('cursor-pointer');
       expect(mlManagerCard.querySelector('input[name="config"]')).not.toBeChecked();
       expect(mlManagerCard.querySelector('button')).toBeInTheDocument();
+
+      if (mlManager.preview) {
+        const imgEl = mlManagerCard.querySelector(`img[src="${mlManager.preview.replace('file', 'sm')}"]`);
+        expect(imgEl).toBeInTheDocument();
+      } else {
+        expect(mlManagerCard.querySelector('img[src="not-found-image.svg"]')).toBeInTheDocument();
+      }
     }
     expect(addMLManagerBtn).toBeEnabled();
   });
@@ -109,7 +137,7 @@ describe('SimpleConfigurationsMLManager component', () => {
     window.sm.isMLManagerConfigActivated.mockResolvedValue(false);
     renderSimpleConfigurationsMLManager();
     window.sm.readMLManagers.mockResolvedValue(mlManagers);
-    const addMLManagerBtn = await screen.findByTestId('add-ml-manager-btn');
+    const addMLManagerBtn = await screen.findByTestId('show-modal-add-ml-manager-btn');
     const toggleMLManagerConfigBtn = await screen.findByTestId('toggle-ml-manager-config-btn');
 
     await userEvent.click(toggleMLManagerConfigBtn);
@@ -127,7 +155,7 @@ describe('SimpleConfigurationsMLManager component', () => {
     window.sm.isMLManagerConfigActivated.mockResolvedValue(true);
     renderSimpleConfigurationsMLManager();
     window.sm.readMLManagers.mockResolvedValue(mlManagers);
-    const addMLManagerBtn = await screen.findByTestId('add-ml-manager-btn');
+    const addMLManagerBtn = await screen.findByTestId('show-modal-add-ml-manager-btn');
     const toggleMLManagerConfigBtn = await screen.findByTestId('toggle-ml-manager-config-btn');
     const mlManagerCard = await screen.findByTestId('config-card-Alex Ferguson');
 
@@ -145,7 +173,7 @@ describe('SimpleConfigurationsMLManager component', () => {
     window.sm.chooseMLManager.mockReturnValue(new Promise((resolve) => {
       setTimeout(() => {
         resolve(false);
-      }, 300);
+      }, 500);
     }));
     const mlManagerCard = await screen.findByTestId(`config-card-${mlManagers[3].name}`);
 
@@ -229,5 +257,25 @@ describe('SimpleConfigurationsMLManager component', () => {
 
     const alert = await screen.findByText(resources.id.simpleConfigurationsMLManager.successAlertMsg.choosed);
     expect(alert).toBeInTheDocument();
+  });
+
+  it('should call saveMLManager function correctly when submit button for add ml manager clicked and form is not empty', async () => {
+    renderSimpleConfigurationsMLManager();
+    const showModalBtn = await screen.findByTestId('show-modal-add-ml-manager-btn');
+    await userEvent.click(showModalBtn);
+
+    const directoryObj = {
+      name: 'Reza Fikkri',
+      directory: path.join('others', 'ML Manager new'),
+      preview: url.pathToFileURL(path.join('others', 'ML Manager new', 'preview.jpg')).toString(),
+    };
+    window.sm.chooseNewSimpleConfigDirectory.mockReturnValue(directoryObj);
+    const chooseDirectoryBtn = await screen.findByTestId('choose-directory-btn');
+    const submitBtn = await screen.findByTestId('submit-btn');
+
+    await userEvent.click(chooseDirectoryBtn);
+    await userEvent.click(submitBtn);
+
+    expect(window.sm.saveMLManager).toHaveBeenCalledWith(directoryObj.name, directoryObj.directory);
   });
 });

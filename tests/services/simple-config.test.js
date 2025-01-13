@@ -1,6 +1,7 @@
 import { afterEach, beforeAll, describe, expect, it, vi, beforeEach } from 'vitest';
 import {
   chooseMLManager,
+  chooseNewSimpleConfigDirectory,
   isMLManagerConfigActivated,
   readMLManagers,
   readSiderIni,
@@ -63,6 +64,7 @@ beforeAll(() => {
   });
   vi.mock('../../src/main/services', () => ({
     isFile: vi.fn(),
+    chooseDirectory: vi.fn(),
   }));
 });
 
@@ -511,5 +513,33 @@ describe('saveMLManager function', () => {
     const result = saveMLManager('Dian', 'Reza New');
 
     expect(result).toBe(false);
+  });
+});
+
+describe('chooseNewSimpleConfigDirectory function', () => {
+  it('should return directoryObj correctly when chooseDirectory not cancelled', async () => {
+    const { chooseDirectory } = await import('../../src/main/services');
+    const directory = path.join('others', 'ML Manager', 'Reza Fikkri');
+    chooseDirectory.mockResolvedValue(directory);
+    const { existsSync } = await import('node:fs');
+    existsSync.mockReturnValue(true);
+
+    const result = await chooseNewSimpleConfigDirectory('title');
+
+    expect(chooseDirectory).toHaveBeenCalledWith('title');
+    expect(result).toEqual({
+      name: path.basename(directory),
+      directory,
+      preview: url.pathToFileURL(path.join(directory, 'preview.png')).toString(),
+    });
+  });
+
+  it('should return false when chooseDirectory cancelled', async () => {
+    const { chooseDirectory } = await import('../../src/main/services');
+    chooseDirectory.mockResolvedValue(false);
+
+    const result = await chooseNewSimpleConfigDirectory('title');
+
+    expect(result).toEqual(false);
   });
 });

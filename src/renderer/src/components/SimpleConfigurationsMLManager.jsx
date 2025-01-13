@@ -128,7 +128,7 @@ export default function SimpleConfigurationsMLManager() {
       { status !== null ? (
         <button
           onClick={() => setShowModalWithSimpleConfigForm(true)}
-          data-testid="add-ml-manager-btn"
+          data-testid="show-modal-add-ml-manager-btn"
           disabled={status ? false : true}
           type="button"
           className="ms-3 text-sm font-medium rounded-lg px-3 py-2 bg-gray-800 hover:bg-indigo-700 outline outline-transparent focus:outline-offset-2 focus:outline-indigo-700 transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-65 disabled:hover:bg-gray-800"
@@ -172,7 +172,8 @@ export default function SimpleConfigurationsMLManager() {
           onClose={() => setShowModalWithSimpleConfigForm(false)}
           onSubmit={handleAddMLManager}
           getPreview={getMLManagerPreview}
-        />}
+        />
+      }
     </>
   );
 }

@@ -91,6 +91,7 @@ export default function ModalWithSimpleConfigForm({
                   type="button"
                   className="flex-none bg-indigo-900/70 hover:bg-indigo-900/90 rounded-r-lg px-4 transition-colors duration-100 font-medium text-white/90"
                   onClick={handleChooseNewSimpleConfigDirectory}
+                  data-testid="choose-directory-btn"
                 >
                   {translate(locale, 'modalWithSimpleConfigForm.directoryBtnText', resources)}
                 </button>
@@ -139,7 +140,7 @@ export default function ModalWithSimpleConfigForm({
                   </div>
                 }
 
-                <button type="submit" className="font-medium rounded-lg px-4 py-3 bg-indigo-700 hover:bg-indigo-600 outline outline-transparent focus:outline-offset-2 focus:outline-indigo-700 shadow-lg transition-colors duration-100 ease-in">{translate(locale, 'modalWithSimpleConfigForm.submitBtnText', resources)}</button>
+                <button type="submit" data-testid="submit-btn" className="font-medium rounded-lg px-4 py-3 bg-indigo-700 hover:bg-indigo-600 outline outline-transparent focus:outline-offset-2 focus:outline-indigo-700 shadow-lg transition-colors duration-100 ease-in">{translate(locale, 'modalWithSimpleConfigForm.submitBtnText', resources)}</button>
               </div>
             </div>
           </form>
