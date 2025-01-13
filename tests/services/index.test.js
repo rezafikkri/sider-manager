@@ -42,6 +42,17 @@ describe('getFileSize function', () => {
     expect(result).toBe('1.5 MB');
   });
 
+  it('should return file size in GB in english locale when file size reach or exceed 1 GB', async () => {
+    const { getSettings } = await import('../../src/main/services/settings');
+    getSettings.mockReturnValue({ locale: 'en' });
+    const { statSync } = await import('node:fs');
+    statSync.mockReturnValue({ size: 1540000000 });
+
+    const result = getFileSize('test.txt');
+
+    expect(result).toBe('1.5 GB');
+  });
+
   it('should return file size in KB in indonesian locale when file size does not reach 1 MB', async () => {
     const { getSettings } = await import('../../src/main/services/settings');
     getSettings.mockReturnValue({ locale: 'id' });
@@ -62,6 +73,17 @@ describe('getFileSize function', () => {
     const result = getFileSize('test.txt');
 
     expect(result).toBe('1,4 MB');
+  });
+
+  it('should return file size in GB in indonesian locale when file size reach or exceed 1 GB', async () => {
+    const { getSettings } = await import('../../src/main/services/settings');
+    getSettings.mockReturnValue({ locale: 'id' });
+    const { statSync } = await import('node:fs');
+    statSync.mockReturnValue({ size: 1530000000 });
+
+    const result = getFileSize('test.txt');
+
+    expect(result).toBe('1,5 GB');
   });
 });
 

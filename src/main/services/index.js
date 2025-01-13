@@ -11,13 +11,17 @@ function handleSetTitle(event, title) {
 function getFileSize(filePath) {
   const { locale } = getSettings();
   const stats = statSync(filePath);
-  let oSize = stats.size / (1000**2); // original size
+
+  const kbSize = stats.size / 1000;
+  const mbSize = stats.size / (1000**2);
+  const gbSize = stats.size / (1000**3);
   let fSize;
-  if (oSize < 1) {
-    oSize = stats.size / 1000;
-    fSize = oSize.toFixed(1) + ' KB';
+  if (gbSize > 1) {
+    fSize = gbSize.toFixed(1) + ' GB';
+  } else if (mbSize > 1) {
+    fSize = mbSize.toFixed(1) + ' MB';
   } else {
-    fSize = oSize.toFixed(1) + ' MB';
+    fSize = kbSize.toFixed(1) + ' KB';
   }
 
   if (locale !== 'en') return fSize.replace('.', ',');
