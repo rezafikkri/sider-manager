@@ -163,19 +163,23 @@ export default function SimpleConfigurationsMLManager() {
       </section>
 
       <div className="fixed bottom-5 right-5 left-5 text-left flex flex-col gap-2 w-3/5 z-30">
-        {(showSuccessAlert && !hasActiveMLManager) ? 
+        {(showSuccessAlert && !hasActiveMLManager) && 
           <Alert
             message={() => translate(locale, 'simpleConfigurationsMLManager.successAlertMsg.choosed', resources)}
             type="success"
             onClose={() => setShowSuccessAlert(false)}
           />
-        : (showSuccessAlert && hasActiveMLManager) ?
+        }
+
+        {(showSuccessAlert && hasActiveMLManager) &&
           <Alert
             message={() => translate(locale, 'simpleConfigurationsMLManager.successAlertMsg.changed', resources)}
             type="success"
             onClose={() => setShowSuccessAlert(false)}
           />
-        : showDeleteSuccessAlert &&
+        }
+
+        {showDeleteSuccessAlert &&
           <Alert
             message={() => translate(locale, 'simpleConfigurationsMLManager.successDeleteAlertMsg', resources)}
             type="success"

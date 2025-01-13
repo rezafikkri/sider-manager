@@ -150,7 +150,7 @@ export default function ModalWithSimpleConfigForm({
       <div className="bg-sima-bg/80 fixed inset-0 z-40"></div>
 
       {showSuccessAlert &&
-        <div className="fixed bottom-5 right-8 left-5 text-left w-3/4 z-50">
+        <div className="fixed bottom-5 right-8 left-5 text-left w-3/5 z-50">
           <Alert
             message={() => translate(locale, 'modalWithSimpleConfigForm.successAlertMsg', resources)}
             type="success"
