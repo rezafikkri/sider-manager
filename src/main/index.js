@@ -33,6 +33,7 @@ import {
   chooseMLManager,
   saveMLManager,
   chooseNewSimpleConfigDirectory,
+  deleteMLManager,
 } from './services/simple-config';
 
 // for performance
@@ -106,6 +107,7 @@ app.whenReady().then(() => {
   ipcMain.handle('chooseMLManager', (_, mlManager) => chooseMLManager(mlManager));
   ipcMain.handle('saveMLManager', (_, name, directory) => saveMLManager(name, directory));
   ipcMain.handle('chooseNewSimpleConfigDirectory', (_, title) => chooseNewSimpleConfigDirectory(title));
+  ipcMain.handle('deleteMLManager', (_, name) => deleteMLManager(name));
 
   // check-update in background
   checkUpdate();

@@ -15,6 +15,7 @@ const sm = {
   chooseMLManager: (mlManager) => ipcRenderer.invoke('chooseMLManager', mlManager),
   saveMLManager: (name, directory) => ipcRenderer.invoke('saveMLManager', name, directory),
   chooseNewSimpleConfigDirectory: (title) => ipcRenderer.invoke('chooseNewSimpleConfigDirectory', title),
+  deleteMLManager: (name) => ipcRenderer.invoke('deleteMLManager', name),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

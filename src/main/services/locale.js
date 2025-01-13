@@ -143,6 +143,7 @@ const resources = {
         choosed: 'ML Manager berhasil dipilih.',
         changed: 'ML Manager berhasil diubah.',
       },
+      successDeleteAlertMsg: 'ML Manager berhasil dihapus.',
     },
     modalWithSimpleConfigForm: {
       dialogTitle: 'Pilih direktori ML Manager baru yang ingin ditambahkan.',
@@ -156,6 +157,12 @@ const resources = {
       nameInputPlaceholder: 'Masukkan nama ML Manager',
       previewSmallText: 'Jika ingin ada preview, sertakan file gambar berkestensi .png/.jpg pada direktori ML Manager.',
       submitBtnText: 'Simpan',
+    },
+    modalPrompt: {
+      msgPrefix: 'Apakah kamu yakin ingin menghapus',
+      msgEnding: 'akan dihapus secara permananen.',
+      yesBtnText: 'Ya, saya yakin',
+      cancelBtnText: 'Tidak, batal',
     },
   },
 
@@ -294,6 +301,7 @@ const resources = {
         choosed: 'ML Manager successfully choosed.',
         changed: 'ML Manager successfully changed.',
       },
+      successDeleteAlertMsg: 'ML Manager successfully deleted.',
     },
     modalWithSimpleConfigForm: {
       dialogTitle: 'Choose new ML Manager directory you want to add.',
@@ -307,6 +315,12 @@ const resources = {
       nameInputPlaceholder: 'Enter the ML Manager name',
       previewSmallText: 'If you want to add preview, include image file with extention .png/.jpg in ML Manager directory.',
       submitBtnText: 'Save',
+    },
+    modalPrompt: {
+      msgPrefix: 'Are you sure you want to delete',
+      msgEnding: 'will be delete permanently.',
+      yesBtnText: 'Yes, i\'m sure',
+      cancelBtnText: 'No, cancel',
     },
   },
 };

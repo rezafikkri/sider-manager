@@ -5,6 +5,7 @@ import ConfigCardImg from './ConfigCardImg';
 import Alert from './Alert';
 import ModalWithSimpleConfigForm from './ModalWithSimpleConfigForm';
 import notFoundImage from '../assets/not-found-image.svg';
+import ModalPrompt from './ModalPrompt';
 
 export default function SimpleConfigurationsMLManager() {
   const {locale, resources} = useContext(LocaleContext);
@@ -14,6 +15,8 @@ export default function SimpleConfigurationsMLManager() {
   const [hasActiveMLManager, setHasActiveMLManager] = useState(false);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [showModalWithSimpleConfigForm, setShowModalWithSimpleConfigForm] = useState(false);
+  const [mlManagerNameToBeDeleted, setMLManagerNameToBeDeleted] = useState(null);
+  const [showDeleteSuccessAlert, setShowDeleteSuccessAlert] = useState(false);
 
   async function loadMLManagers() {
     const mlManagers = await window.sm.readMLManagers();
@@ -74,6 +77,13 @@ export default function SimpleConfigurationsMLManager() {
     return false;
   }
 
+  async function handleDeleteMLManager(name) {
+    await window.sm.deleteMLManager(name);
+    setMLManagers(mlManagers.filter((mlManager) => 
+      mlManager.name !== name
+    ));
+  }
+
   function getMLManagerPreview(preview) {
     if (preview) return preview.replace('file', 'sm');
     return notFoundImage;    
@@ -81,7 +91,7 @@ export default function SimpleConfigurationsMLManager() {
 
   useEffect(() => {
     document.querySelector('body').classList.toggle('overflow-hidden');
-  }, [showModalWithSimpleConfigForm]);
+  }, [showModalWithSimpleConfigForm, mlManagerNameToBeDeleted]);
 
   useEffect(() => {
     // check is ml manager config is activated or not yet
@@ -138,7 +148,7 @@ export default function SimpleConfigurationsMLManager() {
         </button>
       ) : null}
 
-      <section className="px-3 mt-10 grid grid-cols-3 gap-4">
+      <section className="px-3 mt-10 grid grid-cols-3 gap-4 mb-10">
         {mlManagers.map((mlManager) => 
           <ConfigCardImg
             key={mlManager.name}
@@ -147,6 +157,7 @@ export default function SimpleConfigurationsMLManager() {
             isChecked={mlManager.active}
             onChoose={handleChooseMLManager}
             mlManager={mlManager}
+            onDelete={setMLManagerNameToBeDeleted}
           />
         )}
       </section>
@@ -164,7 +175,13 @@ export default function SimpleConfigurationsMLManager() {
             type="success"
             onClose={() => setShowSuccessAlert(false)}
           />
-        : null}
+        : showDeleteSuccessAlert &&
+          <Alert
+            message={() => translate(locale, 'simpleConfigurationsMLManager.successDeleteAlertMsg', resources)}
+            type="success"
+            onClose={() => setShowDeleteSuccessAlert(false)}
+          />
+        }
       </div>
 
       {showModalWithSimpleConfigForm && 
@@ -172,6 +189,16 @@ export default function SimpleConfigurationsMLManager() {
           onClose={() => setShowModalWithSimpleConfigForm(false)}
           onSubmit={handleAddMLManager}
           getPreview={getMLManagerPreview}
+        />
+      }
+
+      {mlManagerNameToBeDeleted &&
+        <ModalPrompt
+          name={mlManagerNameToBeDeleted}
+          category="ML Manager"
+          onDelete={handleDeleteMLManager}
+          onClose={() => setMLManagerNameToBeDeleted(null)}
+          showSuccessAlert={() => setShowDeleteSuccessAlert(true)}
         />
       }
     </>
