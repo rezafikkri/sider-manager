@@ -151,7 +151,7 @@ export default function SimpleConfigurationsMLManager() {
         )}
       </section>
 
-      <div className="fixed bottom-5 right-5 left-5 text-left flex flex-col gap-2 w-3/4 z-30">
+      <div className="fixed bottom-5 right-5 left-5 text-left flex flex-col gap-2 w-3/5 z-30">
         {(showSuccessAlert && !hasActiveMLManager) ? 
           <Alert
             message={() => translate(locale, 'simpleConfigurationsMLManager.successAlertMsg.choosed', resources)}
