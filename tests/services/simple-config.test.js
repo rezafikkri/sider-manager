@@ -2,6 +2,7 @@ import { afterEach, beforeAll, describe, expect, it, vi, beforeEach } from 'vite
 import {
   chooseMLManager,
   chooseNewSimpleConfigDirectory,
+  deleteMLManager,
   isMLManagerConfigActivated,
   readMLManagers,
   readSiderIni,
@@ -541,5 +542,19 @@ describe('chooseNewSimpleConfigDirectory function', () => {
     const result = await chooseNewSimpleConfigDirectory('title');
 
     expect(result).toEqual(false);
+  });
+});
+
+describe('deleteMLManager function', () => {
+  it('should call rmSync function correctly and return true', async () => {
+    const { rmSync } = await import('node:fs');
+
+    const result = deleteMLManager('Reza Fikkri');
+
+    expect(rmSync).toHaveBeenCalledWith(
+      path.join('settingsPath', 'ml-manager', 'Reza Fikkri'),
+      { recursive: true, force: true },
+    );
+    expect(result).toBe(true);
   });
 });

@@ -241,6 +241,13 @@ async function chooseNewSimpleConfigDirectory(title) {
   return directory;
 }
 
+function deleteMLManager(name) {
+  const settingsPath = getSettingsPath();
+  const mlManagerPath = path.join(settingsPath, 'ml-manager', name);
+  rmSync(mlManagerPath, { recursive: true, force: true });
+  return true;
+}
+
 export {
   readSiderIni,
   readModules,
@@ -253,4 +260,5 @@ export {
   getActiveMLManager,
   saveMLManager,
   chooseNewSimpleConfigDirectory,
+  deleteMLManager,
 };
