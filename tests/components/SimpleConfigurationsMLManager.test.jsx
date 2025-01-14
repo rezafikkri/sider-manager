@@ -36,6 +36,12 @@ const resources = {
       previewSmallText: 'Jika ingin ada preview, sertakan file gambar berkestensi .png/.jpg pada direktori ML Manager.',
       submitBtnText: 'Simpan',
     },
+    modalPrompt: {
+      msgPrefix: 'Apakah kamu yakin ingin menghapus',
+      msgEnding: 'akan dihapus secara permananen.',
+      yesBtnText: 'Ya, saya yakin',
+      cancelBtnText: 'Tidak, batal',
+    },
   },
 };
 
@@ -66,6 +72,18 @@ const mlManagers = [
   },
 ];
 
+function renderSimpleConfigurationsMLManager() {
+  render(
+    <Locale
+      getResources={async () => resources}
+      getSettings={async () => ({locale: 'id'})}
+      saveSettings={async () => {}}
+    >
+      <SimpleConfigurationsMLManager />
+    </Locale>
+  );
+}
+
 describe('SimpleConfigurationsMLManager component', () => {
   beforeAll(() => {
     window.sm = {
@@ -75,24 +93,13 @@ describe('SimpleConfigurationsMLManager component', () => {
       isMLManagerConfigActivated: vi.fn(),
       saveMLManager: vi.fn(),
       chooseNewSimpleConfigDirectory: vi.fn(),
+      deleteMLManager: vi.fn(),
     };
 
     vi.mock('../../src/renderer/src/assets/not-found-image.svg', () => ({
       default: 'not-found-image.svg',
     }))
   });
-
-  function renderSimpleConfigurationsMLManager() {
-    render(
-      <Locale
-        getResources={async () => resources}
-        getSettings={async () => ({locale: 'id'})}
-        saveSettings={async () => {}}
-      >
-        <SimpleConfigurationsMLManager />
-      </Locale>
-    );
-  }
 
   afterEach(() => {
     vi.clearAllMocks();
@@ -277,5 +284,18 @@ describe('SimpleConfigurationsMLManager component', () => {
     await userEvent.click(submitBtn);
 
     expect(window.sm.saveMLManager).toHaveBeenCalledWith(directoryObj.name, directoryObj.directory);
+  });
+
+  it('should call deleteMLManager function correctly when yesBtn for delete ml manager clicked', async () => {
+    renderSimpleConfigurationsMLManager();
+    const mlManagerCardBill = screen.queryByTestId('config-card-Bill Shankly');
+    const deleteBtn = mlManagerCardBill.querySelector('button');
+
+    await userEvent.click(deleteBtn);
+
+    const yesBtn = await screen.findByText(resources.id.modalPrompt.yesBtnText);
+    await userEvent.click(yesBtn);
+
+    expect(window.sm.deleteMLManager).toHaveBeenCalledWith('Bill Shankly');
   });
 });

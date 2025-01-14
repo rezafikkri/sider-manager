@@ -14,9 +14,6 @@ export default function ModalPrompt({
   const closeBtn = useRef(null);
   const cancelBtn = useRef(null);
 
-  let strongText = ``;
-  if (locale === 'id') strongText = `${category} ${name}`;
-
   async function handleDelete() {
     setIsLoading(true);
     closeBtn.current.disabled = true;
@@ -32,6 +29,7 @@ export default function ModalPrompt({
       <div className="fixed top-0 right-0 left-0 bottom-0 z-50 flex justify-center items-center">
         <div className="relative h-fit w-[47%] m-10 bg-indigo-950 rounded-lg shadow px-5 py-6">
           <button
+            data-testid="close-btn"
             ref={closeBtn}
             type="button"
             className="absolute top-0 right-0 text-white/60 bg-sima-bg/50 hover:text-white/90 rounded-es-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center disabled:text-white/40 disabled:hover:text-white/40 disabled:cursor-not-allowed"
@@ -43,7 +41,7 @@ export default function ModalPrompt({
           <div className="text-center">
             <svg className="mx-auto mb-4 w-12 h-12 text-gray-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
 
-            <h3 className="mb-6 text-lg text-white/90">
+            <h3 className="mb-6 text-lg text-white/90" data-testid="alert-message-delete">
               {translate(locale, 'modalPrompt.msgPrefix', resources)}
               <strong> {`${category} ${name}`}</strong>? {category}
               {` ${translate(locale, 'modalPrompt.msgEnding', resources)}`}

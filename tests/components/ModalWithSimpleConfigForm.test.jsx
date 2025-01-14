@@ -29,28 +29,28 @@ const resources = {
   },
 };
 
+function renderModalWithSimpleConfigForm(onSubmit, getPreview) {
+  render(
+    <Locale
+      getResources={async () => resources}
+      getSettings={async () => ({locale: 'id'})}
+      saveSettings={async () => {}}
+    >
+      <ModalWithSimpleConfigForm
+        onClose={() => {}}
+        onSubmit={onSubmit}
+        getPreview={getPreview}
+      />
+    </Locale>
+  );
+}
+
 describe('ModalWithSimpleConfigForm component', () => {
   beforeAll(() => {
     window.sm = {
       chooseNewSimpleConfigDirectory: vi.fn(),
     };
   });
-
-  function renderModalWithSimpleConfigForm(onSubmit, getPreview) {
-    render(
-      <Locale
-        getResources={async () => resources}
-        getSettings={async () => ({locale: 'id'})}
-        saveSettings={async () => {}}
-      >
-        <ModalWithSimpleConfigForm
-          onClose={() => {}}
-          onSubmit={onSubmit}
-          getPreview={getPreview}
-        />
-      </Locale>
-    );
-  }
 
   afterEach(() => {
     vi.clearAllMocks();
