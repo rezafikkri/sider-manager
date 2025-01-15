@@ -24,16 +24,17 @@ const resources = {
       },
     },
     modalWithSimpleConfigForm: {
-      dialogTitle: 'Pilih direktori ML Manager baru yang ingin ditambahkan.',
-      errorAlertMsg: 'ML Manager salah. Pastikan setelah nama direktori adalah direktori common (Reza Fikkri\\common) dan pastikan di dalam direktori common tidak terdapat file .cpk!',
-      successAlertMsg: 'ML Manager berhasil ditambahkan.',
+      dialogTitle: 'Pilih direktori :param baru yang ingin ditambahkan.',
+      errorAlertMsgWithCpk: ':param salah. Pastikan setelah nama direktori adalah direktori common (contoh: <strong>Reza Fikkri\\common</strong>) dan pastikan di dalam direktori common tidak terdapat file .cpk!',
+      errorAlertMsgWithoutCpk: ':param salah. Pastikan setelah nama direktori adalah direktori common (contoh: <strong>Reza Fikkri\\common</strong>)!',
+      successAlertMsg: ':param berhasil ditambahkan.',
       directoryLabelText: 'Direktori',
       directoryInputPlaceholder: 'Masukkan direktori',
       directoryBtnText: 'Pilih',
-      directorySmallText: 'Silahkan pilih lokasi direktori ML Manager baru yang ingin ditambahkan.',
+      directorySmallText: 'Silahkan pilih lokasi direktori :param baru yang ingin ditambahkan.',
       nameLabelText: 'Nama',
-      nameInputPlaceholder: 'Masukkan nama ML Manager',
-      previewSmallText: 'Jika ingin ada preview, sertakan file gambar berkestensi .png/.jpg pada direktori ML Manager.',
+      nameInputPlaceholder: 'Masukkan nama :param',
+      previewSmallText: 'Jika ingin ada preview, sertakan file gambar berkestensi <strong>.png</strong> atau <strong>.jpg</strong> pada direktori :param.',
       submitBtnText: 'Simpan',
     },
     modalPrompt: {
@@ -288,7 +289,8 @@ describe('SimpleConfigurationsMLManager component', () => {
 
   it('should call deleteMLManager function correctly when yesBtn for delete ml manager clicked', async () => {
     renderSimpleConfigurationsMLManager();
-    const mlManagerCardBill = screen.queryByTestId('config-card-Bill Shankly');
+    window.sm.readMLManagers.mockResolvedValue(mlManagers);
+    const mlManagerCardBill = await screen.findByTestId('config-card-Bill Shankly');
     const deleteBtn = mlManagerCardBill.querySelector('button');
 
     await userEvent.click(deleteBtn);

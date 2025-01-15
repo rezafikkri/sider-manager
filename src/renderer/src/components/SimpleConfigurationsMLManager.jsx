@@ -190,6 +190,7 @@ export default function SimpleConfigurationsMLManager() {
 
       {showModalWithSimpleConfigForm && 
         <ModalWithSimpleConfigForm
+          category="ML Manager"
           onClose={() => setShowModalWithSimpleConfigForm(false)}
           onSubmit={handleAddMLManager}
           getPreview={getMLManagerPreview}

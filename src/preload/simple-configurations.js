@@ -18,6 +18,7 @@ const sm = {
   chooseMLManager: (mlManager) => ipcRenderer.invoke('chooseMLManager', mlManager),
   chooseGraphicMenu: (graphicMenu) => ipcRenderer.invoke('chooseGraphicMenu', graphicMenu),
   saveMLManager: (name, directory) => ipcRenderer.invoke('saveMLManager', name, directory),
+  saveGraphicMenu: (name, directory) => ipcRenderer.invoke('saveGraphicMenu', name, directory),
   chooseNewSimpleConfigDirectory: (title) => ipcRenderer.invoke('chooseNewSimpleConfigDirectory', title),
   deleteMLManager: (name) => ipcRenderer.invoke('deleteMLManager', name),
 };

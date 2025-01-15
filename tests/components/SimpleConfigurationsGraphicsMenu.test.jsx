@@ -4,6 +4,8 @@ import { describe, vi, it, expect, beforeAll, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
 import * as matchers from '@testing-library/jest-dom/matchers';
 import userEvent from '@testing-library/user-event';
+import path from 'node:path';
+import url from 'node:url';
 import Locale from '../../src/renderer/src/components/Locale';
 import SimpleConfigurationsGraphicsMenu from '../../src/renderer/src/components/SimpleConfigurationsGraphicsMenu';
 
@@ -33,16 +35,17 @@ const resources = {
       },
     },
     modalWithSimpleConfigForm: {
-      dialogTitle: 'Pilih direktori ML Manager baru yang ingin ditambahkan.',
-      errorAlertMsg: 'ML Manager salah. Pastikan setelah nama direktori adalah direktori common (Reza Fikkri\\common) dan pastikan di dalam direktori common tidak terdapat file .cpk!',
-      successAlertMsg: 'ML Manager berhasil ditambahkan.',
+      dialogTitle: 'Pilih direktori :param baru yang ingin ditambahkan.',
+      errorAlertMsgWithCpk: ':param salah. Pastikan setelah nama direktori adalah direktori common (contoh: <strong>Reza Fikkri\\common</strong>) dan pastikan di dalam direktori common tidak terdapat file .cpk!',
+      errorAlertMsgWithoutCpk: ':param salah. Pastikan setelah nama direktori adalah direktori common (contoh: <strong>Reza Fikkri\\common</strong>)!',
+      successAlertMsg: ':param berhasil ditambahkan.',
       directoryLabelText: 'Direktori',
       directoryInputPlaceholder: 'Masukkan direktori',
       directoryBtnText: 'Pilih',
-      directorySmallText: 'Silahkan pilih lokasi direktori ML Manager baru yang ingin ditambahkan.',
+      directorySmallText: 'Silahkan pilih lokasi direktori :param baru yang ingin ditambahkan.',
       nameLabelText: 'Nama',
-      nameInputPlaceholder: 'Masukkan nama ML Manager',
-      previewSmallText: 'Jika ingin ada preview, sertakan file gambar berkestensi .png/.jpg pada direktori ML Manager.',
+      nameInputPlaceholder: 'Masukkan nama :param',
+      previewSmallText: 'Jika ingin ada preview, sertakan file gambar berkestensi <strong>.png</strong> atau <strong>.jpg</strong> pada direktori :param.',
       submitBtnText: 'Simpan',
     },
     modalPrompt: {
@@ -100,6 +103,8 @@ describe('simpleConfigurationsGraphicsMenu component', () => {
       isGraphicsMenuConfigActivated: vi.fn(),
       readGraphicsMenu: vi.fn(),
       chooseGraphicMenu: vi.fn(),
+      saveGraphicMenu: vi.fn(),
+      chooseNewSimpleConfigDirectory: vi.fn(),
     };
   });
 
@@ -128,5 +133,25 @@ describe('simpleConfigurationsGraphicsMenu component', () => {
     await userEvent.click(graphicMenuCard);
     
     expect(window.sm.chooseGraphicMenu).toHaveBeenCalledWith({ ...graphicsMenu[3], active: true });
+  });
+
+  it('should call saveGraphicMenu correctly when submit button for ad graphic menu clicked', async () => {
+    renderSimpleConfigurationsGraphicsMenu();
+    const showModalBtn = await screen.findByTestId('show-modal-add-graphic-menu-btn');
+    await userEvent.click(showModalBtn);
+
+    const directoryObj = {
+      name: 'Reza Fikkri',
+      directory: path.join('others', 'Graphic menu new'),
+      preview: url.pathToFileURL(path.join('others', 'Graphic menu new', 'preview.jpg')).toString(),
+    };
+    window.sm.chooseNewSimpleConfigDirectory.mockReturnValue(directoryObj);
+    const chooseDirectoryBtn = await screen.findByTestId('choose-directory-btn');
+    const submitBtn = await screen.findByTestId('submit-btn');
+
+    await userEvent.click(chooseDirectoryBtn);
+    await userEvent.click(submitBtn);
+
+    expect(window.sm.saveGraphicMenu).toHaveBeenCalledWith(directoryObj.name, directoryObj.directory);
   });
 });

@@ -68,10 +68,10 @@ export default function SimpleConfigurationsGraphicsMenu() {
     setShowSuccessAlert(true);
   }, []);
 
-  async function handleAddMLManager(name, directory) {
-    const mlManager = await window.sm.saveMLManager(name, directory);
-    if (mlManager) {
-      setMLManagers([ ...mlManagers, mlManager ]);
+  async function handleAddGraphicMenu(name, directory) {
+    const graphicMenu = await window.sm.saveGraphicMenu(name, directory);
+    if (graphicMenu) {
+      setGraphicsMenu([ ...graphicsMenu, graphicMenu ]);
       return true;
     }
     return false;
@@ -138,7 +138,7 @@ export default function SimpleConfigurationsGraphicsMenu() {
       { status !== null ? (
         <button
           onClick={() => setShowModalWithSimpleConfigForm(true)}
-          data-testid="show-modal-add-ml-manager-btn"
+          data-testid="show-modal-add-graphic-menu-btn"
           disabled={status ? false : true}
           type="button"
           className="ms-3 text-sm font-medium rounded-lg px-3 py-2 bg-gray-800 hover:bg-indigo-700 outline outline-transparent focus:outline-offset-2 focus:outline-indigo-700 transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-65 disabled:hover:bg-gray-800"
@@ -165,7 +165,7 @@ export default function SimpleConfigurationsGraphicsMenu() {
       <div className="fixed bottom-5 right-5 left-5 text-left flex flex-col gap-2 w-3/5 z-30">
         {(showSuccessAlert && !hasActiveGraphicMenu) && 
           <Alert
-            message={() => translate(locale, 'simpleConfigurationsMLManager.successAlertMsg.choosed', resources)}
+            message={() => translate(locale, 'simpleConfigurationsGraphicsMenu.successAlertMsg.choosed', resources)}
             type="success"
             onClose={() => setShowSuccessAlert(false)}
           />
@@ -173,7 +173,7 @@ export default function SimpleConfigurationsGraphicsMenu() {
 
         {(showSuccessAlert && hasActiveGraphicMenu) &&
           <Alert
-            message={() => translate(locale, 'simpleConfigurationsMLManager.successAlertMsg.changed', resources)}
+            message={() => translate(locale, 'simpleConfigurationsGraphicsMenu.successAlertMsg.changed', resources)}
             type="success"
             onClose={() => setShowSuccessAlert(false)}
           />
@@ -181,7 +181,7 @@ export default function SimpleConfigurationsGraphicsMenu() {
 
         {showDeleteSuccessAlert &&
           <Alert
-            message={() => translate(locale, 'simpleConfigurationsMLManager.successDeleteAlertMsg', resources)}
+            message={() => translate(locale, 'simpleConfigurationsGraphicsMenu.successDeleteAlertMsg', resources)}
             type="success"
             onClose={() => setShowDeleteSuccessAlert(false)}
           />
@@ -190,9 +190,10 @@ export default function SimpleConfigurationsGraphicsMenu() {
 
       {showModalWithSimpleConfigForm && 
         <ModalWithSimpleConfigForm
+          category={'Graphics Menu'}
           onClose={() => setShowModalWithSimpleConfigForm(false)}
-          onSubmit={handleAddMLManager}
-          getPreview={getMLManagerPreview}
+          onSubmit={handleAddGraphicMenu}
+          getPreview={getGraphicMenuPreview}
         />
       }
 

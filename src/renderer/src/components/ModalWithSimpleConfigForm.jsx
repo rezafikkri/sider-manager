@@ -4,6 +4,7 @@ import { translate } from '../../../main/utils';
 import Alert from './Alert';
 
 export default function ModalWithSimpleConfigForm({
+  category,
   onClose,
   onSubmit,
   getPreview,
@@ -20,7 +21,7 @@ export default function ModalWithSimpleConfigForm({
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
   async function handleChooseNewSimpleConfigDirectory() {
-    const title = translate(locale, 'modalWithSimpleConfigForm.dialogTitle', resources);
+    const title = translate(locale, 'modalWithSimpleConfigForm.dialogTitle', resources, category);
     const directoryObj = await window.sm.chooseNewSimpleConfigDirectory(title);
     if (directoryObj) {
       setName(directoryObj.name);
@@ -51,6 +52,13 @@ export default function ModalWithSimpleConfigForm({
     setIsLoading(false);
   }
 
+  let errorAlertMsg;
+  if (showErrorAlert && category !== 'ML Manager') {
+    errorAlertMsg = translate(locale, 'modalWithSimpleConfigForm.errorAlertMsgWithoutCpk', resources, category);
+  } else if (showErrorAlert) {
+    errorAlertMsg = translate(locale, 'modalWithSimpleConfigForm.errorAlertMsgWithCpk', resources, category);
+  }
+
   useEffect(() => {
     inputDirectoryRef.current.scrollLeft = inputDirectoryRef.current.scrollWidth;
   }, [directory]);
@@ -73,7 +81,7 @@ export default function ModalWithSimpleConfigForm({
                 htmlFor={keyInputDirectory}
                 className="inline-block font-semibold mb-3 text-white/90"
               >
-                {translate(locale, 'modalWithSimpleConfigForm.directoryLabelText', resources)}
+                {translate(locale, 'modalWithSimpleConfigForm.directoryLabelText', resources, category)}
               </label>
               <div className="flex outline outline-transparent has-[:focus]:outline-offset-2 has-[:focus]:outline-indigo-700 rounded-lg">
                 <input
@@ -81,7 +89,7 @@ export default function ModalWithSimpleConfigForm({
                   id={keyInputDirectory}
                   type="text"
                   className="flex-auto block w-full p-4 outline-0 bg-indigo-900/40 rounded-l-lg"
-                  placeholder={translate(locale, 'modalWithSimpleConfigForm.directoryInputPlaceholder', resources)}
+                  placeholder={translate(locale, 'modalWithSimpleConfigForm.directoryInputPlaceholder', resources, category)}
                   spellCheck="false"
                   name="directory"
                   value={directory}
@@ -93,11 +101,11 @@ export default function ModalWithSimpleConfigForm({
                   onClick={handleChooseNewSimpleConfigDirectory}
                   data-testid="choose-directory-btn"
                 >
-                  {translate(locale, 'modalWithSimpleConfigForm.directoryBtnText', resources)}
+                  {translate(locale, 'modalWithSimpleConfigForm.directoryBtnText', resources, category)}
                 </button>
               </div>
               <small className="block mt-2 mb-7 text-white/80">
-                {translate(locale, 'modalWithSimpleConfigForm.directorySmallText', resources)}
+                {translate(locale, 'modalWithSimpleConfigForm.directorySmallText', resources, category)}
               </small>
             </div>
 
@@ -106,14 +114,14 @@ export default function ModalWithSimpleConfigForm({
                 htmlFor={keyInputName}
                 className="inline-block font-semibold mb-3 text-white/90"
               >
-                {translate(locale, 'modalWithSimpleConfigForm.nameLabelText', resources)}
+                {translate(locale, 'modalWithSimpleConfigForm.nameLabelText', resources, category)}
               </label>
               <input
                 type="text"
                 name="manager-name"
                 id={keyInputName}
                 className="block w-full p-4 outline-0 bg-indigo-900/40 rounded-lg outline outline-[3px] focus:outline-offset-2 mb-2 outline-transparent focus:outline-indigo-700"
-                placeholder={translate(locale, 'modalWithSimpleConfigForm.nameInputPlaceholder', resources)}
+                placeholder={translate(locale, 'modalWithSimpleConfigForm.nameInputPlaceholder', resources, category)}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 spellCheck="false"
@@ -122,9 +130,10 @@ export default function ModalWithSimpleConfigForm({
 
             <div className="mb-9">
               <label className="inline-block font-semibold mb-2 text-white/90">Preview</label>
-              <small className="block mb-3.5 text-white/80">
-                {translate(locale, 'modalWithSimpleConfigForm.previewSmallText', resources)}
-              </small>
+              <small
+                className="block mb-3.5 text-white/80"
+                dangerouslySetInnerHTML={{ __html: translate(locale, 'modalWithSimpleConfigForm.previewSmallText', resources, category) }}
+              />
               <img
                 className="border border-gray-800 rounded-lg"
                 src={getPreview(preview)}
@@ -140,7 +149,7 @@ export default function ModalWithSimpleConfigForm({
                   </div>
                 }
 
-                <button type="submit" data-testid="submit-btn" className="font-medium rounded-lg px-4 py-3 bg-indigo-700 hover:bg-indigo-600 outline outline-transparent focus:outline-offset-2 focus:outline-indigo-700 shadow-lg transition-colors duration-100 ease-in">{translate(locale, 'modalWithSimpleConfigForm.submitBtnText', resources)}</button>
+                <button type="submit" data-testid="submit-btn" className="font-medium rounded-lg px-4 py-3 bg-indigo-700 hover:bg-indigo-600 outline outline-transparent focus:outline-offset-2 focus:outline-indigo-700 shadow-lg transition-colors duration-100 ease-in">{translate(locale, 'modalWithSimpleConfigForm.submitBtnText', resources, category)}</button>
               </div>
             </div>
           </form>
@@ -152,7 +161,7 @@ export default function ModalWithSimpleConfigForm({
       {showSuccessAlert &&
         <div className="fixed bottom-5 right-8 left-5 text-left w-3/5 z-50">
           <Alert
-            message={() => translate(locale, 'modalWithSimpleConfigForm.successAlertMsg', resources)}
+            message={() => translate(locale, 'modalWithSimpleConfigForm.successAlertMsg', resources, category)}
             type="success"
             onClose={() => setShowSuccessAlert(false)}
           />
@@ -161,7 +170,7 @@ export default function ModalWithSimpleConfigForm({
       {showErrorAlert &&
         <div className="fixed bottom-5 right-8 left-5 text-left z-50">
           <Alert
-            message={() => translate(locale, 'modalWithSimpleConfigForm.errorAlertMsg', resources)}
+            message={() => errorAlertMsg}
             type="danger"
             onClose={() => setShowErrorAlert(false)}
           />
