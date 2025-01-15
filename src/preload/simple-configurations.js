@@ -10,6 +10,7 @@ const sm = {
   readModules: (pesDirectory) => ipcRenderer.invoke('readModules', pesDirectory),
   readLiveCpks: (pesDirectory) => ipcRenderer.invoke('readLiveCpks', pesDirectory),
   readMLManagers: () => ipcRenderer.invoke('readMLManagers'),
+  readGraphicsMenu: () => ipcRenderer.invoke('readGraphicsMenu'),
   isMLManagerConfigActivated: () => ipcRenderer.invoke('isMLManagerConfigActivated'),
   isGraphicsMenuConfigActivated: () => ipcRenderer.invoke('isGraphicsMenuConfigActivated'),
   toggleMLManagerConfig: () => ipcRenderer.invoke('toggleMLManagerConfig'),

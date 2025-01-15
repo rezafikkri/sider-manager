@@ -151,8 +151,8 @@ function isGraphicsMenuConfigActivated() {
   return isSimpleConfigActivated('Graphics Menu');
 }
 
-function getMLManagerPreview(mlManagerpath) {
-  let preview = path.join(mlManagerpath, 'preview');
+function getSimpleConfigPreview(simpleConfigPath) {
+  let preview = path.join(simpleConfigPath, 'preview');
   if (existsSync(`${preview}.png`)) {
     preview = url.pathToFileURL(`${preview}.png`).toString();
   } else if (existsSync(`${preview}.jpg`)) {
@@ -164,29 +164,43 @@ function getMLManagerPreview(mlManagerpath) {
   return preview;
 }
 
-function readMLManagers() {
-  const settingsPath = getSettingsPath();
-  const activeMLManager = getActiveMLManager();
+function getActiveSimpleConfig(configName) {
+  const settings = getSettings();
+  return settings[`active${configName.replace(/\s/g, '')}`];
+}
 
-  const mlManagers = readdirSync(path.join(settingsPath, 'ml-manager')).map((mlManager) => {
-    let mlManagerpath = path.join(settingsPath, 'ml-manager', mlManager);
+function readSimpleConfigs(configName) {
+  const settingsPath = getSettingsPath();
+  const activeSimpleConfig = getActiveSimpleConfig(configName)
+  const dirname = configName.replace(/\s/g, '-').toLowerCase();
+
+  const simpleConfigs = readdirSync(path.join(settingsPath, dirname)).map((simpleConfig) => {
+    let simpleConfigPath = path.join(settingsPath, dirname, simpleConfig);
 
     return {
-      name: mlManager,
-      path: mlManagerpath,
-      preview: getMLManagerPreview(mlManagerpath),
+      name: simpleConfig,
+      path: simpleConfigPath,
+      preview: getSimpleConfigPreview(simpleConfigPath),
       active: false,
     };
   });
 
-  if (activeMLManager) {
+  if (activeSimpleConfig) {
     return [
-      activeMLManager,
-      ...mlManagers.filter((mlManager) => mlManager.name !== activeMLManager?.name)
+      activeSimpleConfig,
+      ...simpleConfigs.filter((mlManager) => mlManager.name !== activeSimpleConfig?.name)
     ];
   }
 
-  return mlManagers;
+  return simpleConfigs;
+}
+
+function readMLManagers() {
+  return readSimpleConfigs('ML Manager');
+}
+
+function readGraphicsMenu() {
+  return readSimpleConfigs('Graphics Menu');
 }
 
 function chooseMLManager(mlManager) {
@@ -201,11 +215,6 @@ function chooseMLManager(mlManager) {
   saveSettings({ activeMLManager: { ...mlManager } });
 
   return true;
-}
-
-function getActiveMLManager() {
-  const settings = getSettings();
-  return settings.activeMLManager;
 }
 
 function hasCpkFileInDirecotry(directory) {
@@ -240,7 +249,7 @@ function saveMLManager(name, directory) {
   return {
     name: name,
     path: dest,
-    preview: getMLManagerPreview(dest),
+    preview: getSimpleConfigPreview(dest),
     active: false,
   };
 }
@@ -251,7 +260,7 @@ async function chooseNewSimpleConfigDirectory(title) {
     return {
       name: path.basename(directory),
       directory,
-      preview: getMLManagerPreview(directory),
+      preview: getSimpleConfigPreview(directory),
     };
   }
 
@@ -275,8 +284,8 @@ export {
   isMLManagerConfigActivated,
   isGraphicsMenuConfigActivated,
   readMLManagers,
+  readGraphicsMenu,
   chooseMLManager,
-  getActiveMLManager,
   saveMLManager,
   chooseNewSimpleConfigDirectory,
   deleteMLManager,

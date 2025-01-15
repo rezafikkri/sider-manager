@@ -11,16 +11,16 @@ export default function SimpleConfigurationsGraphicsMenu() {
   const {locale, resources} = useContext(LocaleContext);
 
   const [status, setStatus] = useState(null);
-  const [mlManagers, setMLManagers] = useState([]);
+  const [graphicsMenu, setGraphicsMenu] = useState([]);
   const [hasActiveMLManager, setHasActiveMLManager] = useState(false);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [showModalWithSimpleConfigForm, setShowModalWithSimpleConfigForm] = useState(false);
   const [mlManagerNameToBeDeleted, setMLManagerNameToBeDeleted] = useState(null);
   const [showDeleteSuccessAlert, setShowDeleteSuccessAlert] = useState(false);
 
-  async function loadMLManagers() {
-    const mlManagers = await window.sm.readMLManagers();
-    setMLManagers(mlManagers);
+  async function loadGraphicsMenu() {
+    const graphicsMenu = await window.sm.readGraphicsMenu();
+    setGraphicsMenu(graphicsMenu);
   }
 
   function handleToggleGraphicsMenuConfig() {
@@ -28,9 +28,9 @@ export default function SimpleConfigurationsGraphicsMenu() {
     setStatus((prevStatus) => {
       const newStatus = !prevStatus;
       if (newStatus) {
-        // loadMLManagers();
+        loadGraphicsMenu();
       } else {
-        // setMLManagers([]);
+        setGraphicsMenu([]);
         setHasActiveMLManager(false);
       }
 
@@ -84,7 +84,7 @@ export default function SimpleConfigurationsGraphicsMenu() {
     ));
   }
 
-  function getMLManagerPreview(preview) {
+  function getGraphicMenuPreview(preview) {
     if (preview) return preview.replace('file', 'sm');
     return notFoundImage;    
   }
@@ -99,7 +99,7 @@ export default function SimpleConfigurationsGraphicsMenu() {
       const check = await window.sm.isGraphicsMenuConfigActivated();
       setStatus(check);
       if (check) {
-        // loadMLManagers();
+        loadGraphicsMenu();
       }
     }
 
@@ -149,14 +149,14 @@ export default function SimpleConfigurationsGraphicsMenu() {
       ) : null}
 
       <section className="px-3 mt-10 grid grid-cols-3 gap-4 mb-10">
-        {mlManagers.map((mlManager) => 
+        {graphicsMenu.map((graphicMenu) => 
           <ConfigCardImg
-            key={mlManager.name}
-            title={mlManager.name}
-            img={getMLManagerPreview(mlManager.preview)}
-            isChecked={mlManager.active}
+            key={graphicMenu.name}
+            title={graphicMenu.name}
+            img={getGraphicMenuPreview(graphicMenu.preview)}
+            isChecked={graphicMenu.active}
             onChoose={handleChooseMLManager}
-            mlManager={mlManager}
+            mlManager={graphicMenu}
             onDelete={setMLManagerNameToBeDeleted}
           />
         )}
