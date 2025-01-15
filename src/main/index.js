@@ -34,6 +34,8 @@ import {
   saveMLManager,
   chooseNewSimpleConfigDirectory,
   deleteMLManager,
+  isGraphicsMenuConfigActivated,
+  toggleGraphicsMenuConfig,
 } from './services/simple-config';
 
 // for performance
@@ -103,7 +105,9 @@ app.whenReady().then(() => {
   ipcMain.handle('readLiveCpks', (_, pesDirectory) => readLiveCpks(pesDirectory));
   ipcMain.handle('readMLManagers', readMLManagers);
   ipcMain.handle('isMLManagerConfigActivated', isMLManagerConfigActivated);
+  ipcMain.handle('isGraphicsMenuConfigActivated', isGraphicsMenuConfigActivated);
   ipcMain.handle('toggleMLManagerConfig', toggleMLManagerConfig);
+  ipcMain.handle('toggleGraphicsMenuConfig', toggleGraphicsMenuConfig);
   ipcMain.handle('chooseMLManager', (_, mlManager) => chooseMLManager(mlManager));
   ipcMain.handle('saveMLManager', (_, name, directory) => saveMLManager(name, directory));
   ipcMain.handle('chooseNewSimpleConfigDirectory', (_, title) => chooseNewSimpleConfigDirectory(title));

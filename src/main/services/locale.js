@@ -145,6 +145,17 @@ const resources = {
       },
       successDeleteAlertMsg: 'ML Manager berhasil dihapus.',
     },
+    simpleConfigurationsGraphicsMenu: {
+      desc: 'Pilih Graphic Menu yang ingin kamu gunakan.',
+      statusOn: 'Hidup',
+      statusOff: 'Mati',
+      addMLManagerBtnText: 'Tambah',
+      successAlertMsg: {
+        choosed: 'Graphic Menu berhasil dipilih.',
+        changed: 'Graphic Menu berhasil diubah.',
+      },
+      successDeleteAlertMsg: 'ML Manager berhasil dihapus.',
+    },
     modalWithSimpleConfigForm: {
       dialogTitle: 'Pilih direktori ML Manager baru yang ingin ditambahkan.',
       errorAlertMsg: 'ML Manager salah. Pastikan setelah nama direktori adalah direktori common (Reza Fikkri\\common) dan pastikan di dalam direktori common tidak terdapat file .cpk!',
@@ -300,6 +311,17 @@ const resources = {
       successAlertMsg: {
         choosed: 'ML Manager successfully choosed.',
         changed: 'ML Manager successfully changed.',
+      },
+      successDeleteAlertMsg: 'ML Manager successfully deleted.',
+    },
+    simpleConfigurationsGraphicsMenu: {
+      desc: 'Choose Graphic Menu that you want to use.',
+      statusOn: 'On',
+      statusOff: 'Off',
+      addMLManagerBtnText: 'Add',
+      successAlertMsg: {
+        choosed: 'Graphic Menu successfully choosed.',
+        changed: 'Graphic Menu successfully changed.',
       },
       successDeleteAlertMsg: 'ML Manager successfully deleted.',
     },

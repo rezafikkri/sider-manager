@@ -99,39 +99,56 @@ function saveSiderIni(newSiderIni) {
   return true;
 }
 
-function toggleMLManagerConfig() {
+function toggleSimpleConfig(configName) {
   const settings = getSettings();
   const pesDirectory = settings.pesDirectory;
 
-  const mlManagerPath = path.join(pesDirectory, 'content', 'Live CPK', 'ML Manager');
-  if (!existsSync(mlManagerPath)) {
-    mkdirSync(mlManagerPath);
+  const simpleConfigPath = path.join(pesDirectory, 'content', 'Live CPK', configName);
+  if (!existsSync(simpleConfigPath)) {
+    mkdirSync(simpleConfigPath);
   } else {
-    rmSync(mlManagerPath, { recursive: true, force: true });
-    deleteSetting('activeMLManager');
+    rmSync(simpleConfigPath, { recursive: true, force: true });
+    deleteSetting(`active${configName.replace(/\s/g, '')}`);
   }
 
-  // add new or comment lua code of ML Manager cpk.root in sider.ini
-  saveSiderIni({ key: 'cpk.root', value: '".\\content\\Live CPK\\ML Manager"' });
+  // add new or comment lua code of simple config cpk.root in sider.ini
+  saveSiderIni({ key: 'cpk.root', value: `".\\content\\Live CPK\\${configName}"` });
   return true;
 }
 
-function isMLManagerConfigActivated() {
+function toggleMLManagerConfig() {
+  return toggleSimpleConfig('ML Manager');
+}
+
+function toggleGraphicsMenuConfig() {
+  return toggleSimpleConfig('Graphics Menu');
+}
+
+function isSimpleConfigActivated(configName) {
   const settings = getSettings();
   const pesDirectory = settings.pesDirectory;
   const siderIni = readSiderIni(pesDirectory);
 
-  const checkMLManagerPath = existsSync(path.join(pesDirectory, 'content', 'Live CPK', 'ML Manager'));
-  let checkMLManagerSiderIni = false;
+  const checkSimpleConfigPath = existsSync(path.join(pesDirectory, 'content', 'Live CPK', configName));
+  let checkSimpleConfigSiderIni = false;
   for (const ini of siderIni) {
-    if (/^cpk\.root = "\.\\content\\Live CPK\\ML Manager"/.test(ini)) {
-      checkMLManagerSiderIni = true;
+    const regexp = new RegExp(`^cpk\\.root = "\\.\\\\content\\\\Live CPK\\\\${configName}"`);
+    if (regexp.test(ini)) {
+      checkSimpleConfigSiderIni = true;
       break;
     }
   }
 
-  if (checkMLManagerPath && checkMLManagerSiderIni) return true;
+  if (checkSimpleConfigPath && checkSimpleConfigSiderIni) return true;
   return false;
+}
+
+function isMLManagerConfigActivated() {
+  return isSimpleConfigActivated('ML Manager');
+}
+
+function isGraphicsMenuConfigActivated() {
+  return isSimpleConfigActivated('Graphics Menu');
 }
 
 function getMLManagerPreview(mlManagerpath) {
@@ -254,7 +271,9 @@ export {
   readLiveCpks,
   saveSiderIni,
   toggleMLManagerConfig,
+  toggleGraphicsMenuConfig,
   isMLManagerConfigActivated,
+  isGraphicsMenuConfigActivated,
   readMLManagers,
   chooseMLManager,
   getActiveMLManager,

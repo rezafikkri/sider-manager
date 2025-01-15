@@ -4,6 +4,7 @@ import SimpleConfigurationsMLManager from './SimpleConfigurationsMLManager';
 import Alert from './Alert';
 import LocaleContext from '../contexts/LocaleContext';
 import { translate } from '../../../main/utils';
+import SimpleConfigurationsGraphicsMenu from './SimpleConfigurationsGraphicsMenu';
 
 export default function SimpleConfigurationsApp() {
   const {locale, resources} = useContext(LocaleContext);
@@ -67,9 +68,9 @@ export default function SimpleConfigurationsApp() {
             <li>
               <a
                 href="#"
-                id="graphic-menu"
+                id="graphics-menu"
                 onClick={handleConfig}
-                className={`hover:bg-indigo-950 ${activeMenu('graphic-menu')}`}
+                className={`hover:bg-indigo-950 ${activeMenu('graphics-menu')}`}
               >
                 Graphic Menu
               </a>
@@ -79,7 +80,8 @@ export default function SimpleConfigurationsApp() {
       </header>
       <main className="py-5 px-3 min-h-full flex-1">
         {config === 'sider' ? <SimpleConfigurationsSider /> :
-        config === 'ml-manager' ? <SimpleConfigurationsMLManager /> : null}
+        config === 'ml-manager' ? <SimpleConfigurationsMLManager /> :
+        config === 'graphics-menu' ? <SimpleConfigurationsGraphicsMenu /> : null}
       </main>
     </>
   );
