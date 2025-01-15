@@ -203,18 +203,26 @@ function readGraphicsMenu() {
   return readSimpleConfigs('Graphics Menu');
 }
 
-function chooseMLManager(mlManager) {
+function chooseSimpleConfig(configName, configData) {
   const settings = getSettings();
-  const dest = path.join(settings.pesDirectory, 'content', 'Live CPK', 'ML Manager', 'common');
+  const dest = path.join(settings.pesDirectory, 'content', 'Live CPK', configName, 'common');
 
   // remove common directory if exist
   if (existsSync(dest)) rmSync(dest, { recursive: true, force: true });
 
-  cpSync(path.join(mlManager.path, 'common'), dest, { recursive: true });
+  cpSync(path.join(configData.path, 'common'), dest, { recursive: true });
 
-  saveSettings({ activeMLManager: { ...mlManager } });
+  saveSettings({ [`active${configName.replace(/\s/g, '')}`]: { ...configData } });
 
   return true;
+}
+
+function chooseMLManager(mlManager) {
+  return chooseSimpleConfig('ML Manager', mlManager);
+}
+
+function chooseGraphicMenu(graphicMenu) {
+  return chooseSimpleConfig('Graphics Menu', graphicMenu);
 }
 
 function hasCpkFileInDirecotry(directory) {
@@ -286,6 +294,7 @@ export {
   readMLManagers,
   readGraphicsMenu,
   chooseMLManager,
+  chooseGraphicMenu,
   saveMLManager,
   chooseNewSimpleConfigDirectory,
   deleteMLManager,

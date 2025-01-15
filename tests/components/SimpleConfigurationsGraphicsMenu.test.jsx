@@ -54,30 +54,30 @@ const resources = {
   },
 };
 
-const mlManagers = [
+const graphicsMenu = [
   {
-    name: 'Arrigo Sacchi',
-    path: '/home/rezafikkri/.config/sider-manager/ml-manager/Arrigo Sacchi',
-    preview: 'file:///home/rezafikkri/.config/sider-manager/ml-manager/Arrigo%20Sacchi/preview.png',
-    active: false, 
+    name: 'Al Hilal SC',
+    path: '/home/rezafikkri/.config/sider-manager/graphics-menu/Al Hilal SC',
+    preview: 'file:///home/rezafikkri/.config/sider-manager/graphics-menu/Al%20Hilal%20SC/preview.png',
+    active: true
   },
   {
-    name: 'Alex Ferguson',
-    path: '/home/rezafikkri/.config/sider-manager/ml-manager/Alex Ferguson',
-    preview: 'file:///home/rezafikkri/.config/sider-manager/ml-manager/Alex%20Ferguson/preview.png',
-    active: false,
+    name: 'Gabuci',
+    path: '/home/rezafikkri/.config/sider-manager/graphics-menu/Gabuci',
+    preview: 'file:///home/rezafikkri/.config/sider-manager/graphics-menu/Gabuci/preview.png',
+    active: false
   },
   {
-    name: 'Bill Shankly',
-    path: '/home/rezafikkri/.config/sider-manager/ml-manager/Bill Shankly',
-    preview: null,
-    active: false,
+    name: 'Gabuto',
+    path: '/home/rezafikkri/.config/sider-manager/graphics-menu/Gabuto',
+    preview: 'file:///home/rezafikkri/.config/sider-manager/graphics-menu/Gabuto/preview.png',
+    active: false
   },
   {
-    name: 'Brian Clough',
-    path: '/home/rezafikkri/.config/sider-manager/ml-manager/Brian Clough',
-    preview: 'file:///home/rezafikkri/.config/sider-manager/ml-manager/Brian%20Clough/preview.png',
-    active: false,
+    name: 'Leonardo',
+    path: '/home/rezafikkri/.config/sider-manager/graphics-menu/Leonardo',
+    preview: 'file:///home/rezafikkri/.config/sider-manager/graphics-menu/Leonardo/preview.png',
+    active: false
   },
 ];
 
@@ -98,6 +98,8 @@ describe('simpleConfigurationsGraphicsMenu component', () => {
     window.sm = {
       toggleGraphicsMenuConfig: vi.fn(),
       isGraphicsMenuConfigActivated: vi.fn(),
+      readGraphicsMenu: vi.fn(),
+      chooseGraphicMenu: vi.fn(),
     };
   });
 
@@ -109,10 +111,22 @@ describe('simpleConfigurationsGraphicsMenu component', () => {
   it('should call call toggleGraphicsMenu config function when toggle button clicked', async () => {
     window.sm.isGraphicsMenuConfigActivated.mockReturnValue(false);
     renderSimpleConfigurationsGraphicsMenu();
+    window.sm.readGraphicsMenu.mockResolvedValue(graphicsMenu);
     const toggleGraphicsMenuConfigBtn = await screen.findByTestId('toggle-graphics-menu-config-btn');
 
     await userEvent.click(toggleGraphicsMenuConfigBtn);
 
     expect(window.sm.toggleGraphicsMenuConfig).toHaveBeenCalled()
+  });
+
+  it('should call chooseMLManager function correctly when card clicked', async () => {
+    window.sm.isGraphicsMenuConfigActivated.mockResolvedValue(true);
+    renderSimpleConfigurationsGraphicsMenu();
+    window.sm.readGraphicsMenu.mockResolvedValue(graphicsMenu);
+    const graphicMenuCard = await screen.findByTestId(`config-card-${graphicsMenu[3].name}`);
+
+    await userEvent.click(graphicMenuCard);
+    
+    expect(window.sm.chooseGraphicMenu).toHaveBeenCalledWith({ ...graphicsMenu[3], active: true });
   });
 });

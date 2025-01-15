@@ -12,7 +12,7 @@ export default function SimpleConfigurationsGraphicsMenu() {
 
   const [status, setStatus] = useState(null);
   const [graphicsMenu, setGraphicsMenu] = useState([]);
-  const [hasActiveMLManager, setHasActiveMLManager] = useState(false);
+  const [hasActiveGraphicMenu, setHasActiveGraphicMenu] = useState(false);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [showModalWithSimpleConfigForm, setShowModalWithSimpleConfigForm] = useState(false);
   const [mlManagerNameToBeDeleted, setMLManagerNameToBeDeleted] = useState(null);
@@ -38,32 +38,32 @@ export default function SimpleConfigurationsGraphicsMenu() {
     });
   }
 
-  const handleChooseMLManager = useCallback(async (mlManager) => {
-    await window.sm.chooseMLManager({ ...mlManager, active: true });
+  const handleChooseGraphicMenu = useCallback(async (graphicMenu) => {
+    await window.sm.chooseGraphicMenu({ ...graphicMenu, active: true });
 
-    setMLManagers((prevMLManagers) => {
-      for (const prevMLManager of prevMLManagers) {
-        if (prevMLManager.active) {
-          setHasActiveMLManager(true);
+    setGraphicsMenu((prevGraphicsMenu) => {
+      for (const prevGraphicMenu of prevGraphicsMenu) {
+        if (prevGraphicMenu.active) {
+          setHasActiveGraphicMenu(true);
           break;
         }
       }
 
-      const nextMLManagers = [...prevMLManagers];
-      let mlManagerChanged = 0;
-      for (const [index, nextMLManager] of nextMLManagers.entries()) {
-        if (nextMLManager.name === mlManager.name) {
-          nextMLManagers[index] = { ...nextMLManager, active: true };
-          mlManagerChanged++;
-        } else if (nextMLManager.active) {
-          nextMLManagers[index] = { ...nextMLManager, active: false };
-          mlManagerChanged++;
+      const nextGraphicsMenu = [...prevGraphicsMenu];
+      let graphicMenuChanged = 0;
+      for (const [index, nextGraphicMenu] of nextGraphicsMenu.entries()) {
+        if (nextGraphicMenu.name === graphicMenu.name) {
+          nextGraphicsMenu[index] = { ...nextGraphicMenu, active: true };
+          graphicMenuChanged++;
+        } else if (nextGraphicMenu.active) {
+          nextGraphicsMenu[index] = { ...nextGraphicMenu, active: false };
+          graphicMenuChanged++;
         }
 
-        if (mlManagerChanged === 2) break;
+        if (graphicMenuChanged === 2) break;
       }
       
-      return nextMLManagers;
+      return nextGraphicsMenu;
     });
     setShowSuccessAlert(true);
   }, []);
@@ -155,7 +155,7 @@ export default function SimpleConfigurationsGraphicsMenu() {
             title={graphicMenu.name}
             img={getGraphicMenuPreview(graphicMenu.preview)}
             isChecked={graphicMenu.active}
-            onChoose={handleChooseMLManager}
+            onChoose={handleChooseGraphicMenu}
             mlManager={graphicMenu}
             onDelete={setMLManagerNameToBeDeleted}
           />
@@ -163,7 +163,7 @@ export default function SimpleConfigurationsGraphicsMenu() {
       </section>
 
       <div className="fixed bottom-5 right-5 left-5 text-left flex flex-col gap-2 w-3/5 z-30">
-        {(showSuccessAlert && !hasActiveMLManager) && 
+        {(showSuccessAlert && !hasActiveGraphicMenu) && 
           <Alert
             message={() => translate(locale, 'simpleConfigurationsMLManager.successAlertMsg.choosed', resources)}
             type="success"
@@ -171,7 +171,7 @@ export default function SimpleConfigurationsGraphicsMenu() {
           />
         }
 
-        {(showSuccessAlert && hasActiveMLManager) &&
+        {(showSuccessAlert && hasActiveGraphicMenu) &&
           <Alert
             message={() => translate(locale, 'simpleConfigurationsMLManager.successAlertMsg.changed', resources)}
             type="success"

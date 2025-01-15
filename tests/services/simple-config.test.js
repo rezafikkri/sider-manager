@@ -1,5 +1,6 @@
 import { afterEach, beforeAll, describe, expect, it, vi, beforeEach } from 'vitest';
 import {
+    chooseGraphicMenu,
   chooseMLManager,
   chooseNewSimpleConfigDirectory,
   deleteMLManager,
@@ -407,6 +408,28 @@ describe('chooseMLManager function', () => {
     expect(cpSync).toHaveBeenCalledWith(path.join(mlManager.path, 'common'), dest, { recursive: true });
     expect(saveSettings).toHaveBeenCalledWith({ activeMLManager: { ...mlManager } });
     expect(result).toBe(true);
+  });
+});
+
+describe('chooseGraphicMenu function', () => {
+  beforeEach(async () => {
+    const { getSettings } = await import('../../src/main/services/settings');
+    getSettings.mockReturnValue({ pesDirectory: 'pesDirectory' });
+  });
+
+  it('should call saveSettings function correctly', async () => {
+    const { existsSync } = await import('node:fs');
+    existsSync.mockReturnValue(false);
+    const { saveSettings } = await import('../../src/main/services/settings');
+    const graphicMenu = {
+      name: 'Al Hilal SC',
+      path: path.join('others', 'graphic-menu-path'),
+      preview: path.join('others', 'preview.jpg'),
+    };
+
+    chooseGraphicMenu(graphicMenu);
+
+    expect(saveSettings).toHaveBeenCalledWith({ activeGraphicsMenu: { ...graphicMenu } });
   });
 });
 
