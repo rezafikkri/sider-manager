@@ -23,6 +23,7 @@ const sm = {
   choosePressRoom: (pressRoom) => ipcRenderer.invoke('choosePressRoom', pressRoom),
   saveMLManager: (name, directory) => ipcRenderer.invoke('saveMLManager', name, directory),
   saveGraphicMenu: (name, directory) => ipcRenderer.invoke('saveGraphicMenu', name, directory),
+  savePressRoom: (name, directory) => ipcRenderer.invoke('savePressRoom', name, directory),
   chooseNewSimpleConfigDirectory: (title) => ipcRenderer.invoke('chooseNewSimpleConfigDirectory', title),
   deleteMLManager: (name) => ipcRenderer.invoke('deleteMLManager', name),
   deleteGraphicMenu: (name) => ipcRenderer.invoke('deleteGraphicMenu', name),

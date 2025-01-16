@@ -287,6 +287,10 @@ function saveGraphicMenu(name, directory) {
   return saveSimpleConfig('Graphics Menu', name, directory);
 }
 
+function savePressRoom(name, directory) {
+  return saveSimpleConfig('Press Room', name, directory);
+}
+
 async function chooseNewSimpleConfigDirectory(title) {
   const directory = await chooseDirectory(title);
   if (directory) {
@@ -334,6 +338,7 @@ export {
   choosePressRoom,
   saveMLManager,
   saveGraphicMenu,
+  savePressRoom,
   chooseNewSimpleConfigDirectory,
   deleteMLManager,
   deleteGraphicMenu,

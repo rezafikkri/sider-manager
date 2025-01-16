@@ -125,4 +125,25 @@ describe('SimpleConfigurationsPresRoom component', () => {
     
     expect(window.sm.choosePressRoom).toHaveBeenCalledWith({ ...pressRooms[3], active: true });
   });
+
+  it('should call savePressRoom function correctly when submit button for add press room clicked', async () => {
+    window.sm.isPressRoomConfigActivated.mockResolvedValue(true);
+    renderSimpleConfigurationsPressRoom();
+    const showModalBtn = await screen.findByTestId('show-modal-add-press-room-btn');
+    await userEvent.click(showModalBtn);
+
+    const directoryObj = {
+      name: 'Reza Fikkri',
+      directory: path.join('others', 'Press room new'),
+      preview: url.pathToFileURL(path.join('others', 'Press room new', 'preview.jpg')).toString(),
+    };
+    window.sm.chooseNewSimpleConfigDirectory.mockReturnValue(directoryObj);
+    const chooseDirectoryBtn = await screen.findByTestId('choose-directory-btn');
+    const submitBtn = await screen.findByTestId('submit-btn');
+
+    await userEvent.click(chooseDirectoryBtn);
+    await userEvent.click(submitBtn);
+
+    expect(window.sm.savePressRoom).toHaveBeenCalledWith(directoryObj.name, directoryObj.directory);
+  });
 });

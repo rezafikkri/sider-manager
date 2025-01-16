@@ -44,6 +44,7 @@ import {
   isPressRoomConfigActivated,
   togglePressRoomConfig,
   choosePressRoom,
+  savePressRoom,
 } from './services/simple-config';
 
 // for performance
@@ -124,6 +125,7 @@ app.whenReady().then(() => {
   ipcMain.handle('chooseGraphicMenu', (_, graphicMenu) => chooseGraphicMenu(graphicMenu));
   ipcMain.handle('choosePressRoom', (_, pressRoom) => choosePressRoom(pressRoom));
   ipcMain.handle('saveMLManager', (_, name, directory) => saveMLManager(name, directory));
+  ipcMain.handle('savePressRoom', (_, name, directory) => savePressRoom(name, directory));
   ipcMain.handle('saveGraphicMenu', (_, name, directory) => saveGraphicMenu(name, directory));
   ipcMain.handle('chooseNewSimpleConfigDirectory', (_, title) => chooseNewSimpleConfigDirectory(title));
   ipcMain.handle('deleteMLManager', (_, name) => deleteMLManager(name));

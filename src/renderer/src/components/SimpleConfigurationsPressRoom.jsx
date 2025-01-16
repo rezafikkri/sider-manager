@@ -69,9 +69,9 @@ export default function SimpleConfigurationsPressRoom() {
   }, []);
 
   async function handleAddPressRoom(name, directory) {
-    const graphicMenu = await window.sm.savePressRoom(name, directory);
-    if (graphicMenu) {
-      setPressRooms([ ...pressRooms, graphicMenu ]);
+    const pressRoom = await window.sm.savePressRoom(name, directory);
+    if (pressRoom) {
+      setPressRooms([ ...pressRooms, pressRoom ]);
       return true;
     }
     return false;
