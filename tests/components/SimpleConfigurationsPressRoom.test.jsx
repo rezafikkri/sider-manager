@@ -146,4 +146,19 @@ describe('SimpleConfigurationsPresRoom component', () => {
 
     expect(window.sm.savePressRoom).toHaveBeenCalledWith(directoryObj.name, directoryObj.directory);
   });
+
+  it('should call deletePressRoom function correctly when yesBtn for delete graphic menu clicked', async () => {
+    window.sm.isPressRoomConfigActivated.mockResolvedValue(true);
+    renderSimpleConfigurationsPressRoom();
+    window.sm.readPressRooms.mockResolvedValue(pressRooms);
+    const pressRoomCardGaruda = await screen.findByTestId('config-card-Garuda Power');
+    const deleteBtn = pressRoomCardGaruda.querySelector('button');
+
+    await userEvent.click(deleteBtn);
+
+    const yesBtn = await screen.findByText(resources.id.modalPrompt.yesBtnText);
+    await userEvent.click(yesBtn);
+
+    expect(window.sm.deletePressRoom).toHaveBeenCalledWith('Garuda Power');
+  });
 });

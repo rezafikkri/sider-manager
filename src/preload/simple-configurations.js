@@ -27,6 +27,7 @@ const sm = {
   chooseNewSimpleConfigDirectory: (title) => ipcRenderer.invoke('chooseNewSimpleConfigDirectory', title),
   deleteMLManager: (name) => ipcRenderer.invoke('deleteMLManager', name),
   deleteGraphicMenu: (name) => ipcRenderer.invoke('deleteGraphicMenu', name),
+  deletePressRoom: (name) => ipcRenderer.invoke('deletePressRoom', name),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

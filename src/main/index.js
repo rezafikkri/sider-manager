@@ -45,6 +45,7 @@ import {
   togglePressRoomConfig,
   choosePressRoom,
   savePressRoom,
+  deletePressRoom,
 } from './services/simple-config';
 
 // for performance
@@ -130,6 +131,7 @@ app.whenReady().then(() => {
   ipcMain.handle('chooseNewSimpleConfigDirectory', (_, title) => chooseNewSimpleConfigDirectory(title));
   ipcMain.handle('deleteMLManager', (_, name) => deleteMLManager(name));
   ipcMain.handle('deleteGraphicMenu', (_, name) => deleteGraphicMenu(name));
+  ipcMain.handle('deletePressRoom', (_, name) => deletePressRoom(name));
 
   // check-update in background
   checkUpdate();

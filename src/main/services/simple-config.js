@@ -319,6 +319,10 @@ function deleteGraphicMenu(name) {
   return deleteSimpleConfig('Graphics Menu', name);
 }
 
+function deletePressRoom(name) {
+  return deleteSimpleConfig('Press Room', name);
+}
+
 export {
   readSiderIni,
   readModules,
@@ -342,4 +346,5 @@ export {
   chooseNewSimpleConfigDirectory,
   deleteMLManager,
   deleteGraphicMenu,
+  deletePressRoom,
 };

@@ -79,8 +79,8 @@ export default function SimpleConfigurationsPressRoom() {
 
   async function handleDeletePressRoom(name) {
     await window.sm.deletePressRoom(name);
-    setPressRooms(pressRooms.filter((graphicMenu) => 
-      graphicMenu.name !== name
+    setPressRooms(pressRooms.filter((pressRoom) => 
+      pressRoom.name !== name
     ));
   }
 
