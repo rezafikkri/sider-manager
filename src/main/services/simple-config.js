@@ -237,6 +237,10 @@ function chooseGraphicMenu(graphicMenu) {
   return chooseSimpleConfig('Graphics Menu', graphicMenu);
 }
 
+function choosePressRoom(pressRoom) {
+  return chooseSimpleConfig('Press Room', pressRoom);
+}
+
 function hasCpkFileInDirecotry(directory) {
   const contents = readdirSync(directory);
 
@@ -327,6 +331,7 @@ export {
   readPressRooms,
   chooseMLManager,
   chooseGraphicMenu,
+  choosePressRoom,
   saveMLManager,
   saveGraphicMenu,
   chooseNewSimpleConfigDirectory,

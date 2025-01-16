@@ -38,32 +38,32 @@ export default function SimpleConfigurationsPressRoom() {
     });
   }
 
-  const handleChoosePressRoom = useCallback(async (graphicMenu) => {
-    await window.sm.choosePressRoom({ ...graphicMenu, active: true });
+  const handleChoosePressRoom = useCallback(async (pressRoom) => {
+    await window.sm.choosePressRoom({ ...pressRoom, active: true });
 
-    setPressRooms((prevGraphicsMenu) => {
-      for (const prevPressRoom of prevGraphicsMenu) {
+    setPressRooms((prevPressRooms) => {
+      for (const prevPressRoom of prevPressRooms) {
         if (prevPressRoom.active) {
           setHasActivePressRoom(true);
           break;
         }
       }
 
-      const nextGraphicsMenu = [...prevGraphicsMenu];
-      let graphicMenuChanged = 0;
-      for (const [index, nextPressRoom] of nextGraphicsMenu.entries()) {
-        if (nextPressRoom.name === graphicMenu.name) {
-          nextGraphicsMenu[index] = { ...nextPressRoom, active: true };
-          graphicMenuChanged++;
+      const nextPressRooms = [...prevPressRooms];
+      let pressRoomChanged = 0;
+      for (const [index, nextPressRoom] of nextPressRooms.entries()) {
+        if (nextPressRoom.name === pressRoom.name) {
+          nextPressRooms[index] = { ...nextPressRoom, active: true };
+          pressRoomChanged++;
         } else if (nextPressRoom.active) {
-          nextGraphicsMenu[index] = { ...nextPressRoom, active: false };
-          graphicMenuChanged++;
+          nextPressRooms[index] = { ...nextPressRoom, active: false };
+          pressRoomChanged++;
         }
 
-        if (graphicMenuChanged === 2) break;
+        if (pressRoomChanged === 2) break;
       }
       
-      return nextGraphicsMenu;
+      return nextPressRooms;
     });
     setShowSuccessAlert(true);
   }, []);

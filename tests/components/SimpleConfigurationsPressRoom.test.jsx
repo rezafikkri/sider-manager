@@ -114,4 +114,15 @@ describe('SimpleConfigurationsPresRoom component', () => {
 
     expect(window.sm.togglePressRoomConfig).toHaveBeenCalled()
   });
+
+  it('should call chooseMLManager function correctly when card clicked', async () => {
+    window.sm.isPressRoomConfigActivated.mockResolvedValue(true);
+    renderSimpleConfigurationsPressRoom();
+    window.sm.readPressRooms.mockResolvedValue(pressRooms);
+    const pressRoomCard = await screen.findByTestId(`config-card-${pressRooms[3].name}`);
+
+    await userEvent.click(pressRoomCard);
+    
+    expect(window.sm.choosePressRoom).toHaveBeenCalledWith({ ...pressRooms[3], active: true });
+  });
 });
