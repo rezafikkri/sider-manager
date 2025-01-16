@@ -284,11 +284,19 @@ async function chooseNewSimpleConfigDirectory(title) {
   return directory;
 }
 
-function deleteMLManager(name) {
+function deleteSimpleConfig(configName, dataName) {
   const settingsPath = getSettingsPath();
-  const mlManagerPath = path.join(settingsPath, 'ml-manager', name);
+  const mlManagerPath = path.join(settingsPath, configName.replace(/\s/g, '-').toLowerCase(), dataName);
   rmSync(mlManagerPath, { recursive: true, force: true });
   return true;
+}
+
+function deleteMLManager(name) {
+  return deleteSimpleConfig('ML Manager', name);
+}
+
+function deleteGraphicMenu(name) {
+  return deleteSimpleConfig('Graphics Menu', name);
 }
 
 export {
@@ -308,4 +316,5 @@ export {
   saveGraphicMenu,
   chooseNewSimpleConfigDirectory,
   deleteMLManager,
+  deleteGraphicMenu,
 };

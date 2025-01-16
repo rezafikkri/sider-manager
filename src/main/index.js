@@ -39,6 +39,7 @@ import {
   readGraphicsMenu,
   chooseGraphicMenu,
   saveGraphicMenu,
+  deleteGraphicMenu,
 } from './services/simple-config';
 
 // for performance
@@ -118,6 +119,7 @@ app.whenReady().then(() => {
   ipcMain.handle('saveGraphicMenu', (_, name, directory) => saveGraphicMenu(name, directory));
   ipcMain.handle('chooseNewSimpleConfigDirectory', (_, title) => chooseNewSimpleConfigDirectory(title));
   ipcMain.handle('deleteMLManager', (_, name) => deleteMLManager(name));
+  ipcMain.handle('deleteGraphicMenu', (_, name) => deleteGraphicMenu(name));
 
   // check-update in background
   checkUpdate();

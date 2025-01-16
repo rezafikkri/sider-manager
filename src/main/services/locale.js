@@ -149,12 +149,12 @@ const resources = {
       desc: 'Pilih Graphic Menu yang ingin kamu gunakan.',
       statusOn: 'Hidup',
       statusOff: 'Mati',
-      addMLManagerBtnText: 'Tambah',
+      addGraphicMenuBtnText: 'Tambah',
       successAlertMsg: {
         choosed: 'Graphic Menu berhasil dipilih.',
         changed: 'Graphic Menu berhasil diubah.',
       },
-      successDeleteAlertMsg: 'ML Manager berhasil dihapus.',
+      successDeleteAlertMsg: 'Graphic Menu berhasil dihapus.',
     },
     modalWithSimpleConfigForm: {
       dialogTitle: 'Pilih direktori :param baru yang ingin ditambahkan.',
@@ -319,12 +319,12 @@ const resources = {
       desc: 'Choose Graphic Menu that you want to use.',
       statusOn: 'On',
       statusOff: 'Off',
-      addMLManagerBtnText: 'Add',
+      addGraphicMenuBtnText: 'Add',
       successAlertMsg: {
         choosed: 'Graphic Menu successfully choosed.',
         changed: 'Graphic Menu successfully changed.',
       },
-      successDeleteAlertMsg: 'ML Manager successfully deleted.',
+      successDeleteAlertMsg: 'Graphic Menu successfully deleted.',
     },
     modalWithSimpleConfigForm: {
       dialogTitle: 'Choose new :param directory you want to add.',

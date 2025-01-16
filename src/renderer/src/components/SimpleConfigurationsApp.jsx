@@ -72,7 +72,7 @@ export default function SimpleConfigurationsApp() {
                 onClick={handleConfig}
                 className={`hover:bg-indigo-950 ${activeMenu('graphics-menu')}`}
               >
-                Graphic Menu
+                Graphics Menu
               </a>
             </li>
           </ul>

@@ -156,7 +156,7 @@ export default function SimpleConfigurationsMLManager() {
             img={getMLManagerPreview(mlManager.preview)}
             isChecked={mlManager.active}
             onChoose={handleChooseMLManager}
-            mlManager={mlManager}
+            dataConfig={mlManager}
             onDelete={setMLManagerNameToBeDeleted}
           />
         )}

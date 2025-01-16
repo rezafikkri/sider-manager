@@ -15,7 +15,7 @@ export default function SimpleConfigurationsGraphicsMenu() {
   const [hasActiveGraphicMenu, setHasActiveGraphicMenu] = useState(false);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [showModalWithSimpleConfigForm, setShowModalWithSimpleConfigForm] = useState(false);
-  const [mlManagerNameToBeDeleted, setMLManagerNameToBeDeleted] = useState(null);
+  const [graphicMenuNameToBeDeleted, setGraphicMenuNameToBeDeleted] = useState(null);
   const [showDeleteSuccessAlert, setShowDeleteSuccessAlert] = useState(false);
 
   async function loadGraphicsMenu() {
@@ -31,7 +31,7 @@ export default function SimpleConfigurationsGraphicsMenu() {
         loadGraphicsMenu();
       } else {
         setGraphicsMenu([]);
-        setHasActiveMLManager(false);
+        setHasActiveGraphicMenu(false);
       }
 
       return newStatus;
@@ -77,10 +77,10 @@ export default function SimpleConfigurationsGraphicsMenu() {
     return false;
   }
 
-  async function handleDeleteMLManager(name) {
-    await window.sm.deleteMLManager(name);
-    setMLManagers(mlManagers.filter((mlManager) => 
-      mlManager.name !== name
+  async function handleDeleteGraphicMenu(name) {
+    await window.sm.deleteGraphicMenu(name);
+    setGraphicsMenu(graphicsMenu.filter((graphicMenu) => 
+      graphicMenu.name !== name
     ));
   }
 
@@ -91,7 +91,7 @@ export default function SimpleConfigurationsGraphicsMenu() {
 
   useEffect(() => {
     document.querySelector('body').classList.toggle('overflow-hidden');
-  }, [showModalWithSimpleConfigForm, mlManagerNameToBeDeleted]);
+  }, [showModalWithSimpleConfigForm, graphicMenuNameToBeDeleted]);
 
   useEffect(() => {
     // check is graphics menu config is activated or not yet
@@ -144,7 +144,7 @@ export default function SimpleConfigurationsGraphicsMenu() {
           className="ms-3 text-sm font-medium rounded-lg px-3 py-2 bg-gray-800 hover:bg-indigo-700 outline outline-transparent focus:outline-offset-2 focus:outline-indigo-700 transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-65 disabled:hover:bg-gray-800"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="icon me-1" viewBox="0 0 16 16"><path fillRule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/></svg>
-          <span>{translate(locale, 'simpleConfigurationsMLManager.addMLManagerBtnText', resources)}</span>
+          <span>{translate(locale, 'simpleConfigurationsGraphicsMenu.addGraphicMenuBtnText', resources)}</span>
         </button>
       ) : null}
 
@@ -156,8 +156,8 @@ export default function SimpleConfigurationsGraphicsMenu() {
             img={getGraphicMenuPreview(graphicMenu.preview)}
             isChecked={graphicMenu.active}
             onChoose={handleChooseGraphicMenu}
-            mlManager={graphicMenu}
-            onDelete={setMLManagerNameToBeDeleted}
+            dataConfig={graphicMenu}
+            onDelete={setGraphicMenuNameToBeDeleted}
           />
         )}
       </section>
@@ -190,19 +190,19 @@ export default function SimpleConfigurationsGraphicsMenu() {
 
       {showModalWithSimpleConfigForm && 
         <ModalWithSimpleConfigForm
-          category={'Graphics Menu'}
+          category={'Graphic Menu'}
           onClose={() => setShowModalWithSimpleConfigForm(false)}
           onSubmit={handleAddGraphicMenu}
           getPreview={getGraphicMenuPreview}
         />
       }
 
-      {mlManagerNameToBeDeleted &&
+      {graphicMenuNameToBeDeleted &&
         <ModalPrompt
-          name={mlManagerNameToBeDeleted}
-          category="ML Manager"
-          onDelete={handleDeleteMLManager}
-          onClose={() => setMLManagerNameToBeDeleted(null)}
+          name={graphicMenuNameToBeDeleted}
+          category="Graphic Menu"
+          onDelete={handleDeleteGraphicMenu}
+          onClose={() => setGraphicMenuNameToBeDeleted(null)}
           showSuccessAlert={() => setShowDeleteSuccessAlert(true)}
         />
       }

@@ -14,25 +14,15 @@ expect.extend(matchers);
 const resources = {
   id: {
     simpleConfigurationsGraphicsMenu: {
-      desc: 'Choose Graphic Menu that you want to use.',
-      statusOn: 'On',
-      statusOff: 'Off',
-      addMLManagerBtnText: 'Add',
-      successAlertMsg: {
-        choosed: 'Graphic Menu successfully choosed.',
-        changed: 'Graphic Menu successfully changed.',
-      },
-      successDeleteAlertMsg: 'ML Manager successfully deleted.',
-    },
-    simpleConfigurationsMLManager: {
-      desc: 'Pilih manager tim yang ingin kamu gunakan ketika memainkan Master League.',
+      desc: 'Pilih Graphic Menu yang ingin kamu gunakan.',
       statusOn: 'Hidup',
       statusOff: 'Mati',
-      addMLManagerBtnText: 'Tambah Manager',
+      addGraphicMenuBtnText: 'Tambah',
       successAlertMsg: {
-        choosed: 'Manager berhasil dipilih.',
-        changed: 'Manager berhasil diubah.',
+        choosed: 'Graphic Menu berhasil dipilih.',
+        changed: 'Graphic Menu berhasil diubah.',
       },
+      successDeleteAlertMsg: 'Graphic Menu berhasil dihapus.',
     },
     modalWithSimpleConfigForm: {
       dialogTitle: 'Pilih direktori :param baru yang ingin ditambahkan.',
@@ -105,6 +95,7 @@ describe('simpleConfigurationsGraphicsMenu component', () => {
       chooseGraphicMenu: vi.fn(),
       saveGraphicMenu: vi.fn(),
       chooseNewSimpleConfigDirectory: vi.fn(),
+      deleteGraphicMenu: vi.fn(),
     };
   });
 
@@ -135,7 +126,8 @@ describe('simpleConfigurationsGraphicsMenu component', () => {
     expect(window.sm.chooseGraphicMenu).toHaveBeenCalledWith({ ...graphicsMenu[3], active: true });
   });
 
-  it('should call saveGraphicMenu correctly when submit button for ad graphic menu clicked', async () => {
+  it('should call saveGraphicMenu function correctly when submit button for ad graphic menu clicked', async () => {
+    window.sm.isGraphicsMenuConfigActivated.mockResolvedValue(true);
     renderSimpleConfigurationsGraphicsMenu();
     const showModalBtn = await screen.findByTestId('show-modal-add-graphic-menu-btn');
     await userEvent.click(showModalBtn);
@@ -153,5 +145,20 @@ describe('simpleConfigurationsGraphicsMenu component', () => {
     await userEvent.click(submitBtn);
 
     expect(window.sm.saveGraphicMenu).toHaveBeenCalledWith(directoryObj.name, directoryObj.directory);
+  });
+
+  it('should call deleteGraphicMenu function correctly when yesBtn for delete graphic menu clicked', async () => {
+    window.sm.isGraphicsMenuConfigActivated.mockResolvedValue(true);
+    renderSimpleConfigurationsGraphicsMenu();
+    window.sm.readGraphicsMenu.mockResolvedValue(graphicsMenu);
+    const graphicMenuCardGabuci = await screen.findByTestId('config-card-Gabuci');
+    const deleteBtn = graphicMenuCardGabuci.querySelector('button');
+
+    await userEvent.click(deleteBtn);
+
+    const yesBtn = await screen.findByText(resources.id.modalPrompt.yesBtnText);
+    await userEvent.click(yesBtn);
+
+    expect(window.sm.deleteGraphicMenu).toHaveBeenCalledWith('Gabuci');
   });
 });
