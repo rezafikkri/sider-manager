@@ -89,7 +89,7 @@ describe('ActivationForm component', () => {
     window.sm.activate.mockReturnValue(new Promise((resolve) => {
       setTimeout(() => {
         resolve(true);
-      }, 500);
+      }, 700);
     }));
     const submitButton = await screen.findByText(resources.id.activationForm.submitBtnText);
     const activationInput = screen.getByRole('textbox');

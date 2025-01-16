@@ -8,28 +8,30 @@ import Locale from '../../src/renderer/src/components/Locale';
 import ModalWithSimpleConfigForm from '../../src/renderer/src/components/ModalWithSimpleConfigForm';
 import path from 'node:path';
 import url from 'node:url';
+import { translate } from '../../src/main/utils';
 
 expect.extend(matchers);
 
 const resources = {
   id: {
     modalWithSimpleConfigForm: {
-      dialogTitle: 'Pilih direktori ML Manager baru yang ingin ditambahkan.',
-      errorAlertMsg: 'ML Manager salah. Pastikan setelah nama direktori adalah direktori common (Reza Fikkri\\common) dan pastikan di dalam direktori common tidak terdapat file .cpk!',
-      successAlertMsg: 'ML Manager berhasil ditambahkan.',
+      dialogTitle: 'Pilih direktori :param baru yang ingin ditambahkan.',
+      errorAlertMsgWithCpk: ':param salah. Pastikan setelah nama direktori adalah direktori common (contoh: <strong>Reza Fikkri\\common</strong>) dan pastikan di dalam direktori common tidak terdapat file .cpk!',
+      errorAlertMsgWithoutCpk: ':param salah. Pastikan setelah nama direktori adalah direktori common (contoh: <strong>Reza Fikkri\\common</strong>)!',
+      successAlertMsg: ':param berhasil ditambahkan.',
       directoryLabelText: 'Direktori',
       directoryInputPlaceholder: 'Masukkan direktori',
       directoryBtnText: 'Pilih',
-      directorySmallText: 'Silahkan pilih lokasi direktori ML Manager baru yang ingin ditambahkan.',
+      directorySmallText: 'Silahkan pilih lokasi direktori :param baru yang ingin ditambahkan.',
       nameLabelText: 'Nama',
-      nameInputPlaceholder: 'Masukkan nama ML Manager',
-      previewSmallText: 'Jika ingin ada preview, sertakan file gambar berkestensi .png/.jpg pada direktori ML Manager.',
+      nameInputPlaceholder: 'Masukkan nama :param',
+      previewSmallText: 'Jika ingin ada preview, sertakan file gambar berkestensi <strong>.png</strong> atau <strong>.jpg</strong> pada direktori :param.',
       submitBtnText: 'Simpan',
     },
   },
 };
 
-function renderModalWithSimpleConfigForm(onSubmit, getPreview) {
+function renderModalWithSimpleConfigForm(category, onSubmit, getPreview) {
   render(
     <Locale
       getResources={async () => resources}
@@ -37,6 +39,7 @@ function renderModalWithSimpleConfigForm(onSubmit, getPreview) {
       saveSettings={async () => {}}
     >
       <ModalWithSimpleConfigForm
+        category={category}
         onClose={() => {}}
         onSubmit={onSubmit}
         getPreview={getPreview}
@@ -60,7 +63,7 @@ describe('ModalWithSimpleConfigForm component', () => {
   it('should call chooseNewSimpleConfigDirectory and getPreview function correctly and show name and directory of choosed directory when choose directory button clicked', async () => {
     const onSubmit = () => {};
     const getPreview = vi.fn();
-    renderModalWithSimpleConfigForm(onSubmit, getPreview);
+    renderModalWithSimpleConfigForm('ML Manager', onSubmit, getPreview);
     const directoryObj = {
       name: 'directory Manager',
       directory: path.join('others', 'directory Manager'),
@@ -71,11 +74,13 @@ describe('ModalWithSimpleConfigForm component', () => {
 
     await userEvent.click(chooseDirectoryBtn);
 
+    const dialogTitle = translate('id', 'modalWithSimpleConfigForm.dialogTitle', resources, 'ML Manager');
     expect(window.sm.chooseNewSimpleConfigDirectory)
-      .toHaveBeenCalledWith(resources.id.modalWithSimpleConfigForm.dialogTitle);
+      .toHaveBeenCalledWith(dialogTitle);
     expect(getPreview).toHaveBeenCalledWith(directoryObj.preview);
+    const nameInputPlaceholder = translate('id', 'modalWithSimpleConfigForm.nameInputPlaceholder', resources, 'ML Manager');
     const nameInput = await screen
-      .findByPlaceholderText(resources.id.modalWithSimpleConfigForm.nameInputPlaceholder);
+      .findByPlaceholderText(nameInputPlaceholder);
     expect(nameInput).toHaveValue(directoryObj.name);
     const directoryInput = await screen
       .findByPlaceholderText(resources.id.modalWithSimpleConfigForm.directoryInputPlaceholder);
@@ -85,7 +90,7 @@ describe('ModalWithSimpleConfigForm component', () => {
   it('should not call onSubmit function when submit button clicked and form is empty', async () => {
     const onSubmit = vi.fn();
     const getPreview = () => {};
-    renderModalWithSimpleConfigForm(onSubmit, getPreview);
+    renderModalWithSimpleConfigForm('Graphcis Menu', onSubmit, getPreview);
     const submitBtn = await screen.findByTestId('submit-btn');
 
     await userEvent.click(submitBtn);
@@ -95,10 +100,10 @@ describe('ModalWithSimpleConfigForm component', () => {
 
   it('should show loading, call onSUbmit function correctly, show success alert and reset form when submit button clicked and add data is success', async () => {
     const onSubmit = vi.fn().mockReturnValue(new Promise((resolve) => {
-      setTimeout(() => resolve(true), 600);
+      setTimeout(() => resolve(true), 800);
     }));
     const getPreview = () => {};
-    renderModalWithSimpleConfigForm(onSubmit, getPreview);
+    renderModalWithSimpleConfigForm('ML Manager', onSubmit, getPreview);
     const directoryObj = {
       name: 'ML Manager new',
       directory: path.join('others', 'ML Manager new'),
@@ -110,8 +115,9 @@ describe('ModalWithSimpleConfigForm component', () => {
 
     await userEvent.click(chooseDirectoryBtn);
 
+    const nameInputPlaceholder = translate('id', 'modalWithSimpleConfigForm.nameInputPlaceholder', resources, 'ML Manager');
     const nameInput = await screen
-      .findByPlaceholderText(resources.id.modalWithSimpleConfigForm.nameInputPlaceholder);
+      .findByPlaceholderText(nameInputPlaceholder);
     await userEvent.clear(nameInput)
     await userEvent.type(nameInput, 'Reza Fikkri');
 
@@ -126,7 +132,7 @@ describe('ModalWithSimpleConfigForm component', () => {
       const directoryInput = await screen
         .findByPlaceholderText(resources.id.modalWithSimpleConfigForm.directoryInputPlaceholder);
       expect(directoryInput).toHaveValue('');
-      const successAlertEl = await screen.findByText(resources.id.modalWithSimpleConfigForm.successAlertMsg);
+      const successAlertEl = await screen.findByTestId('modal-with-simple-config-form-success-alert');
       expect(successAlertEl).toBeInTheDocument();
     });
   });
@@ -134,11 +140,11 @@ describe('ModalWithSimpleConfigForm component', () => {
   it('should show error alert and not reset form submit when submit button clicked and add data is failed', async () => {
     const onSubmit = vi.fn().mockResolvedValue((false));
     const getPreview = () => {};
-    renderModalWithSimpleConfigForm(onSubmit, getPreview);
+    renderModalWithSimpleConfigForm('Press Room', onSubmit, getPreview);
     const directoryObj = {
-      name: 'ML Manager new yes',
-      directory: path.join('others', 'ML Manager new yes'),
-      preview: url.pathToFileURL(path.join('others', 'ML Manager new yes', 'preview.jpg')).toString(),
+      name: 'Pess Room new yes',
+      directory: path.join('others', 'Press Room new yes'),
+      preview: url.pathToFileURL(path.join('others', 'Press Room new yes', 'preview.jpg')).toString(),
     };
     window.sm.chooseNewSimpleConfigDirectory.mockReturnValue(directoryObj);
     const chooseDirectoryBtn = await screen.findByTestId('choose-directory-btn');
@@ -146,8 +152,9 @@ describe('ModalWithSimpleConfigForm component', () => {
 
     await userEvent.click(chooseDirectoryBtn);
 
+    const nameInputPlaceholder = translate('id', 'modalWithSimpleConfigForm.nameInputPlaceholder', resources, 'Press Room');
     const nameInput = await screen
-      .findByPlaceholderText(resources.id.modalWithSimpleConfigForm.nameInputPlaceholder);
+      .findByPlaceholderText(nameInputPlaceholder);
     await userEvent.clear(nameInput)
     await userEvent.type(nameInput, 'Reza Fikkri');
 
@@ -157,7 +164,7 @@ describe('ModalWithSimpleConfigForm component', () => {
     const directoryInput = await screen
       .findByPlaceholderText(resources.id.modalWithSimpleConfigForm.directoryInputPlaceholder);
     expect(directoryInput).toHaveValue(directoryObj.directory);
-    const errorAlertEl = await screen.findByText(resources.id.modalWithSimpleConfigForm.errorAlertMsg);
+    const errorAlertEl = await screen.findByTestId('modal-with-simple-config-form-error-alert');
     expect(errorAlertEl).toBeInTheDocument();
   });
 });

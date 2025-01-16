@@ -103,7 +103,7 @@ describe('AddonInitializationApp component', () => {
     };
     window.sm.chooseInitializationFile.mockResolvedValue(file);
     window.sm.addonInitialization.mockReturnValue(new Promise((resolve) => {
-      setTimeout(() => resolve(false), 300);
+      setTimeout(() => resolve(false), 500);
     }));
     const chooseFileBtn = await screen.findByText(resources.id.addonInitializationChoose.chooseFileBtnText);
     await userEvent.click(chooseFileBtn);

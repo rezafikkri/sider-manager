@@ -159,7 +159,7 @@ export default function ModalWithSimpleConfigForm({
       <div className="bg-sima-bg/80 fixed inset-0 z-40"></div>
 
       {showSuccessAlert &&
-        <div className="fixed bottom-5 right-8 left-5 text-left w-3/5 z-50">
+        <div className="fixed bottom-5 right-8 left-5 text-left w-3/5 z-50" data-testid="modal-with-simple-config-form-success-alert">
           <Alert
             message={() => translate(locale, 'modalWithSimpleConfigForm.successAlertMsg', resources, category)}
             type="success"
@@ -168,7 +168,7 @@ export default function ModalWithSimpleConfigForm({
         </div>
       }
       {showErrorAlert &&
-        <div className="fixed bottom-5 right-8 left-5 text-left z-50">
+        <div className="fixed bottom-5 right-8 left-5 text-left z-50" data-testid="modal-with-simple-config-form-error-alert">
           <Alert
             message={() => errorAlertMsg}
             type="danger"

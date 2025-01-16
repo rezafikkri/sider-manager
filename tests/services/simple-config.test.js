@@ -471,8 +471,9 @@ describe('saveMLManager function', () => {
   });
 
   it('should return false when after new ml manager directory direct in it is not common directory', async () => {
-    const { existsSync } = await import('node:fs');
+    const { existsSync, readdirSync } = await import('node:fs');
     existsSync.mockReturnValue(false);
+    readdirSync.mockReturnValue([]);
 
     const result = saveMLManager('RezaFikkri', 'Manager Reza');
 
@@ -480,8 +481,9 @@ describe('saveMLManager function', () => {
   });
 
   it('should return false when common is file', async () => {
-    const { existsSync } = await import('node:fs');
+    const { existsSync, readdirSync } = await import('node:fs');
     existsSync.mockReturnValue(true);
+    readdirSync.mockReturnValue([]);
     const { isFile } = await import('../../src/main/services');
     isFile.mockReturnValue(true);
 
