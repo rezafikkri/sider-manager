@@ -124,6 +124,10 @@ function toggleGraphicsMenuConfig() {
   return toggleSimpleConfig('Graphics Menu');
 }
 
+function togglePressRoomConfig() {
+  return toggleSimpleConfig('Press Room');
+}
+
 function isSimpleConfigActivated(configName) {
   const settings = getSettings();
   const pesDirectory = settings.pesDirectory;
@@ -149,6 +153,10 @@ function isMLManagerConfigActivated() {
 
 function isGraphicsMenuConfigActivated() {
   return isSimpleConfigActivated('Graphics Menu');
+}
+
+function isPressRoomConfigActivated() {
+  return isSimpleConfigActivated('Press Room');
 }
 
 function getSimpleConfigPreview(simpleConfigPath) {
@@ -201,6 +209,10 @@ function readMLManagers() {
 
 function readGraphicsMenu() {
   return readSimpleConfigs('Graphics Menu');
+}
+
+function readPressRooms() {
+  return readSimpleConfigs('Press Room');
 }
 
 function chooseSimpleConfig(configName, configData) {
@@ -306,10 +318,13 @@ export {
   saveSiderIni,
   toggleMLManagerConfig,
   toggleGraphicsMenuConfig,
+  togglePressRoomConfig,
   isMLManagerConfigActivated,
   isGraphicsMenuConfigActivated,
+  isPressRoomConfigActivated,
   readMLManagers,
   readGraphicsMenu,
+  readPressRooms,
   chooseMLManager,
   chooseGraphicMenu,
   saveMLManager,

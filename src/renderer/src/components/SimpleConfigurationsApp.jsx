@@ -5,6 +5,7 @@ import Alert from './Alert';
 import LocaleContext from '../contexts/LocaleContext';
 import { translate } from '../../../main/utils';
 import SimpleConfigurationsGraphicsMenu from './SimpleConfigurationsGraphicsMenu';
+import SimpleConfigurationsPressRoom from './SimpleConfigurationsPressRoom';
 
 export default function SimpleConfigurationsApp() {
   const {locale, resources} = useContext(LocaleContext);
@@ -81,6 +82,7 @@ export default function SimpleConfigurationsApp() {
       <main className="py-5 px-3 min-h-full flex-1">
         {config === 'sider' ? <SimpleConfigurationsSider /> :
         config === 'ml-manager' ? <SimpleConfigurationsMLManager /> :
+        config === 'press-room' ? <SimpleConfigurationsPressRoom /> :
         config === 'graphics-menu' ? <SimpleConfigurationsGraphicsMenu /> : null}
       </main>
     </>

@@ -156,6 +156,17 @@ const resources = {
       },
       successDeleteAlertMsg: 'Graphic Menu berhasil dihapus.',
     },
+    simpleConfigurationsPressRoom: {
+      desc: 'Pilih Press Room yang ingin kamu gunakan.',
+      statusOn: 'Hidup',
+      statusOff: 'Mati',
+      addPressRoomBtnText: 'Tambah',
+      successAlertMsg: {
+        choosed: 'Press Room berhasil dipilih.',
+        changed: 'Press Room berhasil diubah.',
+      },
+      successDeleteAlertMsg: 'Press Room berhasil dihapus.',
+    },
     modalWithSimpleConfigForm: {
       dialogTitle: 'Pilih direktori :param baru yang ingin ditambahkan.',
       errorAlertMsgWithCpk: ':param salah. Pastikan setelah nama direktori adalah direktori common (contoh: <strong>Reza Fikkri\\common</strong>) dan pastikan di dalam direktori common tidak terdapat file .cpk!',
@@ -326,6 +337,18 @@ const resources = {
       },
       successDeleteAlertMsg: 'Graphic Menu successfully deleted.',
     },
+    simpleConfigurationsPressRoom: {
+      desc: 'Choose Press Room that you want to use.',
+      statusOn: 'On',
+      statusOff: 'Off',
+      addPressRoomBtnText: 'Add',
+      successAlertMsg: {
+        choosed: 'Press Room successfully choosed.',
+        changed: 'Press Room successfully changed.',
+      },
+      successDeleteAlertMsg: 'Press Room successfully deleted.',
+    },
+
     modalWithSimpleConfigForm: {
       dialogTitle: 'Choose new :param directory you want to add.',
       errorAlertMsgWithCpk: ':param wrong. Make sure after directory name is common directory (example: <strong>Reza Fikkri\\common</strong>) and make sure in common directory no .cpk file!',

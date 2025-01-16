@@ -86,7 +86,7 @@ function renderSimpleConfigurationsGraphicsMenu() {
   );
 }
 
-describe('simpleConfigurationsGraphicsMenu component', () => {
+describe('SimpleConfigurationsGraphicsMenu component', () => {
   beforeAll(() => {
     window.sm = {
       toggleGraphicsMenuConfig: vi.fn(),

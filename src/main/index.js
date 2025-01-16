@@ -40,6 +40,9 @@ import {
   chooseGraphicMenu,
   saveGraphicMenu,
   deleteGraphicMenu,
+  readPressRooms,
+  isPressRoomConfigActivated,
+  togglePressRoomConfig,
 } from './services/simple-config';
 
 // for performance
@@ -109,10 +112,13 @@ app.whenReady().then(() => {
   ipcMain.handle('readLiveCpks', (_, pesDirectory) => readLiveCpks(pesDirectory));
   ipcMain.handle('readMLManagers', readMLManagers);
   ipcMain.handle('readGraphicsMenu', readGraphicsMenu);
+  ipcMain.handle('readPressRooms', readPressRooms);
   ipcMain.handle('isMLManagerConfigActivated', isMLManagerConfigActivated);
   ipcMain.handle('isGraphicsMenuConfigActivated', isGraphicsMenuConfigActivated);
+  ipcMain.handle('isPressRoomConfigActivated', isPressRoomConfigActivated);
   ipcMain.handle('toggleMLManagerConfig', toggleMLManagerConfig);
   ipcMain.handle('toggleGraphicsMenuConfig', toggleGraphicsMenuConfig);
+  ipcMain.handle('togglePressRoomConfig', togglePressRoomConfig);
   ipcMain.handle('chooseMLManager', (_, mlManager) => chooseMLManager(mlManager));
   ipcMain.handle('chooseGraphicMenu', (_, graphicMenu) => chooseGraphicMenu(graphicMenu));
   ipcMain.handle('saveMLManager', (_, name, directory) => saveMLManager(name, directory));
