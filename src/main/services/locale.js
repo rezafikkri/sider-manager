@@ -76,7 +76,7 @@ const resources = {
       directoryLabelText: 'Direktori PES 2017',
       directoryInputPlaceholder: 'Masukkan direktori',
       chooseBtnText: 'Pilih',
-      directorySmallText: 'Silahkan pilih atau masukkan direktori di mana kamu menginstall PES 2017.',
+      directorySmallText: 'Silahkan pilih atau masukkan lokasi direktori di mana kamu menginstall PES 2017.',
       dialogTitle: 'Pilih direktori PES 2017',
     },
     playGameBtn: {
@@ -257,7 +257,7 @@ const resources = {
       directoryLabelText: 'PES 2017 Directory',
       directoryInputPlaceholder: 'Enter the directory',
       chooseBtnText: 'Choose',
-      directorySmallText: 'Please choose or enter the directory where you installed PES 2017.',
+      directorySmallText: 'Please choose or enter the directory location where you installed PES 2017.',
       dialogTitle: 'Choose the PES 2017 directory',
     },
     playGameBtn: {
