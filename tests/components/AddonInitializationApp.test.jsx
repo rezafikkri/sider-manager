@@ -33,6 +33,7 @@ describe('AddonInitializationApp component', () => {
     window.sm = {
       chooseInitializationFile: vi.fn(),
       addonInitialization: vi.fn(),
+      getBackupPath: () => 'backupPath',
     };
   });
 
@@ -51,6 +52,12 @@ describe('AddonInitializationApp component', () => {
   afterEach(() => {
     vi.clearAllMocks();
     cleanup();
+  });
+
+  it('should show backupPath in small text', async () => {
+    const backupPathEl = await screen.findByText('backupPath');
+
+    expect(backupPathEl).toBeInTheDocument();
   });
 
   it('should show information of file correctly when choose btn clicked and choose file is not cancelled', async () => {
