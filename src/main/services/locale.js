@@ -18,6 +18,10 @@ const resources = {
     aboutWindow: {
       title: 'Tentang - Sider Manager',
       powered: 'Dipersembahkan oleh',
+      contact: {
+        title: 'Kontak',
+        desc: 'Hanya melayani dihari kerja, <strong>(08.00 – 17.00) Senin – Jumat</strong>. Maaf bila sewaktu-waktu ada keterlambatan membalas pesan, karena yang membalas pesan adalah developer-nya langsung. Jika ada pertanyaan silahkan cek terlebih dahulu pada website kami.',
+      },
     },
     settingsWindow: {
       title: 'Pengaturan - Sider Manager',
@@ -65,7 +69,7 @@ const resources = {
       },
       keyLabelText: 'Kunci aktivasi',
       keyTextareaPlaceholder: 'Masukkan kunci aktivasi',
-      keySmallText: 'Pastikan kamu terhubung ke Internet. Jika terjadi masalah, silahkan hubungi kontak yang tertera pada menu Bantuan \u00bb Tentang kami.',
+      keySmallText: 'Pastikan kamu terhubung ke Internet. Jika terjadi masalah, silahkan hubungi kontak yang tertera pada menu Bantuan \u00bb Tentang.',
       submitBtnText: 'Berikutnya',
       submitBtnLoadingText: 'Memvalidasi...',
     },
@@ -202,6 +206,10 @@ const resources = {
     aboutWindow: {
       title: 'About - Sider Manager',
       powered: 'Powered by',
+      contact: {
+        title: 'Contact',
+        desc: 'Only serve on weekdays, <strong>(8AM - 5PM), Monday - Friday</strong>. Sorry if at any time there is a delay in replying to messages, because the one who replies to messages is the developer directly. If you have any questions, please check our website first.',
+      },
     },
     addonInitializationWindow: {
       title: 'Addon Initialization - Sider Manager',
@@ -246,7 +254,7 @@ const resources = {
       },
       keyLabelText: 'Activation key',
       keyTextareaPlaceholder: 'Enter the activation key',
-      keySmallText: 'Make sure you are connected to the Internet. If problems occur, please contact the contact listed in the Help \u00bb About us menu.',
+      keySmallText: 'Make sure you are connected to the Internet. If problems occur, please contact the contact listed in the Help \u00bb About menu.',
       submitBtnText: 'Next',
       submitBtnLoadingText: 'Validating...',
     },
