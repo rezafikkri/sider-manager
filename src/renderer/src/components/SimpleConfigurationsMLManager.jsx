@@ -89,9 +89,25 @@ export default function SimpleConfigurationsMLManager() {
     return notFoundImage;    
   }
 
-  useEffect(() => {
-    document.querySelector('body').classList.toggle('overflow-hidden');
-  }, [showModalWithSimpleConfigForm, mlManagerNameToBeDeleted]);
+  function showModalAdd() {
+    setShowModalWithSimpleConfigForm(true);
+    document.querySelector('body').classList.add('overflow-hidden');
+  }
+
+  function closeModalAdd() {
+    setShowModalWithSimpleConfigForm(false);
+    document.querySelector('body').classList.remove('overflow-hidden');
+  }
+
+  const showModalDelete = useCallback((name) => {
+    setMLManagerNameToBeDeleted(name);
+    document.querySelector('body').classList.add('overflow-hidden');
+  }, []);
+
+  function closeModalDelete() {
+    setMLManagerNameToBeDeleted(null);
+    document.querySelector('body').classList.remove('overflow-hidden');
+  }
 
   useEffect(() => {
     // check is ml manager config is activated or not yet
@@ -137,7 +153,7 @@ export default function SimpleConfigurationsMLManager() {
 
       { status !== null ? (
         <button
-          onClick={() => setShowModalWithSimpleConfigForm(true)}
+          onClick={showModalAdd}
           data-testid="show-modal-add-ml-manager-btn"
           disabled={status ? false : true}
           type="button"
@@ -157,7 +173,7 @@ export default function SimpleConfigurationsMLManager() {
             isChecked={mlManager.active}
             onChoose={handleChooseMLManager}
             dataConfig={mlManager}
-            onDelete={setMLManagerNameToBeDeleted}
+            onDelete={showModalDelete}
           />
         )}
       </section>
@@ -191,7 +207,7 @@ export default function SimpleConfigurationsMLManager() {
       {showModalWithSimpleConfigForm && 
         <ModalWithSimpleConfigForm
           category="ML Manager"
-          onClose={() => setShowModalWithSimpleConfigForm(false)}
+          onClose={closeModalAdd}
           onSubmit={handleAddMLManager}
           getPreview={getMLManagerPreview}
         />
@@ -202,7 +218,7 @@ export default function SimpleConfigurationsMLManager() {
           name={mlManagerNameToBeDeleted}
           category="ML Manager"
           onDelete={handleDeleteMLManager}
-          onClose={() => setMLManagerNameToBeDeleted(null)}
+          onClose={closeModalDelete}
           showSuccessAlert={() => setShowDeleteSuccessAlert(true)}
         />
       }

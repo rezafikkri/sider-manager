@@ -89,9 +89,25 @@ export default function SimpleConfigurationsPressRoom() {
     return notFoundImage;    
   }
 
-  useEffect(() => {
-    document.querySelector('body').classList.toggle('overflow-hidden');
-  }, [showModalWithSimpleConfigForm, pressRoomNameToBeDeleted]);
+  function showModalAdd() {
+    setShowModalWithSimpleConfigForm(true);
+    document.querySelector('body').classList.add('overflow-hidden');
+  }
+
+  function closeModalAdd() {
+    setShowModalWithSimpleConfigForm(false);
+    document.querySelector('body').classList.remove('overflow-hidden');
+  }
+
+  const showModalDelete = useCallback((name) => {
+    setPressRoomNameToBeDeleted(name);
+    document.querySelector('body').classList.add('overflow-hidden');
+  }, []);
+
+  function closeModalDelete() {
+    setPressRoomNameToBeDeleted(null);
+    document.querySelector('body').classList.remove('overflow-hidden');
+  }
 
   useEffect(() => {
     // check is graphics menu config is activated or not yet
@@ -137,7 +153,7 @@ export default function SimpleConfigurationsPressRoom() {
 
       { status !== null ? (
         <button
-          onClick={() => setShowModalWithSimpleConfigForm(true)}
+          onClick={showModalAdd}
           data-testid="show-modal-add-press-room-btn"
           disabled={status ? false : true}
           type="button"
@@ -157,7 +173,7 @@ export default function SimpleConfigurationsPressRoom() {
             isChecked={pressRoom.active}
             onChoose={handleChoosePressRoom}
             dataConfig={pressRoom}
-            onDelete={setPressRoomNameToBeDeleted}
+            onDelete={showModalDelete}
           />
         )}
       </section>
@@ -190,8 +206,8 @@ export default function SimpleConfigurationsPressRoom() {
 
       {showModalWithSimpleConfigForm && 
         <ModalWithSimpleConfigForm
-          category={'Press Room'}
-          onClose={() => setShowModalWithSimpleConfigForm(false)}
+          category="Press Room"
+          onClose={closeModalAdd}
           onSubmit={handleAddPressRoom}
           getPreview={getPressRoomPreview}
         />
@@ -202,7 +218,7 @@ export default function SimpleConfigurationsPressRoom() {
           name={pressRoomNameToBeDeleted}
           category="Press Room"
           onDelete={handleDeletePressRoom}
-          onClose={() => setPressRoomNameToBeDeleted(null)}
+          onClose={closeModalDelete}
           showSuccessAlert={() => setShowDeleteSuccessAlert(true)}
         />
       }

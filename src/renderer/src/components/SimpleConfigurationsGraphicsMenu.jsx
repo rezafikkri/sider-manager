@@ -89,9 +89,25 @@ export default function SimpleConfigurationsGraphicsMenu() {
     return notFoundImage;    
   }
 
-  useEffect(() => {
-    document.querySelector('body').classList.toggle('overflow-hidden');
-  }, [showModalWithSimpleConfigForm, graphicMenuNameToBeDeleted]);
+  function showModalAdd() {
+    setShowModalWithSimpleConfigForm(true);
+    document.querySelector('body').classList.add('overflow-hidden');
+  }
+
+  function closeModalAdd() {
+    setShowModalWithSimpleConfigForm(false);
+    document.querySelector('body').classList.remove('overflow-hidden');
+  }
+
+  const showModalDelete = useCallback((name) => {
+    setGraphicMenuNameToBeDeleted(name);
+    document.querySelector('body').classList.add('overflow-hidden');
+  }, []);
+
+  function closeModalDelete() {
+    setGraphicMenuNameToBeDeleted(null);
+    document.querySelector('body').classList.remove('overflow-hidden');
+  }
 
   useEffect(() => {
     // check is graphics menu config is activated or not yet
@@ -137,7 +153,7 @@ export default function SimpleConfigurationsGraphicsMenu() {
 
       { status !== null ? (
         <button
-          onClick={() => setShowModalWithSimpleConfigForm(true)}
+          onClick={showModalAdd}
           data-testid="show-modal-add-graphic-menu-btn"
           disabled={status ? false : true}
           type="button"
@@ -157,7 +173,7 @@ export default function SimpleConfigurationsGraphicsMenu() {
             isChecked={graphicMenu.active}
             onChoose={handleChooseGraphicMenu}
             dataConfig={graphicMenu}
-            onDelete={setGraphicMenuNameToBeDeleted}
+            onDelete={showModalDelete}
           />
         )}
       </section>
@@ -191,7 +207,7 @@ export default function SimpleConfigurationsGraphicsMenu() {
       {showModalWithSimpleConfigForm && 
         <ModalWithSimpleConfigForm
           category={'Graphic Menu'}
-          onClose={() => setShowModalWithSimpleConfigForm(false)}
+          onClose={closeModalAdd}
           onSubmit={handleAddGraphicMenu}
           getPreview={getGraphicMenuPreview}
         />
@@ -202,7 +218,7 @@ export default function SimpleConfigurationsGraphicsMenu() {
           name={graphicMenuNameToBeDeleted}
           category="Graphic Menu"
           onDelete={handleDeleteGraphicMenu}
-          onClose={() => setGraphicMenuNameToBeDeleted(null)}
+          onClose={closeModalDelete}
           showSuccessAlert={() => setShowDeleteSuccessAlert(true)}
         />
       }
