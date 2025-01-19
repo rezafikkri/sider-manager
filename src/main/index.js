@@ -132,6 +132,9 @@ app.whenReady().then(() => {
   ipcMain.handle('deleteMLManager', (_, name) => deleteMLManager(name));
   ipcMain.handle('deleteGraphicMenu', (_, name) => deleteGraphicMenu(name));
   ipcMain.handle('deletePressRoom', (_, name) => deletePressRoom(name));
+  ipcMain.handle('getBackupPath', () => {
+    return path.join(path.basename(getSettings().pesDirectory), 'backup');
+  });
 
   // check-update in background
   checkUpdate();

@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import LocaleContext from '../contexts/LocaleContext';
 import { translate } from '../../../main/utils';
 import AddonInitializationChoose from './AddonInitializationChoose';
@@ -11,6 +11,7 @@ export default function AddonInitializationApp() {
   const [isLoading, setIsLoading] = useState(false);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [showErrorAlert, setShowErrorAlert] = useState(false);
+  const [backupPath, setBackupPath] = useState('');
 
   async function handleChooseFile() {
     const newFile = await window.sm.chooseInitializationFile();
@@ -44,6 +45,14 @@ export default function AddonInitializationApp() {
     setIsLoading(false);
   }
 
+  useEffect(() => {
+    async function getBackupPath() {
+      const backupPath = await window.sm.getBackupPath();
+      setBackupPath(backupPath);
+    }
+    getBackupPath();
+  }, []);
+
   return (
     <main className="p-5 h-screen">
     <div className="relative h-full">
@@ -54,7 +63,7 @@ export default function AddonInitializationApp() {
       <small className="mb-6 block">
         <strong>{translate(locale, 'addonInitializationApp.smallStrongText', resources)}</strong>:
         {' ' + translate(locale, 'addonInitializationApp.smallText', resources) + ' '}
-        <code className="bg-indigo-950 p-1 rounded">PES 2017/backup</code>.
+        <code className="bg-indigo-950 p-1 rounded text-nowrap">{backupPath}</code>.
       </small>
       <form className="flex justify-end" onSubmit={handleSubmit}>
         <div className="relative">

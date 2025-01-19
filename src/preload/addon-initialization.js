@@ -7,6 +7,7 @@ const sm = {
   saveSettings: (settings) => ipcRenderer.invoke('saveSettings', settings),
   chooseInitializationFile: () => ipcRenderer.invoke('chooseInitializationFile'),
   addonInitialization: (fileName, filePath) => ipcRenderer.invoke('addonInitialization', fileName, filePath),
+  getBackupPath: () => ipcRenderer.invoke('getBackupPath'),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to
