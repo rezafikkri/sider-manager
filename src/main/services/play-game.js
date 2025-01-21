@@ -23,8 +23,7 @@ async function playGame() {
     }
 
     const execFile = util.promisify(childProcess.execFile);
-    await execFile(siderExe);
-    await execFile(pes2017Exe);
+    await Promise.all([execFile(siderExe), execFile(pes2017Exe)]);
 
     return true;
   } catch (err) {
