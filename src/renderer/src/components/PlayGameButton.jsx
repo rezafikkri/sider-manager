@@ -20,10 +20,10 @@ export default function PlayGameButton() {
   return (
     <>
       <button
-        className="bg-indigo-700 hover:bg-indigo-600 row-span-2 font-bold text-xl rounded-t-3xl rounded-b-2xl px-4 py-6 outline outline-transparent focus:outline-offset-2 focus:outline-indigo-700 transition-colors duration-100 shadow-lg"
+        className="bg-green-500 hover:bg-green-400 font-bold text-xl rounded-3xl px-4 py-6 outline outline-2 outline-transparent focus:outline-offset-2 focus:outline-green-500 transition-colors duration-100 shadow-lg text-d-bg flex justify-center items-center"
         onClick={handlePlayGame}
       >
-        <img src={soccerLogo} className="w-full mb-3"/>
+        <img src={soccerLogo} className="w-8 me-2"/>
         <span>{translate(locale, 'playGameBtn.btnText', resources)}</span>
       </button>
       {playGameError &&

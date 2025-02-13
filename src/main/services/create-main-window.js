@@ -7,7 +7,7 @@ export default function createMainWindow() {
   // Create main window.
   const mainWindow = new BrowserWindow({
     width: 800,
-    height: 430,
+    height: 410,
     show: false,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {

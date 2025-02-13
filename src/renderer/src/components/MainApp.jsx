@@ -12,11 +12,11 @@ export default function MainApp() {
         <div className="bg-gradient"></div>
       </section>
       <Header type="main"/>
-      <main className="grid grid-cols-3 gap-5 p-10 text-center relative z-10">
+      <main className="grid grid-cols-2 gap-5 p-10 text-center relative z-10">
         <AddonInitializationButton />
         <PlayGameButton />
-        <AdvancedConfigurationButton />
         <SimpleConfigurationButton />
+        <AdvancedConfigurationButton />
       </main>
       <Footer />
     </>

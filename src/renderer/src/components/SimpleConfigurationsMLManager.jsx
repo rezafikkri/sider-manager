@@ -141,7 +141,7 @@ export default function SimpleConfigurationsMLManager() {
                 onChange={handleToggleMLManagerConfig}
                 className="sr-only peer"
               />
-              <div className="relative w-11 h-6 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 peer-focus:ring-indigo-800 rounded-full peer bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-indigo-600"></div>
+              <div className="relative w-11 h-6 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-700 rounded-full peer bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-green-600"></div>
               <span className="ms-3 text-sm font-medium text-gray-300">{status ?
                 translate(locale, 'simpleConfigurationsMLManager.statusOn', resources) :
                 translate(locale, 'simpleConfigurationsMLManager.statusOff', resources)
@@ -157,7 +157,7 @@ export default function SimpleConfigurationsMLManager() {
           data-testid="show-modal-add-ml-manager-btn"
           disabled={status ? false : true}
           type="button"
-          className="ms-3 text-sm font-medium rounded-lg px-3 py-2 bg-gray-800 hover:bg-indigo-700 outline outline-transparent focus:outline-offset-2 focus:outline-indigo-700 transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-65 disabled:hover:bg-gray-800"
+          className="ms-3 text-sm font-medium rounded-lg px-3 py-2 bg-gray-800 hover:bg-green-500 hover:text-d-bg outline outline-2 outline-transparent focus:outline-offset-2 focus:outline-green-500 transition-colors duration-100 disabled:cursor-not-allowed disabled:opacity-65 disabled:hover:bg-gray-800"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="icon me-1" viewBox="0 0 16 16"><path fillRule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/></svg>
           <span>{translate(locale, 'simpleConfigurationsMLManager.addMLManagerBtnText', resources)}</span>

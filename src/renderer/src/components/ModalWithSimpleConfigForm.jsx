@@ -66,11 +66,11 @@ export default function ModalWithSimpleConfigForm({
   return (
     <>
       <div className="fixed top-0 right-0 left-0 bottom-0 z-50 flex justify-center overflow-auto">
-        <div className="relative h-fit w-2/5 m-10 bg-indigo-950 rounded-lg shadow px-5 py-6">
+        <div className="relative h-fit w-2/5 m-10 bg-d-bg-light rounded-lg shadow px-5 py-6">
           <button
             onClick={onClose}
             type="button"
-            className="absolute top-0 right-0 text-white/60 bg-sima-bg/50 hover:text-white/90 rounded-es-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+            className="absolute top-0 right-0 text-white/60 bg-d-alert-bg hover:text-white/90 rounded-es-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
           >
             <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14"><path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/></svg>
           </button>
@@ -83,12 +83,12 @@ export default function ModalWithSimpleConfigForm({
               >
                 {translate(locale, 'modalWithSimpleConfigForm.directoryLabelText', resources, category)}
               </label>
-              <div className="flex outline outline-transparent has-[:focus]:outline-offset-2 has-[:focus]:outline-indigo-700 rounded-lg">
+              <div className="flex outline outline-2 outline-transparent has-[:focus]:outline-offset-2 has-[:focus]:outline-green-700 rounded-lg">
                 <input
                   ref={inputDirectoryRef}
                   id={keyInputDirectory}
                   type="text"
-                  className="flex-auto block w-full p-4 outline-0 bg-indigo-900/40 rounded-l-lg"
+                  className="flex-auto block w-full p-4 outline-0 bg-d-input-bg-light rounded-l-lg"
                   placeholder={translate(locale, 'modalWithSimpleConfigForm.directoryInputPlaceholder', resources, category)}
                   spellCheck="false"
                   name="directory"
@@ -97,7 +97,7 @@ export default function ModalWithSimpleConfigForm({
                 />
                 <button
                   type="button"
-                  className="flex-none bg-indigo-900/70 hover:bg-indigo-900/90 rounded-r-lg px-4 transition-colors duration-100 font-medium text-white/90"
+                  className="flex-none bg-[#2A2731] hover:bg-[#2E2A35] rounded-r-lg px-4 transition-colors duration-100 font-medium text-white/90"
                   onClick={handleChooseNewSimpleConfigDirectory}
                   data-testid="choose-directory-btn"
                 >
@@ -120,7 +120,7 @@ export default function ModalWithSimpleConfigForm({
                 type="text"
                 name="manager-name"
                 id={keyInputName}
-                className="block w-full p-4 outline-0 bg-indigo-900/40 rounded-lg outline outline-[3px] focus:outline-offset-2 mb-2 outline-transparent focus:outline-indigo-700"
+                className="block w-full p-4 outline-0 bg-d-input-bg-light rounded-lg outline outline-[3px] focus:outline-offset-2 mb-2 outline-transparent focus:outline-green-700"
                 placeholder={translate(locale, 'modalWithSimpleConfigForm.nameInputPlaceholder', resources, category)}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -144,19 +144,19 @@ export default function ModalWithSimpleConfigForm({
             <div className="flex justify-end items-center">
               <div className="relative">
                 {isLoading && 
-                  <div className="absolute z-20 bg-indigo-600/90 top-0 bottom-0 left-0 right-0 rounded-lg flex justify-center items-center" data-testid="loading">
+                  <div className="absolute z-20 bg-green-500/90 top-0 bottom-0 left-0 right-0 rounded-lg flex justify-center items-center" data-testid="loading">
                     <div className="w-5 h-5 border-4 border-t-white border-s-white/50 border-e-white/50 border-b-white/50 rounded-full animate-spin"/>
                   </div>
                 }
 
-                <button type="submit" data-testid="submit-btn" className="font-medium rounded-lg px-4 py-3 bg-indigo-700 hover:bg-indigo-600 outline outline-transparent focus:outline-offset-2 focus:outline-indigo-700 shadow-lg transition-colors duration-100 ease-in">{translate(locale, 'modalWithSimpleConfigForm.submitBtnText', resources, category)}</button>
+                <button type="submit" data-testid="submit-btn" className="font-medium rounded-lg px-4 py-3 bg-green-500 hover:bg-green-400 outline outline-2 outline-transparent focus:outline-offset-2 focus:outline-green-500 shadow-lg transition-colors duration-100 ease-in text-d-bg">{translate(locale, 'modalWithSimpleConfigForm.submitBtnText', resources, category)}</button>
               </div>
             </div>
           </form>
         </div>
       </div>
 
-      <div className="bg-sima-bg/80 fixed inset-0 z-40"></div>
+      <div className="bg-d-bg/80 fixed inset-0 z-40"></div>
 
       {showSuccessAlert &&
         <div className="fixed bottom-5 right-8 left-5 text-left w-3/5 z-50" data-testid="modal-with-simple-config-form-success-alert">

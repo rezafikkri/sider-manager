@@ -8,9 +8,9 @@ export default function Footer() {
   if (locale === 'en') feedbackLink = 'https://forms.gle/zS2UprPyfcD92j4j9';
 
   return (
-    <footer className="p-4 text-white/80 [&_a]:text-indigo-400 [&_a]:font-medium text-xs relative z-10">
+    <footer className="p-4 text-white/80 [&_a]:text-green-300/90 [&_a]:font-medium text-xs relative z-10">
       {translate(locale, 'footer.sendFeedbackText', resources)}
-      <a href={feedbackLink} target="_blank" className="inline-block hover:text-indigo-300">{translate(locale, 'footer.sendFeedbackLinkText', resources)}</a>
+      <a href={feedbackLink} target="_blank" className="inline-block hover:text-green-300">{translate(locale, 'footer.sendFeedbackLinkText', resources)}</a>
     </footer>
   );
 }

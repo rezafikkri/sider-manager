@@ -43,11 +43,11 @@ export default function ActivationForm({ onActivate }) {
         <label htmlFor={keyTextAreaId} className="inline-block font-semibold mb-3 text-white/90">
           {translate(locale, 'activationForm.keyLabelText', resources)}
         </label>
-        <div className="overflow-hidden rounded-lg shadow outline outline-[3px] has-[:focus]:outline-offset-2 ${activateError outline-transparent has-[:focus]:outline-indigo-700">
+        <div className="overflow-hidden rounded-lg shadow outline outline-2 has-[:focus]:outline-offset-2 ${activateError outline-transparent has-[:focus]:outline-green-600">
           <textarea
             id={keyTextAreaId}
             rows={6}
-            className={`block p-4 w-full bg-indigo-950 resize-none outline-0`}
+            className={`block p-4 w-full bg-d-input-bg resize-none outline-0 text-white`}
             spellCheck="false"
             name="key"
             placeholder={translate(locale, 'activationForm.keyTextareaPlaceholder', resources)}
@@ -62,13 +62,13 @@ export default function ActivationForm({ onActivate }) {
         <div className="flex justify-end">
           <div className="relative">
             {isLoading && 
-              <div className="absolute z-20 bg-indigo-600/90 top-0 bottom-0 left-0 right-0 rounded-lg flex justify-center items-center" data-testid="loading">
+              <div className="absolute z-20 bg-green-500/90 top-0 bottom-0 left-0 right-0 rounded-lg flex justify-center items-center" data-testid="loading">
                 <div className="w-5 h-5 border-4 border-t-white border-s-white/50 border-e-white/50 border-b-white/50 rounded-full animate-spin"/>
               </div>
             }
             <button
               type="submit"
-              className="font-medium rounded-lg px-4 py-2.5 bg-indigo-700 hover:bg-indigo-600 outline outline-transparent focus:outline-offset-2 focus:outline-indigo-700 transition-colors duration-300"
+              className="font-medium rounded-lg px-4 py-2.5 bg-green-500 hover:bg-green-400 outline outline-transparent focus:outline-offset-2 focus:outline-green-500 transition-colors duration-100 text-d-bg"
               disabled={isLoading}
             >
               {translate(locale, 'activationForm.submitBtnText', resources)}

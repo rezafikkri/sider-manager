@@ -38,12 +38,12 @@ export default function PESDirectoryForm() {
       >
         {translate(locale, 'pesDirectoryInput.directoryLabelText', resources)}
       </label>
-      <div className="flex outline outline-transparent has-[:focus]:outline-offset-2 has-[:focus]:outline-indigo-700 rounded-lg">
+      <div className="flex outline outline-2 outline-transparent has-[:focus]:outline-offset-2 has-[:focus]:outline-green-700 rounded-lg">
         <input
           ref={inputDirectoryRef}
           id={keyInputDirectory}
           type="text"
-          className="flex-auto block w-full p-4 outline-0 bg-indigo-950 rounded-l-lg"
+          className="flex-auto block w-full p-4 outline-0 bg-d-input-bg rounded-l-lg"
           placeholder={translate(locale, 'pesDirectoryInput.directoryInputPlaceholder', resources)}
           spellCheck="false"
           name="directory"
@@ -53,7 +53,7 @@ export default function PESDirectoryForm() {
         />
         <button
           type="button"
-          className="flex-none bg-[#24215D] hover:bg-[#2B286F] rounded-r-lg px-4 transition-colors duration-100 font-medium text-white/90"
+          className="flex-none bg-[#18161C] hover:bg-[#1B191F] rounded-r-lg px-4 transition-colors duration-100 font-medium text-white/90"
           onClick={handleChooseDirectory}
         >
           {translate(locale, 'pesDirectoryInput.chooseBtnText', resources)}
@@ -64,7 +64,7 @@ export default function PESDirectoryForm() {
       </small>
 
       <div className="flex justify-end">
-        <button type="submit" className="font-medium rounded-lg px-4 py-3 bg-indigo-700 hover:bg-indigo-600 outline outline-transparent focus:outline-offset-2 focus:outline-indigo-700 shadow-lg transition-colors duration-100 ease-in">
+        <button type="submit" className="font-medium rounded-lg px-4 py-3 bg-green-500 hover:bg-green-400 outline outline-2 outline-transparent focus:outline-offset-2 focus:outline-green-500 shadow-lg transition-colors duration-100 ease-in text-d-bg">
           {translate(locale, 'pesDirectoryForm.submitBtnText', resources)}
         </button>
       </div>

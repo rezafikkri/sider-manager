@@ -19,7 +19,9 @@ export default function SimpleConfigurationsApp() {
   }
 
   function activeMenu(menu) {
-    return menu === config ? 'bg-indigo-950 font-medium' : 'opacity-80';
+    return menu === config ?
+      'bg-d-alert-bg-hover hover:bg-d-alert-bg-hover font-medium' :
+      'opacity-80 hover:bg-d-alert-bg';
   }
 
   return (
@@ -41,7 +43,7 @@ export default function SimpleConfigurationsApp() {
                 href="#"
                 id="sider"
                 onClick={handleConfig}
-                className={`hover:bg-indigo-950 ${activeMenu('sider')}`}
+                className={activeMenu('sider')}
               >
                 Sider
               </a>
@@ -51,7 +53,7 @@ export default function SimpleConfigurationsApp() {
                 href="#"
                 id="ml-manager"
                 onClick={handleConfig}
-                className={`hover:bg-indigo-950 ${activeMenu('ml-manager')}`}
+                className={activeMenu('ml-manager')}
               >
                 ML Manager
               </a>
@@ -61,7 +63,7 @@ export default function SimpleConfigurationsApp() {
                 href="#"
                 id="press-room"
                 onClick={handleConfig}
-                className={`hover:bg-indigo-950 ${activeMenu('press-room')}`}
+                className={activeMenu('press-room')}
               >
                 Press Room
               </a>
@@ -71,7 +73,7 @@ export default function SimpleConfigurationsApp() {
                 href="#"
                 id="graphics-menu"
                 onClick={handleConfig}
-                className={`hover:bg-indigo-950 ${activeMenu('graphics-menu')}`}
+                className={activeMenu('graphics-menu')}
               >
                 Graphics Menu
               </a>

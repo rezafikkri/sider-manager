@@ -39,11 +39,11 @@ export default function AboutApp() {
       </section>
       <section className="mt-14 mb-5">
         <h2 className="font-bold mb-4 text-lg">{translate(locale, 'aboutWindow.contact.title', resources)}</h2>
-        <p dangerouslySetInnerHTML={{__html: translate(locale, 'aboutWindow.contact.desc', resources)}}/>
+        <p className="text-white/90" dangerouslySetInnerHTML={{__html: translate(locale, 'aboutWindow.contact.desc', resources)}}/>
         <h3 className="mt-3 mb-1.5 font-semibold">Email</h3>
-        <p><a href="mailto:fikkri.reza@gmail.com" target="_blank">fikkri.reza@gmail.com</a></p>
+        <p className="text-white/90"><a href="mailto:fikkri.reza@gmail.com" target="_blank">fikkri.reza@gmail.com</a></p>
         <h4 className="mt-3 mb-1.5 font-semibold">WhatsApp</h4>
-        <p>+62 85758438583</p>
+        <p className="text-white/90">+62 85758438583</p>
       </section>
     </main>
   );

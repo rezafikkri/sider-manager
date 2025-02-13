@@ -22,20 +22,20 @@ function ConfigCardImg({
   return (
     <div className="relative">
       {isLoading &&
-        <div className="absolute z-20 bg-indigo-600/60 top-0 bottom-0 left-0 right-0 rounded-lg flex justify-center items-center" data-testid={`loading-${title}`}>
+        <div className="absolute z-20 bg-green-700/60 top-0 bottom-0 left-0 right-0 rounded-lg flex justify-center items-center" data-testid={`loading-${title}`}>
           <div className="w-5 h-5 border-4 border-t-white border-s-white/50 border-e-white/50 border-b-white/50 rounded-full animate-spin"/>
         </div>
       }
 
-      <label htmlFor={configId} className={`${!isChecked ? 'cursor-pointer' : ''} border border-gray-800 rounded-lg has-[:checked]:border-indigo-600 block`} data-testid={`config-card-${title}`}>
+      <label htmlFor={configId} className={`${!isChecked ? 'cursor-pointer' : ''} border border-gray-800 rounded-lg has-[:checked]:border-green-700 block`} data-testid={`config-card-${title}`}>
         <img src={img} alt={title} className="rounded-t-lg" loading="lazy" width="1360" height="768" decoding="async" />
-        <div className="flex justify-between px-3 py-2 border-t border-gray-800 h-[41px]">
-          <div className="inline-flex items-center">
+        <div className="flex justify-between px-3 py-2 border-t border-gray-800 min-h-[41px]">
+          <div className="flex items-center">
             <label className={`relative flex items-center ${!isChecked ? 'cursor-pointer' : ''}`}>
               <input
                 name="config"
                 type="radio"
-                className={`peer h-4 w-4 ${!isChecked ? 'cursor-pointer' : ''} appearance-none rounded-full border checked:border-8 border-gray-600 hover:border-gray-500 bg-gray-700 checked:!border-indigo-600 transition-all duration-75`}
+                className={`peer h-4 w-4 ${!isChecked ? 'cursor-pointer' : ''} appearance-none rounded-full border checked:border-8 border-gray-600 hover:border-gray-500 bg-gray-700 checked:!border-green-600 transition-all duration-75`}
                 id={configId}
                 onChange={handleOnChange}
                 checked={isChecked}

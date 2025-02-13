@@ -18,12 +18,12 @@ export default function Alert({ message, onClose, type='danger' }) {
   const btnId = useId();
 
   return (
-    <div className={`flex items-center p-4 rounded-lg bg-indigo-950 ${textColor}`}>
+    <div className={`flex items-center p-4 rounded-lg bg-d-alert-bg ${textColor}`}>
       {icon}
       <div className="ms-3 me-3 text-sm font-medium" dangerouslySetInnerHTML={{ __html: message()}}/>
       <button
         type="button"
-        className={`ms-auto -mx-1.5 -my-1.5 rounded-lg focus:ring-2 ${closeButtonFocusColor} p-1.5 inline-flex items-center justify-center h-8 w-8 bg-indigo-950 ${textColor} hover:bg-indigo-900/50`}
+        className={`ms-auto -mx-1.5 -my-1.5 rounded-lg focus:ring-2 ${closeButtonFocusColor} p-1.5 inline-flex items-center justify-center h-8 w-8 bg-d-alert-bg ${textColor} hover:bg-d-alert-bg-hover`}
         onClick={onClose}
         id={btnId}
       >
