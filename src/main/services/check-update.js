@@ -10,9 +10,9 @@ import { getLocaleResources } from './locale';
 import { translate } from '../utils';
 import UnauthorizeError from '../exceptions/UnauthorizeError';
 
-const cid = '1067594218718-jue7kr807nc2nl08f1fpslk8v4mq70qs.apps.googleusercontent.com';
-const csec = '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';
-const rt = '1//04XwgAsM6hakgCgYIARAAGAQSNwF-L9Irlw0j6pApykBsA6CzjBvvIzabHe3IXaSCWd3QKA0lNEp7naZDbybj3m4qzwPkslMSsk0';
+const cid = '882426195302-d85q810np449r40iqg2t6j79ubcm2ts2.apps.googleusercontent.com';
+const csec = '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';
+const rt = '1//047LICTKVSZJiCgYIARAAGAQSNwF-L9IrABeN4tU2T0gyTovrEleRTz5jmMfJF6LmNZIHiT9DD-OUF-JZ871p-0QHqfGEACc-VBs';
 
 async function loadAccessToken() {
   const gdAtPath = path.join(getSettingsPath(), 'gd-at.json');
@@ -38,7 +38,7 @@ async function refreshAT() {
 async function getFolders() {
   const { at: accessToken } = await loadAccessToken();
   try {
-    const url = 'https://www.googleapis.com/drive/v3/files?orderBy=name_natural%20desc&q=%27upload-sm%40release-sider-manager.iam.gserviceaccount.com%27%20in%20owners%20and%20mimeType%20%3D%20%27application%2Fvnd.google-apps.folder%27';
+    const url = 'https://www.googleapis.com/drive/v3/files?orderBy=name_natural%20desc&q=%27upload-sider-manager%40caramel-vim-451414-b6.iam.gserviceaccount.com%27%20in%20owners%20and%20mimeType%20%3D%20%27application%2Fvnd.google-apps.folder%27';
     const res = await needle('get', url, {
       headers: { 'Authorization': `Bearer ${accessToken}` }
     });
