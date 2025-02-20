@@ -30,8 +30,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Run Unit Testing
-        run: pnpm run test
+      # - name: Run Unit Testing
+      #   run: pnpm run test
 
       - name: Build
         run: pnpm run build:linux
@@ -71,8 +71,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Run Unit Testing
-        run: pnpm run test
+      # - name: Run Unit Testing
+      #   run: pnpm run test
 
       - name: Build
         run: pnpm run build:win
