@@ -1,15 +1,13 @@
 import { contextBridge, ipcRenderer } from 'electron';
 
 const sm = {
-  windowName: 'main',
+  windowName: 'addonInitialization',
   getLocaleResources: () => ipcRenderer.invoke('getLocaleResources'),
   getSettings: () => ipcRenderer.invoke('getSettings'),
   saveSettings: (settings) => ipcRenderer.invoke('saveSettings', settings),
-  playGame: () => ipcRenderer.invoke('playGame'),
-  createSettingsWindow: () => ipcRenderer.invoke('createSettingsWindow'),
-  createAboutWindow: () => ipcRenderer.invoke('createAboutWindow'),
-  createAddonInitializationWindow: () => ipcRenderer.invoke('createAddonInitializationWindow'),
-  createSimpleConfigurationsWindow: () => ipcRenderer.invoke('createSimpleConfigurationsWindow'),
+  chooseInitializationFile: () => ipcRenderer.invoke('chooseInitializationFile'),
+  addonInitialization: (fileName, filePath) => ipcRenderer.invoke('addonInitialization', fileName, filePath),
+  getBackupPath: () => ipcRenderer.invoke('getBackupPath'),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="512"
+   height="512"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="Reza logo.svg"
+   inkscape:export-filename="../../../../Documents/Other Design/Reza.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.49497476"
+     inkscape:cx="286.88332"
+     inkscape:cy="437.39604"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:snap-grids="true"
+     units="mm"
+     inkscape:snap-object-midpoints="false"
+     showguides="true"
+     inkscape:window-width="1366"
+     inkscape:window-height="710"
+     inkscape:window-x="0"
+     inkscape:window-y="26"
+     inkscape:window-maximized="1"
+     inkscape:showpageshadow="2"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:lockguides="false">
+    <inkscape:grid
+       type="xygrid"
+       id="grid1023"
+       originx="0"
+       originy="0" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g295"
+       transform="matrix(2.4380941,0,0,2.4380941,6.8430306e-5,6.8430306e-5)">
+      <path
+         style="fill:#020202;fill-opacity:0.999062;stroke:none;stroke-width:0.645922;stroke-opacity:1"
+         d="M -4.7584025e-5,-4.7584025e-5 V 210.00005 H 210.00005 V -4.7584025e-5 Z"
+         id="rect832" />
+      <path
+         style="fill:#ffffff;fill-opacity:0.999062;stroke-width:0.600219"
+         d="m 80.941538,112.39477 h 94.528892 v 25.39732 h -68.23552 v 35.52523 H 80.941538 v -35.52523 z"
+         id="path1629"
+         sodipodi:nodetypes="cccccccc" />
+      <path
+         style="fill:#ffffff;fill-opacity:0.999062;stroke-width:0.600219"
+         d="M 37.597689,35.444583 H 175.47043 V 97.123925 H 149.17706 V 61.737953 H 63.891061 V 173.31732 H 37.597689 Z"
+         id="path1627"
+         sodipodi:nodetypes="ccccccccc" />
+    </g>
+  </g>
+</svg>

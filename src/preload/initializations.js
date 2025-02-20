@@ -1,15 +1,19 @@
 import { contextBridge, ipcRenderer } from 'electron';
 
 const sm = {
-  windowName: 'main',
+  windowName: 'initializations',
+  setTitle: (title) => ipcRenderer.send('set-title', title),
   getLocaleResources: () => ipcRenderer.invoke('getLocaleResources'),
   getSettings: () => ipcRenderer.invoke('getSettings'),
   saveSettings: (settings) => ipcRenderer.invoke('saveSettings', settings),
-  playGame: () => ipcRenderer.invoke('playGame'),
-  createSettingsWindow: () => ipcRenderer.invoke('createSettingsWindow'),
+  isActivated: () => ipcRenderer.invoke('isActivated'),
+  checkLicenseKeyHasBeenUsed: () => ipcRenderer.invoke('checkLicenseKeyHasBeenUsed'),
+  activate: (activationKey) => ipcRenderer.invoke('activate', activationKey),
+  choosePESDirectory: () => ipcRenderer.invoke('choosePESDirectory'),
+  initializeSettings: (pesDirectory) => ipcRenderer.invoke('initializeSettings', pesDirectory),
+  initializeMainWindow: () => ipcRenderer.invoke('initializeMainWindow'),
+  isPESDirectorySetup: () => ipcRenderer.invoke('isPESDirectorySetup'),
   createAboutWindow: () => ipcRenderer.invoke('createAboutWindow'),
-  createAddonInitializationWindow: () => ipcRenderer.invoke('createAddonInitializationWindow'),
-  createSimpleConfigurationsWindow: () => ipcRenderer.invoke('createSimpleConfigurationsWindow'),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to
