@@ -1,0 +1,108 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  build-on-linux:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 9
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run Unit Testing
+        run: pnpm run test
+
+      - name: Build
+        run: pnpm run build:linux
+
+      - name: See dist
+        shell: bash
+        run: |
+          cd dist
+          ls -R
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux_build
+          path: |
+            dist/*.deb
+            dist/*.yml
+
+  build-on-windows:
+    needs: build-on-linux
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 9
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run Unit Testing
+        run: pnpm run test
+
+      - name: Build
+        run: pnpm run build:win
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: linux_build
+          path: dist
+
+      - name: See dist
+        shell: bash
+        run: |
+          cd dist
+          ls -R
+
+      - name: release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          files: |
+            dist/*.exe
+            dist/*.deb
+            dist/*.yml
+            dist/*.blockmap
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: upload_to_google_drive
+          path: |
+            dist/*.exe
+            dist/*.deb
+            dist/*.yml
+            dist/*.blockmap
