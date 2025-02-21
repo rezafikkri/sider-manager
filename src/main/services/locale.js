@@ -97,14 +97,9 @@ const resources = {
       btnText: 'Inisialisasi Addon',
       smallText: 'Menginisialisasi Addon/Mod kamu dengan mudah',
     },
-    advancedConfigBtn: {
-      btnText: 'Lanjutan',
-      smallText: 'Konfigurasi detail dari Addon kamu',
-    },
-    simpleConfigBtn: {
-      btnText: 'Sederhana',
-      smallText: 'Konfigurasi sederhana dari Addon kamu',
-    },
+    advancedConfigBtnText: 'Lanjutan',
+    simpleConfigBtnText: 'Sederhana',
+    simpleAdvancedSmallText: '<strong>Sederhana</strong> untuk konfigurasi sederhana Addon, <strong>Lanjutan</strong> untuk konfigurasi detail dari Addon.',
     footer: {
       sendFeedbackText: 'Punya saran? ',
       sendFeedbackLinkText: 'Kirimkan masukan!'
@@ -114,8 +109,7 @@ const resources = {
       body: 'Sider Manager versi :param diliris.',
     },
     addonInitializationApp: {
-      smallStrongText: 'Catatan',
-      smallText: 'berkas Sider yang lama akan dibackup di',
+      smallText: '<strong>Catatan</strong>: Inisialisasi Addon hanya perlu dilakukan ketika pertama kali install aplikasi, kecuali jika memang ada intruksi untuk melakukannya lagi!, pastikan juga nama PES Executable dan Sider Executable benar pada bagian <strong>Pengaturan</strong> dan untuk berkas Sider yang lama akan dibackup di ',
       cancelBtnText: 'Batal',
       initializationBtnText: 'Inisialisasi',
       successAlertMsg: 'Inisialisasi Addon selesai.',
@@ -284,14 +278,9 @@ const resources = {
       btnText: 'Addon Initialization',
       smallText: 'Initialize your Addon/Mod easily',
     },
-    advancedConfigBtn: {
-      btnText: 'Advanced',
-      smallText: 'Detailed configuration of your Addon',
-    },
-    simpleConfigBtn: {
-      btnText: 'Simple',
-      smallText: 'Simple configuration of your Addon',
-    },
+    advancedConfigBtnText: 'Advanced',
+    simpleConfigBtnText: 'Simple',
+    simpleAdvancedSmallText: '<strong>Simple</strong> for simple configurations of Addon, <strong>Advanced</strong> for detail configurations of Addon.',
     footer: {
       sendFeedbackText: 'Have a suggestion? ',
       sendFeedbackLinkText: 'Send feedback!'
@@ -303,6 +292,7 @@ const resources = {
     addonInitializationApp: {
       smallStrongText: 'Note',
       smallText: 'old Sider file will be backed up in',
+      smallText: '<strong>Note</strong>: Addon initialization only needs to be done when first installing the application, unless there are instructions to do it again!, also make sure the PES Executable name and Sider Executable name are correct in <strong>Setting</strong> section and for old Sider file will be backed up in ',
       cancelBtnText: 'Cancel',
       initializationBtnText: 'Initialization',
       successAlertMsg: 'Addon initialization complete.',

@@ -6,14 +6,11 @@ export default function AdvancedConfigurationButton() {
   const {locale, resources} = useContext(LocaleContext);
 
   return (
-    <section className="shadow-lg">
-      <button className="bg-green-500 hover:bg-green-400 font-bold text-xl w-full px-3 py-4 rounded-t-3xl outline outline-2 outline-transparent focus:outline-offset-2 focus:outline-green-500 transition-colors duration-100 text-d-bg flex justify-center items-center">
-        <svg className="icon me-2" xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" /><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /></svg>
-        <span>{translate(locale, 'advancedConfigBtn.btnText', resources)}</span>
+    <section className="shadow-lg rounded-2xl flex-1 ms-1.5">
+      <button className="bg-green-500 hover:bg-green-400 font-bold text-xl w-full px-4 py-5 rounded-2xl transition-transform duration-[0.3s] active:scale-[0.96] text-d-bg flex justify-center items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="currentColor" className="icon me-2 text-d-bg/90"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14.647 4.081a.724 .724 0 0 0 1.08 .448c2.439 -1.485 5.23 1.305 3.745 3.744a.724 .724 0 0 0 .447 1.08c2.775 .673 2.775 4.62 0 5.294a.724 .724 0 0 0 -.448 1.08c1.485 2.439 -1.305 5.23 -3.744 3.745a.724 .724 0 0 0 -1.08 .447c-.673 2.775 -4.62 2.775 -5.294 0a.724 .724 0 0 0 -1.08 -.448c-2.439 1.485 -5.23 -1.305 -3.745 -3.744a.724 .724 0 0 0 -.447 -1.08c-2.775 -.673 -2.775 -4.62 0 -5.294a.724 .724 0 0 0 .448 -1.08c-1.485 -2.439 1.305 -5.23 3.744 -3.745a.722 .722 0 0 0 1.08 -.447c.673 -2.775 4.62 -2.775 5.294 0zm-2.647 4.919a3 3 0 1 0 0 6a3 3 0 0 0 0 -6z" /></svg>
+        <span>{translate(locale, 'advancedConfigBtnText', resources)}</span>
       </button>
-      <small className="block bg-d-bg-light text-white/70 px-2 py-3 rounded-b-3xl">
-        {translate(locale, 'advancedConfigBtn.smallText', resources)}
-      </small>
     </section>
   );
 }

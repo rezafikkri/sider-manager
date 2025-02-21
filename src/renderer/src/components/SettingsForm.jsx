@@ -110,7 +110,7 @@ export default function SettingsForm() {
             />
             <button
               type="button"
-              className="flex-none bg-[#18161C] hover:bg-[#1B191F] rounded-r-lg px-4 transition-colors duration-100 font-medium text-white/90"
+              className="flex-none bg-[#1B191F] hover:bg-[#1D1B22] rounded-r-lg px-4 transition-colors duration-100 font-medium text-white/90"
               onClick={handleChooseDirectory}
             >
               {translate(locale, 'pesDirectoryInput.chooseBtnText', resources)}
@@ -170,7 +170,7 @@ export default function SettingsForm() {
           <button type="submit" className="font-medium rounded-lg px-4 py-3 bg-green-500 hover:bg-green-400 outline outline-2 outline-transparent focus:outline-offset-2 focus:outline-green-500 shadow-lg transition-colors duration-100 ease-in text-d-bg">{translate(locale, 'settingsForm.submitBtnText', resources)}</button>
         </div>
       </form>
-      {(showSuccessAlert || errors.length > 0) ? 
+      {(showSuccessAlert || errors.length > 0) ?
       <div className="absolute bottom-0 right-0 left-0 text-left flex flex-col gap-2 w-3/4">
         {showSuccessAlert ?
           <Alert
@@ -178,7 +178,7 @@ export default function SettingsForm() {
             type="success"
             onClose={() => setShowSuccessAlert(false)}
           />
-        : errors.map(error => 
+        : errors.map(error =>
           <Alert
             key={error.id}
             message={() => error.message}

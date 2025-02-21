@@ -13,7 +13,7 @@ export default function createAddonInitializationWindow(parentWindow) {
   // Create settings window
   const addonInitializationWindow = new BrowserWindow({
     width: 450,
-    height: 395,
+    height: 470,
     show: false,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {

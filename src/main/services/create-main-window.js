@@ -6,8 +6,8 @@ import icon from '../../../resources/icon.png?asset';
 export default function createMainWindow() {
   // Create main window.
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 410,
+    width: 460,
+    height: 500,
     show: false,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {

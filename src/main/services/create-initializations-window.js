@@ -9,7 +9,7 @@ import { translate } from '../utils';
 export default function createInitializationsWindow() {
   const { locale } = getSettings();
   const localeResources = getLocaleResources();
-  
+
   // Create initializations window
   const initializationsWindow = new BrowserWindow({
     width: 350,

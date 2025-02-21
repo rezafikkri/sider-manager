@@ -62,7 +62,7 @@ export default function SimpleConfigurationsGraphicsMenu() {
 
         if (graphicMenuChanged === 2) break;
       }
-      
+
       return nextGraphicsMenu;
     });
     setShowSuccessAlert(true);
@@ -79,14 +79,14 @@ export default function SimpleConfigurationsGraphicsMenu() {
 
   async function handleDeleteGraphicMenu(name) {
     await window.sm.deleteGraphicMenu(name);
-    setGraphicsMenu(graphicsMenu.filter((graphicMenu) => 
+    setGraphicsMenu(graphicsMenu.filter((graphicMenu) =>
       graphicMenu.name !== name
     ));
   }
 
   function getGraphicMenuPreview(preview) {
     if (preview) return preview.replace('file', 'sm');
-    return notFoundImage;    
+    return notFoundImage;
   }
 
   function showModalAdd() {
@@ -157,7 +157,7 @@ export default function SimpleConfigurationsGraphicsMenu() {
           data-testid="show-modal-add-graphic-menu-btn"
           disabled={status ? false : true}
           type="button"
-          className="ms-3 text-sm font-medium rounded-lg px-3 py-2 bg-gray-800 hover:bg-green-500 outline outline-2 outline-transparent focus:outline-offset-2 focus:outline-green-500 transition-colors duration-100 disabled:cursor-not-allowed disabled:opacity-65 disabled:hover:bg-gray-800 hover:text-d-bg"
+          className="ms-3 text-sm font-medium rounded-lg px-3 py-2 bg-gray-800 hover:bg-green-500 outline outline-2 outline-transparent focus:outline-offset-2 focus:outline-green-500 transition-colors duration-100 disabled:cursor-not-allowed disabled:opacity-65 disabled:hover:bg-gray-800 hover:not-disabled:text-d-bg"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="icon me-1" viewBox="0 0 16 16"><path fillRule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/></svg>
           <span>{translate(locale, 'simpleConfigurationsGraphicsMenu.addGraphicMenuBtnText', resources)}</span>
@@ -165,7 +165,7 @@ export default function SimpleConfigurationsGraphicsMenu() {
       ) : null}
 
       <section className="px-3 mt-10 grid grid-cols-3 gap-4 mb-10">
-        {graphicsMenu.map((graphicMenu) => 
+        {graphicsMenu.map((graphicMenu) =>
           <ConfigCardImg
             key={graphicMenu.name}
             title={graphicMenu.name}
@@ -179,7 +179,7 @@ export default function SimpleConfigurationsGraphicsMenu() {
       </section>
 
       <div className="fixed bottom-5 right-5 left-5 text-left flex flex-col gap-2 w-3/5 z-30">
-        {(showSuccessAlert && !hasActiveGraphicMenu) && 
+        {(showSuccessAlert && !hasActiveGraphicMenu) &&
           <Alert
             message={() => translate(locale, 'simpleConfigurationsGraphicsMenu.successAlertMsg.choosed', resources)}
             type="success"
@@ -204,7 +204,7 @@ export default function SimpleConfigurationsGraphicsMenu() {
         }
       </div>
 
-      {showModalWithSimpleConfigForm && 
+      {showModalWithSimpleConfigForm &&
         <ModalWithSimpleConfigForm
           category={'Graphic Menu'}
           onClose={closeModalAdd}
