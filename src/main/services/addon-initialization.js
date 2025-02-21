@@ -23,8 +23,6 @@ const ignoreList = new Set([
   'Uninstall',
   'anilag.cfg',
   'CPY.ini',
-  'lua51.dll',
-  'msvcr100.dll',
   'PES2017.exe',
   'sdkencryptedappticket.dll',
   'Settings.exe',

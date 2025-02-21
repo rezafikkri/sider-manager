@@ -27,7 +27,7 @@ const resources = {
       title: 'Pengaturan - Sider Manager',
     },
     addonInitializationWindow: {
-      title: 'Inisialisasi Addon - Sider Manager',
+      title: 'Inisialisasi Addon/Mod - Sider Manager',
     },
     simpleConfigurationsWindow: {
       title: 'Konfigurasi Sederhana - Sider Manager',
@@ -89,7 +89,7 @@ const resources = {
       btnText: 'Bermain Game',
       error: {
         pesExeNotFound: 'Pada direktori instalasi PES 2017, tidak ditemukan file PES2017.exe, jika kamu pernah mengubah nama file PES2017.exe sebelumnya, kamu harus mengatur nama filenya pada menu Pengaturan!',
-        siderExeNotFound: 'Pada direktori instalasi PES 2017, tidak ditemukan file sider.exe, pastikan kamu telah menginstall Addon melalui fitur Pasang Addon, atau jika kamu pernah mengubah nama file sider.exe, kamu harus mengatur nama filenya pada menu Pengaturan!',
+        siderExeNotFound: 'Pada direktori instalasi PES 2017, tidak ditemukan file sider.exe, pastikan kamu telah menginstall Addon/Mod melalui fitur Inisialisasi Addon, atau jika kamu pernah mengubah nama file sider.exe, kamu harus mengatur nama filenya pada menu Pengaturan!',
         runApp: 'Terjadi kesalahan pada saat menjalankan aplikasi PES 2017 dan atau Sider.',
       },
     },
@@ -99,7 +99,7 @@ const resources = {
     },
     advancedConfigBtnText: 'Lanjutan',
     simpleConfigBtnText: 'Sederhana',
-    simpleAdvancedSmallText: '<strong>Sederhana</strong> untuk konfigurasi sederhana Addon, <strong>Lanjutan</strong> untuk konfigurasi detail dari Addon.',
+    simpleAdvancedSmallText: '<strong>Sederhana</strong> untuk konfigurasi sederhana Addon/Mod, <strong>Lanjutan</strong> untuk konfigurasi detail dari Addon/Mod.',
     footer: {
       sendFeedbackText: 'Punya saran? ',
       sendFeedbackLinkText: 'Kirimkan masukan!'
@@ -270,7 +270,7 @@ const resources = {
       btnText: 'Play Game',
       error: {
         pesExeNotFound: 'In the PES 2017 installation directory, the PES2017.exe file is not found, if you have previously changed the name of the PES2017.exe file, you must set the file name in the Settings menu!',
-        siderExeNotFound: 'In the PES 2017 installation directory, the sider.exe file is not found, Make sure you have installed the Addon via the Install Addon feature, or if you have previously changed the name of the sider.exe file, you must set the file name in the Settings menu!',
+        siderExeNotFound: 'In the PES 2017 installation directory, the sider.exe file is not found, Make sure you have installed the Addon via the Addon Initialization feature, or if you have previously changed the name of the sider.exe file, you must set the file name in the Settings menu!',
         runApp: 'An error occurred while running the PES 2017 and or Sider application.',
       },
     },
@@ -280,7 +280,7 @@ const resources = {
     },
     advancedConfigBtnText: 'Advanced',
     simpleConfigBtnText: 'Simple',
-    simpleAdvancedSmallText: '<strong>Simple</strong> for simple configurations of Addon, <strong>Advanced</strong> for detail configurations of Addon.',
+    simpleAdvancedSmallText: '<strong>Simple</strong> for simple configurations of Addon/Mod, <strong>Advanced</strong> for detail configurations of Addon/Mod.',
     footer: {
       sendFeedbackText: 'Have a suggestion? ',
       sendFeedbackLinkText: 'Send feedback!'
