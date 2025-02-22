@@ -11,10 +11,7 @@ expect.extend(matchers);
 
 const resources = {
   id: {
-    simpleConfigBtn: {
-      btnText: 'Sederhana',
-      smallText: 'Konfigurasi sederhana dari Addon kamu',
-    },
+    simpleConfigBtnText: 'Simple',
   },
 };
 

@@ -36,7 +36,7 @@ describe('Alert component', () => {
     const closeButton = alertMessageDiv.nextElementSibling;
     const alertDiv = alertMessageDiv.parentElement;
 
-    expect(closeButton).toHaveClass('text-red-400', 'focus:ring-red-400');
+    expect(closeButton).toHaveClass('text-red-400', 'btn', 'active:scale-[0.90]');
     expect(alertDiv).toHaveClass('text-red-400');
   });
 
@@ -46,7 +46,7 @@ describe('Alert component', () => {
     const closeButton = alertMessageDiv.nextElementSibling;
     const alertDiv = alertMessageDiv.parentElement;
 
-    expect(closeButton).toHaveClass('text-green-400', 'focus:ring-green-400');
+    expect(closeButton).toHaveClass('text-green-400');
     expect(alertDiv).toHaveClass('text-green-400');
   });
 
@@ -56,7 +56,7 @@ describe('Alert component', () => {
     const closeButton = alertMessageDiv.nextElementSibling;
     const alertDiv = alertMessageDiv.parentElement;
 
-    expect(closeButton).toHaveClass('text-yellow-300', 'focus:ring-yellow-400');
+    expect(closeButton).toHaveClass('text-yellow-300');
     expect(alertDiv).toHaveClass('text-yellow-300');
   });
 });
