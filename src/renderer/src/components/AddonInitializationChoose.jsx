@@ -16,7 +16,7 @@ export default function AddonInitializationChoose({ onChoose }) {
       <button
         onClick={onChoose}
         type="button"
-        className="font-medium rounded-lg text-sm px-4 py-2.5 bg-green-600 hover:bg-green-500 transition-all duration-[0.3s] active:scale-[0.96] text-d-bg"
+        className="btn font-medium rounded-lg text-sm px-4 py-2.5 bg-green-600 hover:bg-green-500 active:scale-[0.96] text-d-bg"
       >
         {translate(locale, 'addonInitializationChoose.chooseFileBtnText', resources)}
       </button>

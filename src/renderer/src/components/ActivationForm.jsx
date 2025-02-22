@@ -68,20 +68,24 @@ export default function ActivationForm({ onActivate }) {
             onChange={(e) => setKey(e.target.value)}
           />
         </div>
-        <small className="mb-7 block mt-2 text-white/80">
-          {translate(locale, 'activationForm.keySmallText', resources)}
+        <small className="block text-white/70 flex mt-2 mb-7">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon me-1"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 9h.01" /><path d="M11 12h1v4h1" /><path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9 -9 9s-9 -1.8 -9 -9s1.8 -9 9 -9z" /></svg>
+          <span
+            className="flex-1"
+            dangerouslySetInnerHTML={{ __html: translate(locale, 'activationForm.keySmallText', resources) }}
+          />
         </small>
 
         <div className="flex justify-end">
           <div className="relative">
-            {isLoading && 
+            {isLoading &&
               <div className="absolute z-20 bg-green-500/90 top-0 bottom-0 left-0 right-0 rounded-lg flex justify-center items-center" data-testid="loading">
                 <div className="w-5 h-5 border-4 border-t-white border-s-white/50 border-e-white/50 border-b-white/50 rounded-full animate-spin"/>
               </div>
             }
             <button
               type="submit"
-              className="font-medium rounded-lg px-4 py-2.5 bg-green-500 hover:bg-green-400 outline outline-transparent focus:outline-offset-2 focus:outline-green-500 transition-colors duration-100 text-d-bg"
+              className="btn active:not-disabled:scale-[0.96] font-medium rounded-lg px-4 py-2.5 bg-green-500 hover:not-disabled:bg-green-400 text-d-bg disabled:cursor-not-allowed"
               disabled={isLoading}
             >
               {translate(locale, 'activationForm.submitBtnText', resources)}

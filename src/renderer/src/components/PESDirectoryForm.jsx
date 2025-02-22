@@ -12,7 +12,7 @@ export default function PESDirectoryForm() {
   useEffect(() => {
     inputDirectoryRef.current.scrollLeft = inputDirectoryRef.current.scrollWidth;
   }, [pesDirectory]);
-  
+
   async function handleChooseDirectory() {
     const pesDirectory = await window.sm.choosePESDirectory();
 
@@ -53,18 +53,19 @@ export default function PESDirectoryForm() {
         />
         <button
           type="button"
-          className="flex-none bg-[#18161C] hover:bg-[#1B191F] rounded-r-lg px-4 transition-colors duration-100 font-medium text-white/90"
+          className="flex-none bg-[#1B191F] hover:bg-[#1D1B22] rounded-r-lg px-4 transition-colors duration-100 font-medium text-white/90"
           onClick={handleChooseDirectory}
         >
           {translate(locale, 'pesDirectoryInput.chooseBtnText', resources)}
         </button>
       </div>
-      <small className="block mt-2 mb-7 text-white/80">
-        {translate(locale, 'pesDirectoryInput.directorySmallText', resources)}
+      <small className="block text-white/70 flex mt-2 mb-7">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon me-1"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 9h.01" /><path d="M11 12h1v4h1" /><path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9 -9 9s-9 -1.8 -9 -9s1.8 -9 9 -9z" /></svg>
+        <span className="flex-1">{translate(locale, 'pesDirectoryInput.directorySmallText', resources)}</span>
       </small>
 
       <div className="flex justify-end">
-        <button type="submit" className="font-medium rounded-lg px-4 py-3 bg-green-500 hover:bg-green-400 outline outline-2 outline-transparent focus:outline-offset-2 focus:outline-green-500 shadow-lg transition-colors duration-100 ease-in text-d-bg">
+        <button type="submit" className="btn active:scale-[0.96] font-medium rounded-lg px-4 py-3 bg-green-500 hover:bg-green-400 shadow-lg text-d-bg">
           {translate(locale, 'pesDirectoryForm.submitBtnText', resources)}
         </button>
       </div>

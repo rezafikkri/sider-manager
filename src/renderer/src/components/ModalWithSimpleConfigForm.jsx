@@ -104,8 +104,11 @@ export default function ModalWithSimpleConfigForm({
                   {translate(locale, 'modalWithSimpleConfigForm.directoryBtnText', resources, category)}
                 </button>
               </div>
-              <small className="block mt-2 mb-7 text-white/80">
-                {translate(locale, 'modalWithSimpleConfigForm.directorySmallText', resources, category)}
+              <small className="block mt-2 mb-7 text-white/80 flex">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon me-1"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 9h.01" /><path d="M11 12h1v4h1" /><path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9 -9 9s-9 -1.8 -9 -9s1.8 -9 9 -9z" /></svg>
+                <span className="flex-1">
+                  {translate(locale, 'modalWithSimpleConfigForm.directorySmallText', resources, category)}
+                </span>
               </small>
             </div>
 
@@ -130,10 +133,13 @@ export default function ModalWithSimpleConfigForm({
 
             <div className="mb-9">
               <label className="inline-block font-semibold mb-2 text-white/90">Preview</label>
-              <small
-                className="block mb-3.5 text-white/80"
-                dangerouslySetInnerHTML={{ __html: translate(locale, 'modalWithSimpleConfigForm.previewSmallText', resources, category) }}
-              />
+              <div className="flex mb-3.5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon me-1"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 9h.01" /><path d="M11 12h1v4h1" /><path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9 -9 9s-9 -1.8 -9 -9s1.8 -9 9 -9z" /></svg>
+                <small
+                  className="block text-white/80 flex-1"
+                  dangerouslySetInnerHTML={{ __html: translate(locale, 'modalWithSimpleConfigForm.previewSmallText', resources, category) }}
+                />
+              </div>
               <img
                 className="border border-gray-800 rounded-lg"
                 src={getPreview(preview)}
@@ -143,13 +149,13 @@ export default function ModalWithSimpleConfigForm({
 
             <div className="flex justify-end items-center">
               <div className="relative">
-                {isLoading && 
+                {isLoading &&
                   <div className="absolute z-20 bg-green-500/90 top-0 bottom-0 left-0 right-0 rounded-lg flex justify-center items-center" data-testid="loading">
                     <div className="w-5 h-5 border-4 border-t-white border-s-white/50 border-e-white/50 border-b-white/50 rounded-full animate-spin"/>
                   </div>
                 }
 
-                <button type="submit" data-testid="submit-btn" className="font-medium rounded-lg px-4 py-3 bg-green-500 hover:bg-green-400 outline outline-2 outline-transparent focus:outline-offset-2 focus:outline-green-500 shadow-lg transition-colors duration-100 ease-in text-d-bg">{translate(locale, 'modalWithSimpleConfigForm.submitBtnText', resources, category)}</button>
+                <button type="submit" data-testid="submit-btn" className="btn active:scale-[0.96] font-medium rounded-lg px-4 py-3 bg-green-500 hover:bg-green-400 shadow-lg text-d-bg">{translate(locale, 'modalWithSimpleConfigForm.submitBtnText', resources, category)}</button>
               </div>
             </div>
           </form>

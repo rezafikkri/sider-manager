@@ -157,7 +157,7 @@ export default function SimpleConfigurationsPressRoom() {
           data-testid="show-modal-add-press-room-btn"
           disabled={status ? false : true}
           type="button"
-          className="ms-3 text-sm font-medium rounded-lg px-3 py-2 bg-gray-800 hover:not-disabled:text-d-bg hover:bg-green-500 outline outline-2 outline-transparent focus:outline-offset-2 focus:outline-green-500 transition-colors duration-100 disabled:cursor-not-allowed disabled:opacity-65 disabled:hover:bg-gray-800"
+          className="btn active:not-disabled:scale-[0.96] ms-3 text-sm font-medium rounded-lg px-3 py-2 bg-gray-800 hover:not-disabled:text-d-bg hover:not-disabled:bg-green-500 disabled:cursor-not-allowed disabled:opacity-65"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="icon me-1" viewBox="0 0 16 16"><path fillRule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/></svg>
           <span>{translate(locale, 'simpleConfigurationsPressRoom.addPressRoomBtnText', resources)}</span>

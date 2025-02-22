@@ -76,7 +76,7 @@ export default function AddonInitializationApp() {
           <button
             data-testid="initialization"
             type="submit"
-            className="font-medium rounded-lg px-4 py-2.5 bg-green-500 hover:bg-green-400 transition-all duration-[0.3s] active:scale-[0.96] text-d-bg"
+            className="btn font-medium rounded-lg px-4 py-2.5 bg-green-500 hover:bg-green-400 active:scale-[0.96] text-d-bg"
           >
             {translate(locale, 'addonInitializationApp.initializationBtnText', resources)}
           </button>

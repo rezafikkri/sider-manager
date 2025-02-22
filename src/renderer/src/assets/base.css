@@ -24,6 +24,12 @@
     cursor: pointer;
   }
 
+  button.btn {
+    transition-duration: .2s;
+    transition-property: scale;
+    transition-timing-function: cubic-bezier(0,0,.2,1);
+  }
+
   input[type="number"]::-webkit-outer-spin-button,
   input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;

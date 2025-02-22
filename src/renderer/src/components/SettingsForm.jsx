@@ -167,7 +167,7 @@ export default function SettingsForm() {
         </div>
 
         <div className="flex justify-end mt-8">
-          <button type="submit" className="font-medium rounded-lg px-4 py-3 bg-green-500 hover:bg-green-400 outline outline-2 outline-transparent focus:outline-offset-2 focus:outline-green-500 shadow-lg transition-colors duration-100 ease-in text-d-bg">{translate(locale, 'settingsForm.submitBtnText', resources)}</button>
+          <button type="submit" className="btn active:scale-[0.96] font-medium rounded-lg px-4 py-3 bg-green-500 hover:bg-green-400 shadow-lg text-d-bg">{translate(locale, 'settingsForm.submitBtnText', resources)}</button>
         </div>
       </form>
       {(showSuccessAlert || errors.length > 0) ?

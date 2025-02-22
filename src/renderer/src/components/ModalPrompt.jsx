@@ -48,7 +48,7 @@ export default function ModalPrompt({
             </h3>
 
             <div className="inline-block relative">
-              {isLoading && 
+              {isLoading &&
                 <div className="absolute z-20 bg-red-500/90 top-0 bottom-0 left-0 right-0 rounded-lg flex justify-center items-center" data-testid="loading">
                   <div className="w-5 h-5 border-4 border-t-white border-s-white/50 border-e-white/50 border-b-white/50 rounded-full animate-spin"/>
                 </div>
@@ -57,7 +57,7 @@ export default function ModalPrompt({
               <button
                 onClick={handleDelete}
                 type="button"
-                className="bg-red-600 hover:bg-red-500 outline outline-transparent focus:outline-offset-2 focus:outline-red-600 transition-colors duration-100 ease-in font-medium rounded-lg px-4 py-3"
+                className="btn active:scale-[0.96] bg-red-600 hover:bg-red-500 font-medium rounded-lg px-4 py-3"
               >
                 {translate(locale, 'modalPrompt.yesBtnText', resources)}
               </button>
@@ -66,7 +66,7 @@ export default function ModalPrompt({
               ref={cancelBtn}
               onClick={onClose}
               type="button"
-              className="font-medium rounded-lg px-4 py-3 ms-3 bg-gray-700 text-gray-300 hover:text-white hover:bg-gray-600 outline outline-transparent focus:outline-offset-2 focus:outline-gray-600 transition-colors duration-100 ease-in disabled:hover:bg-gray-700 disabled:text-gray-400 disabled:cursor-not-allowed"
+              className="btn active:scale-[0.96] font-medium rounded-lg px-4 py-3 ms-3 bg-gray-700 text-gray-300 hover:text-white hover:bg-gray-600"
             >
               {translate(locale, 'modalPrompt.cancelBtnText', resources)}
             </button>
