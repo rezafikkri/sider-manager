@@ -49,6 +49,19 @@ async function prepareRelease() {
     }
 
     writeFileSync(activationPath, activations.join('\n'));
+
+    // write releasedAt to create-released-at-file.js file
+    const createReleasedAtFilePath = path.join('src', 'main', 'utils', 'create-released-at-file.mjs');
+    const createReleasedAtFiles = readFileSync(createReleasedAtFilePath, { encoding: 'utf8' }).split('\n');
+
+    for (const [crafIndex, crafVal] of createReleasedAtFiles.entries()) {
+      if (/^const releasedAt =/.test(crafVal)) {
+        createReleasedAtFiles[crafIndex] = `const releasedAt = ${newReleasedAt};`;
+        break;
+      }
+    }
+
+    writeFileSync(createReleasedAtFilePath, createReleasedAtFiles.join('\n'));
   } catch (err) {
     console.dir(err);
   } finally {

@@ -27,6 +27,10 @@ jobs:
         shell: bash
         run: mkdir release
 
+      - name: Create released-at.txt file
+        shell: bash
+        run: node src/main/utils/create-released-at-file.mjs
+
       - uses: actions/download-artifact@v4
         with:
           github-token: ${{ env.GITHUB_TOKEN }}
@@ -39,6 +43,15 @@ jobs:
         run: |
           cd release
           ls -R
+
+      - name: Upload released-at.txt Artifacts TO Google Drive
+        uses: Jumbo810/Upload_Github_Artifacts_TO_GDrive@v2.2.2
+        with:
+          target: release/released-at.txt
+          credentials: ${{ secrets.G_SERVICE_CREDENTIAL }}
+          parent_folder_id: ${{ env.PARENT_FOLDER_ID }}
+          child_folder: v${{ env.APP_VERSION }}
+          override: true
 
       - name: Upload (builder-debug.yml) Artifacts TO Google Drive
         uses: Jumbo810/Upload_Github_Artifacts_TO_GDrive@v2.2.2
