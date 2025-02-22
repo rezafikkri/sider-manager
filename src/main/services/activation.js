@@ -10,7 +10,7 @@ import pool from '../utils/db';
 import MustUpgradeLicenseKeyError from '../exceptions/MustUpgradeLicenseKeyError';
 
 const sKeyLicense = '42d36b6f54550304c82d30a925298f008820b0bebaee0efd1595911a47f13097';
-const releasedAt = 1740230920;
+const releasedAt = 1740247817;
 
 // for ensure user activate is using form
 function getSKeyCheck(sKeyLicense) {
