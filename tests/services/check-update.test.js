@@ -86,7 +86,7 @@ describe('checkUpdate function', () => {
     expect(mkdirSync).toHaveBeenCalledWith(path.join('temp', 'sider-manager'), { recursive: true });
   });
 
-  it('should return false and not call log.error function when not checking for update and versions in release data not found', async () => {
+  it('should return false and not call log.error function when not checking for update and versions in release data not found (ex. unauthorize user)', async () => {
     const { readFileSync } = await import('node:fs');
     readFileSync.mockImplementation((gdAtPath) => {
       if (gdAtPath === path.join('', 'gd-at.json')) {
@@ -101,7 +101,7 @@ describe('checkUpdate function', () => {
         return { statusCode: 401, body: '' };
       }
     });
-    
+
     const check = await checkUpdate();
 
     expect(check).toBe(false);
@@ -130,7 +130,7 @@ describe('checkUpdate function', () => {
     });
     const { generateErrorLogMessage } = await import('../../src/main/utils');
     generateErrorLogMessage.mockReturnValue('Versions in release data not found.');
-    
+
     const check = await checkUpdate();
 
     expect(check).toBe(false);
@@ -138,24 +138,36 @@ describe('checkUpdate function', () => {
   });
 
   it('should show Notification and call writeFileSync correctly when not checking for update and currentAppVersion is smaller than latestReleaseVersion', async () => {
-    const { readFileSync, writeFileSync } = await import('node:fs');
+    const { readFileSync, writeFileSync, existsSync } = await import('node:fs');
+    existsSync.mockImplementation((gdAtPath) => {
+      if (gdAtPath === path.join('', 'gd-at.json')) return true;
+    });
     readFileSync.mockImplementation((gdAtPath) => {
       if (gdAtPath === path.join('', 'gd-at.json')) {
         return JSON.stringify({ accessToken: 'access-token' });
       }
     });
-    needle.mockResolvedValue({ statusCode: 200, body: { files: [{name: 'v10.10.0'}] } });
+    needle.mockResolvedValueOnce({
+      statusCode: 200,
+      body: { files: [{ name: 'v10.10.0', id: 'folderId123' }] },
+    });
+    needle.mockResolvedValueOnce({ statusCode: 200, body: { files: [{ id: 'fileId456' }] } });
+    needle.mockResolvedValueOnce({ statusCode: 200, body: '123456789' });
     const { Notification } = await import('electron');
     vi.useFakeTimers();
     vi.setSystemTime(new Date(1732017351986))
-    
+
     await checkUpdate();
 
     expect(Notification).toHaveBeenCalledWith({ title: 'translate', body: 'translate' });
     expect(Notification.prototype.show).toHaveBeenCalled();
     expect(writeFileSync).toHaveBeenCalledWith(
       path.join('temp', 'sider-manager', 'check-update.json'),
-      JSON.stringify({ version: '10.10.0', limitTime: Math.floor(new Date().getTime() / 1000) + (3600 * 24 * 2) })
+      JSON.stringify({
+        version: '10.10.0',
+        limitTime: Math.floor(new Date().getTime() / 1000) + (3600 * 24 * 2),
+        releasedAt: 123456789,
+      }),
     );
 
     vi.useRealTimers();
@@ -195,20 +207,34 @@ describe('checkUpdate function', () => {
     existsSync.mockImplementation((checkPath) => {
       if (checkPath === checkUpdateFilePath) {
         return true;
+      } else if (checkPath === 'gd-at.json') {
+        return true;
       }
     });
-    needle.mockResolvedValue({ statusCode: 200, body: { files: [{name: 'v11.10.0'}] } });
+    needle.mockResolvedValueOnce({
+      statusCode: 200,
+      body: {
+        files: [{ name: 'v11.10.0', id: 'folderId123' }],
+      },
+    });
+    needle.mockResolvedValueOnce({ statusCode: 200, body: { files: [{id: 'fileId456'}] } });
+    needle.mockResolvedValueOnce({ statusCode: 200, body: '45678912345' });
     const { Notification } = await import('electron');
+
     vi.useFakeTimers();
     vi.setSystemTime(new Date(1732022463884))
-    
+
     const check = await checkUpdate();
 
     expect(Notification).toHaveBeenCalledWith({ title: 'translate', body: 'translate' });
     expect(Notification.prototype.show).toHaveBeenCalled();
     expect(writeFileSync).toHaveBeenCalledWith(
       checkUpdateFilePath,
-      JSON.stringify({ version: '11.10.0', limitTime: Math.floor(new Date().getTime() / 1000) + (3600 * 24 * 2) })
+      JSON.stringify({
+        version: '11.10.0',
+        limitTime: Math.floor(new Date().getTime() / 1000) + (3600 * 24 * 2),
+        releasedAt: 45678912345,
+      }),
     );
     expect(check).toBe(true);
 
@@ -230,13 +256,13 @@ describe('checkUpdate function', () => {
       }
     });
     needle.mockResolvedValue({ statusCode: 200, body: { files: [{name: 'v11.10.0'}] } });
-    
+
     const check = await checkUpdate();
 
     expect(check).toBe(false);
   });
 
-  it('should return false and not call log.error function when have checked for update and versions in release data not found', async () => {
+  it('should return false and not call log.error function when have checked for update and versions in release data not found (ex. unauthorize user)', async () => {
     const { readFileSync, existsSync } = await import('node:fs');
     readFileSync.mockImplementation((pathParam) => {
       if (pathParam === 'gd-at.json') {
@@ -258,7 +284,7 @@ describe('checkUpdate function', () => {
         return { statusCode: 401, body: '' };
       }
     });
-    
+
     const check = await checkUpdate();
 
     expect(check).toBe(false);
