@@ -4,6 +4,7 @@ import { writeFileSync, readFileSync, existsSync, mkdirSync } from 'node:fs';
 import { app, Notification } from 'electron';
 import log from 'electron-log/main';
 import os from 'node:os';
+import jwt from 'jsonwebtoken';
 import { getSettingsPath, getSettings } from './settings';
 import { generateErrorLogMessage } from '../utils';
 import { getLocaleResources } from './locale';
@@ -92,6 +93,7 @@ function checkSmallerThanVersion(currentVersion, latestVersion) {
   return false;
 }
 
+// this is for get released at of latest version of application release
 async function getReleasedAt(folderId) {
   try {
     const { at: accessToken } = await loadAccessToken();
@@ -116,6 +118,10 @@ async function getReleasedAt(folderId) {
   }
 }
 
+function getSMTempDirPath() {
+  return path.join(app.getPath('temp'), 'sider-manager');
+}
+
 export default async function checkUpdate() {
   // check if native notification is support or not
   if (!Notification.isSupported()) return false;
@@ -123,8 +129,7 @@ export default async function checkUpdate() {
   const { locale } = getSettings();
   const localeResources = getLocaleResources();
   const currentAppVersion = app.getVersion();
-
-  const tempDirPath = path.join(app.getPath('temp'), 'sider-manager');
+  const tempDirPath = getSMTempDirPath();
   // create sider-manager temp dir if does not exist
   if (!existsSync(tempDirPath)) {
     mkdirSync(tempDirPath, { recursive: true });
@@ -191,4 +196,25 @@ export default async function checkUpdate() {
   }
 }
 
-export { checkSmallerThanVersion };
+function getRegistered() {
+  const tempDirPath = getSMTempDirPath();
+  const settingsPath = getSettingsPath();
+  const keysPath = path.join(settingsPath, 'key.json');
+
+  if (!existsSync(keysPath)) return false;
+
+  const keys = JSON.parse(readFileSync(keysPath));
+  const decodedLicenseKey = jwt.decode(keys.aKey);
+
+  return {
+    at: decodedLicenseKey.iat,
+    until: decodedLicenseKey.iat + (60*60*24*365.25),
+    name: decodedLicenseKey.name,
+    email: decodedLicenseKey.email,
+  };
+}
+
+export {
+  checkSmallerThanVersion,
+  getRegistered,
+};

@@ -141,6 +141,7 @@ async function activate(licenseKey) {
 }
 
 export {
+  releasedAt,
   isActivated,
   activate,
   checkLicenseKeyHasBeenUsed,

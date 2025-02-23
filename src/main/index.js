@@ -14,9 +14,9 @@ import {
   isPESDirectorySetup,
   initializeSettings,
 } from './services/settings';
-import { activate, checkLicenseKeyHasBeenUsed, isActivated } from './services/activation';
+import { activate, checkLicenseKeyHasBeenUsed, isActivated, releasedAt } from './services/activation';
 import { playGame } from './services/play-game';
-import checkUpdate from './services/check-update';
+import checkUpdate, { getRegistered } from './services/check-update';
 import { initializeMainWindow } from './services/initializations';
 import createAboutWindow from './services/create-about-window';
 import createAddonInitializationWindow from './services/create-addon-initialization-window';
@@ -92,7 +92,7 @@ app.whenReady().then(() => {
     ipcMain.handle('initializeSettings', (_, pesDirectory) => initializeSettings(pesDirectory, mainWindowObj));
     ipcMain.handle('initializeMainWindow', () => initializeMainWindow(createMainWindow, mainWindowObj));
     ipcMain.handle('isPESDirectorySetup', isPESDirectorySetup);
-    
+
     createInitializationsWindow();
   } else {
     mainWindowObj.mainWindow = createMainWindow();
@@ -136,6 +136,9 @@ app.whenReady().then(() => {
   ipcMain.handle('getBackupPath', () => {
     return path.join(path.basename(getSettings().pesDirectory), 'backup');
   });
+  ipcMain.handle('getRegistered', getRegistered);
+  // this is for get release at of now installed application
+  ipcMain.handle('getReleasedAt', () => releasedAt);
 
   // check-update in background
   checkUpdate();

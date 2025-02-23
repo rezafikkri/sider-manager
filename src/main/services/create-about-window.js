@@ -12,7 +12,7 @@ export default function createAboutWindow(parentWindow) {
 
   // Create about window
   const aboutWindow = new BrowserWindow({
-    width: 450,
+    width: 550,
     height: 550,
     show: false,
     ...(process.platform === 'linux' ? { icon } : {}),

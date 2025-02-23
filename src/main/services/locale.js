@@ -17,10 +17,21 @@ const resources = {
     },
     aboutWindow: {
       title: 'Tentang - Sider Manager',
+      releasedAtText: 'Dirilis pada',
       powered: 'Dipersembahkan oleh',
       contact: {
         title: 'Kontak',
         desc: 'Hanya melayani dihari kerja, <strong>(08.00 – 17.00) Senin – Jumat</strong>. Maaf bila sewaktu-waktu ada keterlambatan membalas pesan, karena yang membalas pesan adalah developer-nya langsung. Jika ada pertanyaan silahkan cek terlebih dahulu pada website kami.',
+      },
+      registeredAs: {
+        title: 'Terdaftar sabagai',
+        name: 'Nama',
+        email: 'Email',
+        at: 'Pada',
+        until: 'Sampai',
+        desc: 'Berdasarkan keterangan di atas, dengan License Key yang saat ini digunakan, batas waktu kamu bisa menerima update terbaru (jika ada) adalah :param. Setelah itu kamu tidak bisa menerima update terbaru lagi, tetapi kamu tetap bisa menggunakan versi aplikasi saat ini selama yang kamu mau, ',
+        aText: 'baca selangkapnya',
+        unregistered: 'Tidak terdaftar.',
       },
     },
     settingsWindow: {
@@ -201,10 +212,21 @@ const resources = {
     },
     aboutWindow: {
       title: 'About - Sider Manager',
+      releasedAtText: 'Released at',
       powered: 'Powered by',
       contact: {
         title: 'Contact',
         desc: 'Only serve on weekdays, <strong>(8AM - 5PM), Monday - Friday</strong>. Sorry if at any time there is a delay in replying to messages, because the one who replies to messages is the developer directly. If you have any questions, please check our website first.',
+      },
+      registeredAs: {
+        title: 'Registered as',
+        name: 'Name',
+        email: 'Email',
+        at: 'At',
+        until: 'Until',
+        desc: 'Based on the above information, with the License Key currently in use, your to receive latest update (if any) is :param. After that, you will not be able to receive the latest updates anymore, but you can still use the current version of the app as long as you want, ',
+        aText: 'read more',
+        unregistered: 'Unregistered.',
       },
     },
     addonInitializationWindow: {
