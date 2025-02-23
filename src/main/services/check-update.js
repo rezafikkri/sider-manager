@@ -10,6 +10,7 @@ import { generateErrorLogMessage } from '../utils';
 import { getLocaleResources } from './locale';
 import { translate } from '../utils';
 import UnauthorizeError from '../exceptions/UnauthorizeError';
+import { releasedAt } from './activation';
 
 const cid = '882426195302-d85q810np449r40iqg2t6j79ubcm2ts2.apps.googleusercontent.com';
 const csec = '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';
@@ -206,11 +207,30 @@ function getRegistered() {
   const keys = JSON.parse(readFileSync(keysPath));
   const decodedLicenseKey = jwt.decode(keys.aKey);
 
+  // generate message for update information
+  let updateMessage = null;
+  let checkUpdate = null;
+  const checkUpdatePath = path.join(tempDirPath, 'check-update.json');
+  if (existsSync(checkUpdatePath)) {
+    checkUpdate = JSON.parse(readFileSync(checkUpdatePath));
+
+    // check if current installed app version < latestReleaseVersion
+    if (checkSmallerThanVersion(app.getVersion(), checkUpdate.version)) {
+      if ((checkUpdate.releasedAt - decodedLicenseKey.iat) / (60*60*24*365.25) >= 1) {
+        updateMessage = 'availableAndMustUpgrade';
+      } else {
+        updateMessage = 'available';
+      }
+    }
+  }
+
   return {
     at: decodedLicenseKey.iat,
     until: decodedLicenseKey.iat + (60*60*24*365.25),
     name: decodedLicenseKey.name,
     email: decodedLicenseKey.email,
+    updateMessage,
+    latestReleaseVersion: checkUpdate?.version,
   };
 }
 

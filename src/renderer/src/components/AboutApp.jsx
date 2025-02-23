@@ -6,6 +6,7 @@ import priskoLogo from '../assets/PriskoJrMod.png';
 import LocaleContext from '../contexts/LocaleContext';
 import { translate } from '../../../main/utils';
 import 'dayjs/locale/id';
+import Alert from './Alert';
 
 export default function AboutApp() {
   const [appVersion, setAppVersion] = useState(null);
@@ -40,7 +41,7 @@ export default function AboutApp() {
     }
     getAppVersion();
 
-    // get released at of  installed application
+    // get released at of now installed application
     async function getReleasedAt() {
       let releasedAt = await window.sm.getReleasedAt();
       const dayjsRAObj = dayjs.unix(releasedAt);
@@ -59,9 +60,26 @@ export default function AboutApp() {
           <span className="text-2xl font-bold me-1.5">Sider Manager</span>
           <span className="text-lg font-medium">- {appVersion && `v${appVersion}`}</span>
         </h1>
-        <small className="text-center block">
+        <small className="text-center block mb-5">
           {translate(locale, 'aboutWindow.releasedAtText', resources)} {releasedAt && releasedAt}
         </small>
+
+        {registered?.updateMessage &&
+          <Alert
+            message={() =>
+              translate(
+                locale,
+                `aboutWindow.${registered.updateMessage}`,
+                resources,
+                `v${registered.latestReleaseVersion}`,
+              )
+            }
+            type={
+              registered.updateMessage === 'availableAndMustUpgrade' ? 'warning' :
+              registered.updateMessage === 'available' ? 'info' : ''
+            }
+          />
+        }
 
         <section className="mt-14">
           <h2 className="mb-4 font-bold text-lg">
