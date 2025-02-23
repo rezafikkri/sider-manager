@@ -24,7 +24,7 @@ const resources = {
         desc: 'Hanya melayani dihari kerja, <strong>(08.00 – 17.00) Senin – Jumat</strong>. Maaf bila sewaktu-waktu ada keterlambatan membalas pesan, karena yang membalas pesan adalah developer-nya langsung. Jika ada pertanyaan silahkan cek terlebih dahulu pada website kami.',
       },
       registeredAs: {
-        title: 'Terdaftar sabagai',
+        title: 'Terdaftar sebagai',
         name: 'Nama',
         email: 'Email',
         at: 'Pada',

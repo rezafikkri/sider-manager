@@ -39,6 +39,8 @@ export default function AboutApp() {
       setAppVersion(appVersion);
     }
     getAppVersion();
+
+    // get released at of  installed application
     async function getReleasedAt() {
       let releasedAt = await window.sm.getReleasedAt();
       const dayjsRAObj = dayjs.unix(releasedAt);
@@ -82,7 +84,7 @@ export default function AboutApp() {
           ) : registered === null ?
             <p className="text-white/90">Loading...</p>
           :
-            <p className="text-white/90">{translate(locale, 'aboutWindow.registredAs.unregistered', resources)}</p>
+            <p className="text-white/90">{translate(locale, 'aboutWindow.registeredAs.unregistered', resources)}</p>
           }
         </section>
 
