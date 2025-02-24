@@ -10,7 +10,6 @@ import { generateErrorLogMessage } from '../utils';
 import { getLocaleResources } from './locale';
 import { translate } from '../utils';
 import UnauthorizeError from '../exceptions/UnauthorizeError';
-import { releasedAt } from './activation';
 
 const cid = '882426195302-d85q810np449r40iqg2t6j79ubcm2ts2.apps.googleusercontent.com';
 const csec = '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';

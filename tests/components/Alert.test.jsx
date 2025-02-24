@@ -59,4 +59,14 @@ describe('Alert component', () => {
     expect(closeButton).toHaveClass('text-yellow-300');
     expect(alertDiv).toHaveClass('text-yellow-300');
   });
+
+  it('should show info alert when alert type is info', () => {
+    render(<Alert message={() => "This is info"} type="info" />);
+    const alertMessageDiv = screen.getByText('This is info');
+    const closeButton = alertMessageDiv.nextElementSibling;
+    const alertDiv = alertMessageDiv.parentElement;
+
+    expect(closeButton).not.toBeInTheDocument();
+    expect(alertDiv).toHaveClass('text-green-400');
+  });
 });

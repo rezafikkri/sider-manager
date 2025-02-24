@@ -5,11 +5,13 @@ import {
   vi,
   expect,
   afterEach,
+  beforeEach,
 } from 'vitest';
 import path from 'node:path';
 import log from 'electron-log/main';
-import checkUpdate, { checkSmallerThanVersion } from '../../src/main/services/check-update';
+import checkUpdate, { checkSmallerThanVersion, getRegistered } from '../../src/main/services/check-update';
 import needle from 'needle';
+import jwt from 'jsonwebtoken';
 
 const checkUpdateFilePath = path.join('temp', 'sider-manager', 'check-update.json');
 
@@ -21,38 +23,38 @@ beforeAll(() => {
   vi.mock('../../src/main/services/locale', () => ({
     getLocaleResources: () => {},
   }));
+
+  vi.mock('../../src/main/services/settings', () => ({
+    getSettings: () => ({ locale: '' }),
+    getSettingsPath: () => '',
+  }));
+
+  vi.mock('node:fs', () => ({
+    writeFileSync: vi.fn(),
+    existsSync: vi.fn(),
+    readFileSync: vi.fn(),
+    mkdirSync: vi.fn(),
+  }));
+
+  vi.mock('electron', () => {
+    const Notification = vi.fn();
+    Notification.isSupported = () => true;
+    Notification.prototype.show = vi.fn();
+
+    return {
+      app: {
+        getPath: (param) => param,
+        getVersion: vi.fn(),
+      },
+      Notification,
+    };
+  });
 });
 
 describe('checkUpdate function', () => {
   beforeAll(() => {
-    vi.mock('../../src/main/services/settings', () => ({
-      getSettings: () => ({ locale: '' }),
-      getSettingsPath: () => '',
-    }));
-
     vi.mock('needle', () => ({
       default: vi.fn(),
-    }));
-
-    vi.mock('electron', () => {
-      const Notification = vi.fn();
-      Notification.isSupported = () => true;
-      Notification.prototype.show = vi.fn();
-
-      return {
-        app: {
-          getPath: (param) => param,
-          getVersion: () => '9.0.10',
-        },
-        Notification,
-      };
-    });
-
-    vi.mock('node:fs', () => ({
-      writeFileSync: vi.fn(),
-      existsSync: vi.fn(),
-      readFileSync: vi.fn(),
-      mkdirSync: vi.fn(),
     }));
 
     vi.mock('../../src/main/utils', () => ({
@@ -66,6 +68,8 @@ describe('checkUpdate function', () => {
   });
 
   it('should create sider-manager temp dir when not exist', async () => {
+    const { app } = await import('electron');
+    app.getVersion.mockReturnValue('9.0.10');
     const { existsSync, mkdirSync, readFileSync } = await import('node:fs');
     existsSync.mockImplementation((tempDirPath) => {
       if (tempDirPath === path.join('temp', 'sider-manager')) {
@@ -138,6 +142,8 @@ describe('checkUpdate function', () => {
   });
 
   it('should show Notification and call writeFileSync correctly when not checking for update and currentAppVersion is smaller than latestReleaseVersion', async () => {
+    const { app } = await import('electron');
+    app.getVersion.mockReturnValue('9.0.10');
     const { readFileSync, writeFileSync, existsSync } = await import('node:fs');
     existsSync.mockImplementation((gdAtPath) => {
       if (gdAtPath === path.join('', 'gd-at.json')) return true;
@@ -174,6 +180,8 @@ describe('checkUpdate function', () => {
   });
 
   it('should not show Notification and not call writeFileSync when not checking for update and currentAppVersion is not smaller than latestReleaseVersion', async () => {
+    const { app } = await import('electron');
+    app.getVersion.mockReturnValue('9.0.10');
     const { existsSync, readFileSync, writeFileSync } = await import('node:fs');
     existsSync.mockImplementation((gdAtPath) => {
       if (gdAtPath === path.join('', 'gd-at.json')) {
@@ -196,6 +204,8 @@ describe('checkUpdate function', () => {
   });
 
   it('should show Notification, call writeFileSync correctly and return true when have checked for update, currentAppVersion is smaller than latestReleaseVersion and latestCheckUpdateVerion smaller than latestReleaseVersion', async () => {
+    const { app } = await import('electron');
+    app.getVersion.mockReturnValue('9.0.10');
     const { readFileSync, writeFileSync, existsSync } = await import('node:fs');
     readFileSync.mockImplementation((pathParam) => {
       if (pathParam === 'gd-at.json') {
@@ -292,6 +302,8 @@ describe('checkUpdate function', () => {
   });
 
   it('should not show Notification, not call writeFileSync and return false when have checked for update, currentAppVersion is not smaller than latestReleaseVersion and latestCheckUpdateVersion is smaller than latestReleaseVersion', async () => {
+    const { app } = await import('electron');
+    app.getVersion.mockReturnValue('9.0.10');
     const { existsSync, readFileSync, writeFileSync } = await import('node:fs');
     existsSync.mockImplementation((pathParam) => {
       if (pathParam === path.join('', 'gd-at.json') || pathParam === checkUpdateFilePath) {
@@ -317,6 +329,8 @@ describe('checkUpdate function', () => {
   });
 
   it('should not show Notification, not call writeFileSync and return false when have checked for update, currentAppVersion is smaller than latestReleaseVersion and latestCheckUpdateVersion is not smaller than latestReleaseVersion', async () => {
+    const { app } = await import('electron');
+    app.getVersion.mockReturnValue('9.0.10');
     const { existsSync, readFileSync, writeFileSync } = await import('node:fs');
     existsSync.mockImplementation((pathParam) => {
       if (pathParam === path.join('', 'gd-at.json') || pathParam === checkUpdateFilePath) {
@@ -342,6 +356,8 @@ describe('checkUpdate function', () => {
   });
 
   it('should not show Notification, not call writeFileSync and return false when have checked for update, currentAppVersion is not smaller than latestReleaseVersion and latestCheckUpdateVerion is not smaller than latestReleaseVersion', async () => {
+    const { app } = await import('electron');
+    app.getVersion.mockReturnValue('9.0.10');
     const { existsSync, readFileSync, writeFileSync } = await import('node:fs');
     existsSync.mockImplementation((pathParam) => {
       if (pathParam === path.join('', 'gd-at.json') || pathParam === checkUpdateFilePath) {
@@ -396,5 +412,103 @@ describe('smallerThan function', () => {
   it('should return true when Major Current is equal to Major Latest, Minor Current is not smaller than Minor Latest, Minor Current is equal to Minor Latest and Path Current is smaller than Path Latest', () => {
     const check = checkSmallerThanVersion('10.2.11', '10.2.12');
     expect(check).toBe(true);
+  });
+});
+
+describe('getRegistered function', () => {
+  beforeEach(() => {
+    jwt._decode = jwt.decode;
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+
+    jwt.decode = jwt._decode;
+    delete jwt._decode;
+  });
+
+  it('should return false when key.json not exist', async () => {
+    const { existsSync } = await import('node:fs');
+    existsSync.mockReturnValue(false);
+
+    const result = getRegistered();
+
+    expect(result).toBe(false);
+  });
+
+  it('should return registered corrently but haven\'t check for update yet', async () => {
+    const { readFileSync, existsSync } = await import('node:fs');
+    existsSync.mockImplementation((keysPath) => {
+      if (keysPath === 'key.json') {
+        return true;
+      }
+    });
+    readFileSync.mockReturnValue(JSON.stringify({ aKey: 'aKey' }));
+    jwt.decode = () => ({
+      iat: 1000,
+      name: 'Reza',
+      email: 'rezafikkri@gmail.com',
+    });
+
+    const result = getRegistered();
+
+    expect(result).toEqual({
+      at: 1000,
+      until: 1000 + (3600*24*365.25),
+      name: 'Reza',
+      email: 'rezafikkri@gmail.com',
+      updateMessage: null,
+      latestReleaseVersion: undefined,
+    });
+  });
+
+  it('should return registered and update message corrently when update available but must upgrade license key', async () => {
+    const { app } = await import('electron');
+    app.getVersion.mockReturnValue('9.0.10');
+    const { readFileSync, existsSync } = await import('node:fs');
+    existsSync.mockReturnValue(true);
+    readFileSync.mockReturnValueOnce(JSON.stringify({ aKey: 'aKey' }));
+    readFileSync.mockReturnValueOnce(JSON.stringify({ version: '11.0.1', releasedAt: 3600*24*370 }));
+    jwt.decode = () => ({
+      iat: 1,
+      name: 'Adelina',
+      email: 'adel@gmail.com',
+    });
+
+    const result = getRegistered();
+
+    expect(result).toEqual({
+      at: 1,
+      until: 1 + (3600*24*365.25),
+      name: 'Adelina',
+      email: 'adel@gmail.com',
+      updateMessage: 'availableAndMustUpgrade',
+      latestReleaseVersion: '11.0.1',
+    });
+  });
+
+  it('should return registered and update message corrently when update available but not must upgrade license key', async () => {
+    const { app } = await import('electron');
+    app.getVersion.mockReturnValue('9.0.10');
+    const { readFileSync, existsSync } = await import('node:fs');
+    existsSync.mockReturnValue(true);
+    readFileSync.mockReturnValueOnce(JSON.stringify({ aKey: 'aKey' }));
+    readFileSync.mockReturnValueOnce(JSON.stringify({ version: '12.1.1', releasedAt: 10011 }));
+    jwt.decode = () => ({
+      iat: 10011,
+      name: 'Dian',
+      email: 'dian@gmail.com',
+    });
+
+    const result = getRegistered();
+
+    expect(result).toEqual({
+      at: 10011,
+      until: 10011 + (3600*24*365.25),
+      name: 'Dian',
+      email: 'dian@gmail.com',
+      updateMessage: 'available',
+      latestReleaseVersion: '12.1.1',
+    });
   });
 });
