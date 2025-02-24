@@ -4,8 +4,8 @@ import { translate } from '../../../main/utils';
 
 export default function Footer() {
   const {locale, resources} = useContext(LocaleContext);
-  let feedbackLink = 'https://forms.gle/MWtbZcQ3AWDxHTwH9';
-  if (locale === 'en') feedbackLink = 'https://forms.gle/zS2UprPyfcD92j4j9';
+  let feedbackLink = 'https://forms.gle/Dgm2NBTydgLYXCPH9';
+  if (locale === 'en') feedbackLink = 'https://forms.gle/8g9An2fkg75N6Ef16';
 
   return (
     <footer className="p-4 text-white/80 [&_a]:text-green-300/90 [&_a]:font-medium text-xs relative z-10">
