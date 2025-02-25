@@ -49,6 +49,11 @@ beforeAll(() => {
       Notification,
     };
   });
+
+  vi.mock('../../src/main/services/encrypt-decrypt', () => ({
+    decrypt: (data) => data,
+    encrypt: (data) => data,
+  }));
 });
 
 describe('checkUpdate function', () => {

@@ -9,8 +9,8 @@ import { getSettingsPath } from './settings';
 import pool from '../utils/db';
 import MustUpgradeLicenseKeyError from '../exceptions/MustUpgradeLicenseKeyError';
 
-const sKeyLicense = '42d36b6f54550304c82d30a925298f008820b0bebaee0efd1595911a47f13097';
-const releasedAt = 1740468984;
+const sKeyLicense = '7303c96537bbbcfff454dfcf47a11072e4da81e9bf5789bd888a8b7edaf0f441';
+const releasedAt = 1740470127;
 
 // for ensure user activate is using form
 function getSKeyCheck(sKeyLicense) {

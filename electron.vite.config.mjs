@@ -9,7 +9,7 @@ export default defineConfig({
       externalizeDepsPlugin(),
       bytecodePlugin({
         protectedStrings: [
-          '42d36b6f54550304c82d30a925298f008820b0bebaee0efd1595911a47f13097',// secret license key
+          '7303c96537bbbcfff454dfcf47a11072e4da81e9bf5789bd888a8b7edaf0f441',// secret license key
           '882426195302-d85q810np449r40iqg2t6j79ubcm2ts2.apps.googleusercontent.com',
           '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',
           '1//047LICTKVSZJiCgYIARAAGAQSNwF-L9IrABeN4tU2T0gyTovrEleRTz5jmMfJF6LmNZIHiT9DD-OUF-JZ871p-0QHqfGEACc-VBs',
