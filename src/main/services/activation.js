@@ -10,7 +10,7 @@ import pool from '../utils/db';
 import MustUpgradeLicenseKeyError from '../exceptions/MustUpgradeLicenseKeyError';
 
 const sKeyLicense = '42d36b6f54550304c82d30a925298f008820b0bebaee0efd1595911a47f13097';
-const releasedAt = 1740289058;
+const releasedAt = 1740468984;
 
 // for ensure user activate is using form
 function getSKeyCheck(sKeyLicense) {
@@ -86,7 +86,7 @@ async function activate(licenseKey) {
 
       // start transaction
       await client.query('START TRANSACTION');
-      const getLicenseKeyText = `SELECT id, used_for_activate FROM license_key where key = $1 FOR UPDATE`;
+      const getLicenseKeyText = 'SELECT id, used_for_activate FROM license_key where key = $1 FOR UPDATE';
       const getLicenseKeyValue = [licenseKey];
       const licenseKeyDB = (await client.query(getLicenseKeyText, getLicenseKeyValue)).rows;
 

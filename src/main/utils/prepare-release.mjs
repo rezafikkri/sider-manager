@@ -8,6 +8,8 @@ import pool from './db.mjs';
 async function prepareRelease() {
   let spinner;
   try {
+    // write sKeyLicense and releasedAt to activation.js,
+    // while insert new (if not yet) sKeyLicense to DB
     const activationPath = path.join('src', 'main', 'services', 'activation.js');
     const activations = readFileSync(activationPath, { encoding: 'utf8' }).split('\n');
     const newReleasedAt = Math.floor(new Date().getTime() / 1000);
@@ -23,15 +25,16 @@ async function prepareRelease() {
     const sKeyLicenseDB = (await pool.query(getSKeyLicenseText, getSKeyLicenseValue)).rows;
 
     let changed = 0;
+    let newSKeyLicense = null;
     for (const [aIndex, aVal] of activations.entries()) {
       if (/^const sKeyLicense =/.test(aVal)) {
         if (sKeyLicenseDB.length <= 0) {
-          const newSKeyLicense = crypto.randomBytes(32).toString('hex');
+          newSKeyLicense = crypto.randomBytes(32).toString('hex');
           activations[aIndex] = `const sKeyLicense = '${newSKeyLicense}';`;
           // insert new sKeyLicense to DB
           const insertSKeyLicenseText = `
             INSERT INTO secret_key_license (key, version, created_at)
-              VALUES ($1, $2, $3)
+            VALUES ($1, $2, $3)
           `;
           const insertSKeyLicenseValue = [newSKeyLicense, appVersion, newReleasedAt];
           (await pool.query(insertSKeyLicenseText, insertSKeyLicenseValue)).rowCount;
@@ -49,6 +52,18 @@ async function prepareRelease() {
     }
 
     writeFileSync(activationPath, activations.join('\n'));
+
+    // write sKeyLicense
+    if (newSKeyLicense) {
+      const electronVitis = readFileSync('electron.vite.config.mjs', { encoding: 'utf8' }).split('\n');
+      for (const [evIndex, evVal] of electronVitis.entries()) {
+        if (/\/\/ secret license key/.test(evVal)) {
+          electronVitis[evIndex] = `          '${newSKeyLicense}',// secret license key`;
+          break;
+        }
+      }
+      writeFileSync('electron.vite.config.mjs', electronVitis.join('\n'));
+    }
 
     // write releasedAt to create-released-at-file.js file
     const createReleasedAtFilePath = path.join('src', 'main', 'utils', 'create-released-at-file.mjs');
