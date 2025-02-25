@@ -10,6 +10,7 @@ import { generateErrorLogMessage } from '../utils';
 import { getLocaleResources } from './locale';
 import { translate } from '../utils';
 import UnauthorizeError from '../exceptions/UnauthorizeError';
+import { decrypt, encrypt } from './encrypt-decrypt';
 
 const cid = '882426195302-d85q810np449r40iqg2t6j79ubcm2ts2.apps.googleusercontent.com';
 const csec = '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';
@@ -21,7 +22,8 @@ async function loadAccessToken() {
     await refreshAT();
   }
 
-  return JSON.parse(readFileSync(gdAtPath));
+  const aTEncrypted = JSON.parse(readFileSync(gdAtPath));
+  return decrypt(aTEncrypted.at);
 }
 
 async function refreshAT() {
@@ -32,7 +34,10 @@ async function refreshAT() {
   });
   if (res.statusCode !== 200) throw new Error(JSON.stringify(res.body));
 
-  const newAccessToken = { at: res.body.access_token };
+  // encrypt access token
+  const encryptedAT = encrypt(res.body.access_token);
+
+  const newAccessToken = { at: encryptedAT };
   writeFileSync(path.join(getSettingsPath(), 'gd-at.json'), JSON.stringify(newAccessToken));
 }
 
@@ -50,7 +55,7 @@ async function get(url, accessToken) {
 
 async function getFolders() {
   try {
-    const { at: accessToken } = await loadAccessToken();
+    const accessToken = await loadAccessToken();
     const url = 'https://www.googleapis.com/drive/v3/files?orderBy=name_natural%20desc&q=%27upload-sider-manager%40caramel-vim-451414-b6.iam.gserviceaccount.com%27%20in%20owners%20and%20mimeType%20%3D%20%27application%2Fvnd.google-apps.folder%27';
     const body = await get(url, accessToken);
     return body.files;
@@ -96,7 +101,7 @@ function checkSmallerThanVersion(currentVersion, latestVersion) {
 // this is for get released at of latest version of application release
 async function getReleasedAt(folderId) {
   try {
-    const { at: accessToken } = await loadAccessToken();
+    const accessToken = await loadAccessToken();
     const urlGetFileId = `https://www.googleapis.com/drive/v3/files?q=name%3D%27released-at.txt%27%20and%20%27${folderId}%27%20in%20parents`;
     const bodyFileId = await get(urlGetFileId, accessToken);
     const fileId = bodyFileId.files[0].id;
