@@ -29,7 +29,7 @@ export default function AddonInitializationApp() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    if (initializationFile === null) return false;
+    if (!initializationFile) return false;
 
     // show loading
     setIsLoading(true);
@@ -41,6 +41,8 @@ export default function AddonInitializationApp() {
     } else {
       setShowErrorAlert(true);
     }
+
+    setInitializationFile(null);
     // hide loading
     setIsLoading(false);
   }
@@ -54,52 +56,53 @@ export default function AddonInitializationApp() {
   }, []);
 
   return (
-    <main className="p-5 h-screen">
-    <div className="relative h-full">
-      { initializationFile ?
-        <AddonInitializationFile {...initializationFile} onRemove={handleRemoveFile} isLoading={isLoading} /> :
-        <AddonInitializationChoose onChoose={handleChooseFile} />
-      }
-      <small className="mb-6 block">
-        <span dangerouslySetInnerHTML={{
+    <main className="p-5">
+      <div className="relative h-full">
+        { initializationFile ?
+          <AddonInitializationFile {...initializationFile} onRemove={handleRemoveFile} isLoading={isLoading} /> :
+          <AddonInitializationChoose onChoose={handleChooseFile} />
+        }
+        <small className="mb-6 block">
+          <span dangerouslySetInnerHTML={{
             __html: translate(locale, 'addonInitializationApp.smallText', resources)
-        }} />
-        <code className="bg-d-alert-bg p-1 rounded text-nowrap">{backupPath}</code>.
-      </small>
-      <form className="flex justify-end" onSubmit={handleSubmit}>
-        <div className="relative">
-          {isLoading &&
-            <div className="absolute z-20 bg-green-500/90 top-0 bottom-0 left-0 right-0 rounded-lg flex justify-center items-center">
-              <div className="w-5 h-5 border-4 border-t-white border-s-white/50 border-e-white/50 border-b-white/50 rounded-full animate-spin" data-testid="loading"/>
-            </div>
-          }
-          <button
-            data-testid="initialization"
-            type="submit"
-            className="btn font-medium rounded-lg px-4 py-2.5 bg-green-500 hover:bg-green-400 active:scale-[0.96] text-d-bg"
-          >
-            {translate(locale, 'addonInitializationApp.initializationBtnText', resources)}
-          </button>
-        </div>
-      </form>
-      {(showSuccessAlert || showErrorAlert) &&
-        <div className="absolute bottom-10 right-0 left-0 text-left flex flex-col gap-2 w-full">
-          {showSuccessAlert ?
-            <Alert
-              message={() => translate(locale, 'addonInitializationApp.successAlertMsg', resources)}
-              type="success"
-              onClose={() => setShowSuccessAlert(false)}
-            />
-          : showErrorAlert &&
-            <Alert
-              message={() => translate(locale, 'addonInitializationApp.errorAlertMsg', resources)}
-              type="danger"
-              onClose={() => setShowErrorAlert(false)}
-            />
-          }
-        </div>
-      }
-    </div>
+          }} />
+          <code className="bg-d-alert-bg p-1 rounded text-nowrap">{backupPath}</code>.
+        </small>
+        <form className="flex justify-end" onSubmit={handleSubmit}>
+          <div className="relative">
+            {isLoading &&
+              <div className="absolute z-20 bg-green-600/90 top-0 bottom-0 left-0 right-0 rounded-lg flex justify-center items-center">
+                <div className="w-5 h-5 border-4 border-t-white border-s-white/50 border-e-white/50 border-b-white/50 rounded-full animate-spin me-2" data-testid="loading"/>
+              </div>
+            }
+
+              <button
+                data-testid="initialization"
+                type="submit"
+                className="btn font-medium rounded-lg px-4 py-2.5 bg-green-500 hover:bg-green-400 active:scale-[0.96] text-d-bg"
+              >
+                {translate(locale, 'addonInitializationApp.initializationBtnText', resources)}
+              </button>
+          </div>
+        </form>
+        {(showSuccessAlert || showErrorAlert) &&
+          <div className="absolute bottom-10 right-0 left-0 text-left flex flex-col gap-2 w-full">
+            {showSuccessAlert ?
+              <Alert
+                message={() => translate(locale, 'addonInitializationApp.successAlertMsg', resources)}
+                type="success"
+                onClose={() => setShowSuccessAlert(false)}
+              />
+              : showErrorAlert &&
+                <Alert
+                  message={() => translate(locale, 'addonInitializationApp.errorAlertMsg', resources)}
+                  type="danger"
+                  onClose={() => setShowErrorAlert(false)}
+                />
+            }
+          </div>
+        }
+      </div>
     </main>
   );
 }

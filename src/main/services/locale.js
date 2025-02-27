@@ -320,7 +320,7 @@ const resources = {
     addonInitializationApp: {
       smallStrongText: 'Note',
       smallText: 'old Sider file will be backed up in',
-      smallText: '<strong>Note</strong>: Addon initialization only needs to be done when first installing the application, unless there are instructions to do it again!, also make sure the PES Executable name and Sider Executable name are correct in <strong>Setting</strong> section and for old Sider file will be backed up in ',
+      smallText: '<strong>Note</strong>: Addon initialization only needs to be done when first installing the application, unless there are instructions to do it again!, also make sure the PES Executable name and Sider Executable name are correct in <strong>Settings</strong> section and for old Sider file will be backed up in ',
       cancelBtnText: 'Cancel',
       initializationBtnText: 'Initialization',
       successAlertMsg: 'Addon initialization complete.',
