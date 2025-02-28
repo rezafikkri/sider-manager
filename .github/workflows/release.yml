@@ -25,7 +25,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          # cache: 'pnpm'
+          cache: 'pnpm'
+
+      - name: Delete node_modules
+        shell: bash
+        run: |
+          sudo rm -rf node_modules
 
       - name: Install dependencies
         run: pnpm install
@@ -66,7 +71,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          # cache: 'pnpm'
+          cache: 'pnpm'
+
+      - name: Delete node_modules
+        shell: bash
+        run: |
+          sudo rm -rf node_modules
+
 
       - name: Install dependencies
         run: pnpm install
