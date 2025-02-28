@@ -7,6 +7,7 @@ import {
   saveSettings,
   initializeSettings,
   deleteSetting,
+  chooseAdvancedExecutable,
 } from '../../src/main/services/settings';
 import path from 'node:path';
 
@@ -75,13 +76,41 @@ describe('choosePESDirectory function', () => {
       chooseDirectory: vi.fn(),
     }));
   });
-  
+
   it('should call chooseDirectory function correctly', async () => {
     const { chooseDirectory } = await import('../../src/main/services');
 
     await choosePESDirectory();
 
     expect(chooseDirectory).toHaveBeenCalledWith('translate');
+  });
+});
+
+describe('chooseAdvancedExecutable', () => {
+  beforeAll(() => {
+    vi.mock('../../src/main/utils', () => ({
+      translate: () => 'translate',
+    }));
+  });
+
+  it('should call showOpenDialog function correctly and return the directory when choose pes directory not canceled', async () => {
+    const advancedExe = 'advancedExe';
+    const { dialog } = await import('electron');
+    dialog.showOpenDialog.mockReturnValue({ canceled: false, filePaths: [advancedExe] });
+
+    const result = await chooseAdvancedExecutable();
+
+    expect(dialog.showOpenDialog).toHaveBeenCalledWith({title: 'translate', properties: ['openFile']});
+    expect(result).toBe(advancedExe);
+  });
+
+  it('should return false when choose directory canceled', async () => {
+    const { dialog } = await import('electron');
+    dialog.showOpenDialog.mockReturnValue({ canceled: true });
+
+    const result = await chooseAdvancedExecutable();
+
+    expect(result).toBe(false);
   });
 });
 
@@ -135,7 +164,7 @@ describe('initializeSettings function', () => {
     const settingsFilePath = path.join('sider-manager', 'settings.json');
 
     const initialize = initializeSettings(pesDirectory, mainWindowObj);
-    
+
     expect(writeFileSync).toHaveBeenCalledWith(settingsFilePath, JSON.stringify({
       pesDirectory: pesDirectory,
       pesExecutable: ['PES2017.exe', 'sider.exe'],
