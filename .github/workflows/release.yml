@@ -27,13 +27,13 @@ jobs:
           node-version: 22
           cache: 'pnpm'
 
-      - name: Delete node_modules
-        shell: bash
-        run: |
-          sudo rm -rf node_modules
-
       - name: Install dependencies
         run: pnpm install
+
+      - name: pnpm approve-builds
+        shell: bash
+        run: |
+          pnpm approve-builds
 
       - name: Run Unit Testing
         run: pnpm run test
@@ -73,14 +73,13 @@ jobs:
           node-version: 22
           cache: 'pnpm'
 
-      - name: Delete node_modules
-        shell: bash
-        run: |
-          sudo rm -rf node_modules
-
-
       - name: Install dependencies
         run: pnpm install
+
+      - name: pnpm approve-builds
+        shell: bash
+        run: |
+          pnpm approve-builds
 
       - name: Run Unit Testing
         run: pnpm run test

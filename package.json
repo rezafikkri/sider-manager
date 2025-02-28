@@ -1,6 +1,6 @@
 {
   "name": "sider-manager",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "description": "Sider Manager Application for PES 2017",
   "main": "./out/main/index.js",
   "author": "priskojrmod.my.id",
