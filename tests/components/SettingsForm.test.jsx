@@ -18,6 +18,14 @@ const resources = {
       directorySmallText: 'Silahkan pilih atau masukkan direktori di mana kamu menginstall PES 2017.',
       dialogTitle: 'Pilih direktori PES 2017',
     },
+    advancedExeInput: {
+      dialogTitle: 'Pilih executable advanced',
+      labelText: 'Executable Advanced',
+      chooseBtnText: 'Pilih',
+      inputPlaceholder: 'Masukkan lokasi file executable',
+      smallText: 'Silahkan pilih atau masukkan lokasi file executable advanced.',
+      error: 'Executable advanced tidak boleh kosong.',
+    },
     settingsForm: {
       error: {
         pesExe: 'Nama file executable PES tidak ada di dalam direktori instalasi PES 2017',
@@ -43,6 +51,7 @@ describe('SettingsForm component', () => {
       choosePESDirectory: vi.fn(),
       isPESExecutableExist: vi.fn(),
       saveSettings: vi.fn(),
+      chooseAdvancedExecutable: vi.fn(),
     };
     render(
       <Locale
@@ -71,10 +80,17 @@ describe('SettingsForm component', () => {
   });
 
   it('should call choosePESDirectory function when choose PES directory button clicked', async () => {
-    const chooseButton = await screen.findByText(resources.id.pesDirectoryInput.chooseBtnText);
+    const chooseButton = await screen.findByTestId('chooseDirectory');
     await userEvent.click(chooseButton);
-    
+
     expect(window.sm.choosePESDirectory).toHaveBeenCalled();
+  });
+
+  it('should call chooseAdvancedExecutable function when choose advanced exe button clicked', async () => {
+    const chooseButton = await screen.findByTestId('chooseFile');
+    await userEvent.click(chooseButton);
+
+    expect(window.sm.chooseAdvancedExecutable).toHaveBeenCalled();
   });
 
   it('should show pesExe error when pesExe is not in pesDirectory and submit button clicked', async () => {
@@ -113,12 +129,21 @@ describe('SettingsForm component', () => {
     expect(siderExeError).toBeInTheDocument();
   });
 
+  it('should show advanced error when advanced exe is empty', async () => {
+    const submitButton = await screen.findByText(resources.id.settingsForm.submitBtnText);
+
+    await userEvent.click(submitButton);
+
+    const advancedExeError = screen.queryByText(resources.id.advancedExeInput.error);
+    expect(advancedExeError).toBeInTheDocument();
+  });
+
   it('should not call saveSettings function when error occur when submit button clicked', async () => {
     window.sm.isPESExecutableExist.mockResolvedValue(false);
     const submitButton = await screen.findByText(resources.id.settingsForm.submitBtnText);
 
     await userEvent.click(submitButton);
-    
+
     expect(window.sm.saveSettings).not.toHaveBeenCalled();
   });
 
@@ -131,12 +156,15 @@ describe('SettingsForm component', () => {
     await userEvent.type(pesExeInput, 'new');
     const siderExeInput = screen.getByPlaceholderText(resources.id.settingsForm.siderExeInputPlaceholder);
     await userEvent.type(siderExeInput, 'new');
+    const advancedExeInput = screen.getByPlaceholderText(resources.id.advancedExeInput.inputPlaceholder);
+    await userEvent.type(advancedExeInput, 'advancedExeNew');
 
     await userEvent.click(submitButton);
 
     expect(window.sm.saveSettings).toHaveBeenCalledWith({
       pesDirectory: `${oldSettings.pesDirectory}new`,
       pesExecutable: [`${oldSettings.pesExecutable[0]}new`, `${oldSettings.pesExecutable[1]}new`],
+      advancedExe: 'advancedExeNew',
     });
   });
 
@@ -148,11 +176,16 @@ describe('SettingsForm component', () => {
 
     window.sm.saveSettings.mockResolvedValue(true);
     window.sm.isPESExecutableExist.mockResolvedValue(true);
+    const advancedExeInput = screen.getByPlaceholderText(resources.id.advancedExeInput.inputPlaceholder);
+    await userEvent.type(advancedExeInput, 'advancedExeNew');
+
     // second click to make save settings success
     await userEvent.click(submitButton);
 
+    const advancedExeError = screen.queryByText(resources.id.advancedExeInput.error);
     const pesExeError = screen.queryByText(resources.id.settingsForm.error.pesExe);
     const siderExeError = screen.queryByText(resources.id.settingsForm.error.siderExe);
+    expect(advancedExeError).not.toBeInTheDocument();
     expect(pesExeError).not.toBeInTheDocument();
     expect(siderExeError).not.toBeInTheDocument();
     const successAlert = screen.queryByText(resources.id.settingsForm.successAlertMsg);

@@ -138,6 +138,7 @@ export default function SettingsForm() {
               type="button"
               className="flex-none bg-[#1B191F] hover:bg-[#1D1B22] rounded-r-lg px-4 transition-colors duration-100 font-medium text-white/90"
               onClick={handleChooseDirectory}
+              data-testid="chooseDirectory"
             >
               {translate(locale, 'pesDirectoryInput.chooseBtnText', resources)}
             </button>
@@ -221,6 +222,7 @@ export default function SettingsForm() {
               type="button"
               className="flex-none bg-[#1B191F] hover:bg-[#1D1B22] rounded-r-lg px-4 transition-colors duration-100 font-medium text-white/90"
               onClick={handleChooseAdvancedExe}
+              data-testid="chooseFile"
             >
               {translate(locale, 'advancedExeInput.chooseBtnText', resources)}
             </button>
