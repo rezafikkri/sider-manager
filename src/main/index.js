@@ -13,6 +13,7 @@ import {
   saveSettings,
   isPESDirectorySetup,
   initializeSettings,
+  chooseAdvancedExecutable,
 } from './services/settings';
 import { activate, checkLicenseKeyHasBeenUsed, isActivated, releasedAt } from './services/activation';
 import { playGame } from './services/play-game';
@@ -78,6 +79,7 @@ app.whenReady().then(() => {
 
   ipcMain.handle('getLocaleResources', getLocaleResources);
   ipcMain.handle('getSettings', getSettings);
+  ipcMain.handle('chooseAdvancedExecutable', chooseAdvancedExecutable);
   ipcMain.handle('saveSettings', (_, settings) => saveSettings(settings));
   ipcMain.handle('isActivated', isActivated);
   ipcMain.handle('checkLicenseKeyHasBeenUsed', checkLicenseKeyHasBeenUsed);
@@ -107,7 +109,6 @@ app.whenReady().then(() => {
   ipcMain.handle('createAboutWindow', () => createAboutWindow(mainWindowObj.mainWindow));
   ipcMain.handle('getAppVersion', () => app.getVersion());
 
-  ipcMain.handle('backup', backup);
   ipcMain.handle('chooseInitializationFile', chooseInitializationFile);
   ipcMain.handle('addonInitialization', (_, fileName, filePath) => addonInitialization(fileName, filePath));
   ipcMain.handle('readSiderIni', (_, pesDirectory) => readSiderIni(pesDirectory));

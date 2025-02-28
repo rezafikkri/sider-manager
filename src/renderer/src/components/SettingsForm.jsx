@@ -8,23 +8,29 @@ export default function SettingsForm() {
   const keyInputPESExe = useId();
   const keyInputSiderExe = useId();
   const keyInputDirectory = useId();
+  const keyInputAdvancedExe = useId();
   const [pesDirectory, setPESDirectory] = useState('');
   const [pesExe, setPESExe] = useState('');
   const [siderExe, setSiderExe] = useState('');
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [advancedExe, setAdvancedExe] = useState('');
 
   const [errors, setErrors] = useState([]);
-
-  const inputDirectoryRef = useRef(null);
-  useEffect(() => {
-    inputDirectoryRef.current.scrollLeft = inputDirectoryRef.current.scrollWidth;
-  }, [pesDirectory]);
 
   async function handleFormSubmit(e) {
     e.preventDefault();
 
     // check if executable file is in the pes directory
     let error = false;
+
+    if (advancedExe.trim() === '') {
+      setErrors(errors => [
+        ...errors,
+        { id: errors.length + 1, message: translate(locale, 'advancedExeInput.error', resources) },
+      ]);
+      error = true;
+    }
+
     if (!await window.sm.isPESExecutableExist(pesDirectory, pesExe)) {
       setErrors(errors => [
         ...errors,
@@ -44,8 +50,9 @@ export default function SettingsForm() {
     if (error) return false;
 
     const isSaved = await window.sm.saveSettings({
-      pesDirectory: pesDirectory,
+      pesDirectory,
       pesExecutable: [pesExe, siderExe],
+      advancedExe,
     });
     if (isSaved) {
       setErrors([]);
@@ -58,6 +65,14 @@ export default function SettingsForm() {
 
     if (pesDirectory) {
       setPESDirectory(pesDirectory);
+    }
+  }
+
+  async function handleChooseAdvancedExe() {
+    const advancedExe = await window.sm.chooseAdvancedExecutable();
+
+    if (advancedExe) {
+      setAdvancedExe(advancedExe);
     }
   }
 
@@ -75,14 +90,25 @@ export default function SettingsForm() {
       setPESDirectory(settings.pesDirectory);
       setPESExe(settings.pesExecutable[0]);
       setSiderExe(settings.pesExecutable[1]);
+      if (settings.advancedExe) setAdvancedExe(settings.advancedExe);
     }
     getSettings();
   }, []);
 
+  const inputDirectoryRef = useRef(null);
+  const advancedExeInputRef = useRef(null);
+  useEffect(() => {
+    if (pesDirectory !== '') {
+      inputDirectoryRef.current.scrollLeft = inputDirectoryRef.current.scrollWidth;
+    }
+    if (advancedExe !== '') {
+      advancedExeInputRef.current.scrollLeft = advancedExeInputRef.current.scrollWidth;
+    }
+  }, [pesDirectory, advancedExe]);
+
   return (
     <div className="relative">
       <form onSubmit={handleFormSubmit}>
-
         <div className="flex items-center mb-7">
           <div className="flex-1 me-5">
             <label
@@ -164,6 +190,41 @@ export default function SettingsForm() {
             onChange={handleOnChangeSiderExeInput}
             spellCheck="false"
           />
+        </div>
+
+        <div className="flex items-center mb-7">
+          <div className="flex-1 me-5">
+            <label
+              htmlFor={keyInputAdvancedExe}
+              className="inline-block font-semibold mb-2 text-white/90"
+            >
+              {translate(locale, 'advancedExeInput.labelText', resources)}
+            </label>
+            <small className="block text-white/80">
+              {translate(locale, 'advancedExeInput.smallText', resources)}
+            </small>
+          </div>
+          <div className="flex outline outline-2 outline-transparent has-[:focus]:outline-offset-2 has-[:focus]:outline-green-700 rounded-lg w-80">
+            <input
+              ref={advancedExeInputRef}
+              id={keyInputAdvancedExe}
+              type="text"
+              className="flex-auto block w-full px-3 py-2 outline-0 bg-d-input-bg rounded-l-lg"
+              placeholder={translate(locale, 'advancedExeInput.inputPlaceholder', resources)}
+              spellCheck="false"
+              name="advancedExe"
+              onBlur={(e) => e.target.scrollLeft = e.target.scrollWidth}
+              value={advancedExe}
+              onChange={(e) => setAdvancedExe(e.target.value)}
+            />
+            <button
+              type="button"
+              className="flex-none bg-[#1B191F] hover:bg-[#1D1B22] rounded-r-lg px-4 transition-colors duration-100 font-medium text-white/90"
+              onClick={handleChooseAdvancedExe}
+            >
+              {translate(locale, 'advancedExeInput.chooseBtnText', resources)}
+            </button>
+          </div>
         </div>
 
         <div className="flex justify-end mt-8">

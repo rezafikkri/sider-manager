@@ -7,6 +7,7 @@ const sm = {
   getSettings: () => ipcRenderer.invoke('getSettings'),
   isPESExecutableExist: (pesDirectory, pesExe) => ipcRenderer.invoke('isPESExecutableExist', pesDirectory, pesExe),
   saveSettings: (settings) => ipcRenderer.invoke('saveSettings', settings),
+  chooseAdvancedExecutable: () => ipcRenderer.invoke('chooseAdvancedExecutable'),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

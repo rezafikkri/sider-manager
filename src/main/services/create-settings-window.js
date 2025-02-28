@@ -13,7 +13,7 @@ export default function createSettingsWindow(parentWindow) {
   // Create settings window
   const settingsWindow = new BrowserWindow({
     width: 800,
-    height: 360,
+    height: 460,
     show: false,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {

@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, dialog } from 'electron';
 import path from 'node:path';
 import { readFileSync, writeFileSync } from 'node:fs';
 import createMainWindow from './create-main-window';
@@ -37,6 +37,22 @@ async function choosePESDirectory() {
   return await chooseDirectory(title);
 }
 
+async function chooseAdvancedExecutable() {
+  const { locale } = getSettings();
+  const localeResources = getLocaleResources();
+  const title = translate(locale, 'advancedExeInput.dialogTitle', localeResources);
+
+  const directoryObj = await dialog.showOpenDialog({
+    title,
+    properties: ['openFile'],
+  });
+  if (!directoryObj.canceled) {
+    return directoryObj.filePaths[0];
+  }
+
+  return false;
+}
+
 function saveSettings(settings) {
   const oldSettings = getSettings();
   writeFileSync(getSettingsFilePath(), JSON.stringify({ ...oldSettings, ...settings }));
@@ -56,9 +72,9 @@ function initializeSettings(pesDirectory, mainWindowObj) {
     pesExecutable: ['PES2017.exe', 'sider.exe'],
   };
   saveSettings(settings);
-  
+
   // close initilization window and show main window
-  BrowserWindow.getFocusedWindow().close(); 
+  BrowserWindow.getFocusedWindow().close();
   mainWindowObj.mainWindow = createMainWindow();
   return true;
 }
@@ -72,4 +88,5 @@ export {
   initializeSettings,
   saveSettings,
   deleteSetting,
+  chooseAdvancedExecutable,
 };

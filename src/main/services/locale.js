@@ -99,6 +99,14 @@ const resources = {
       directorySmallText: 'Silahkan pilih atau masukkan lokasi direktori di mana kamu menginstall PES 2017.',
       dialogTitle: 'Pilih direktori PES 2017',
     },
+    advancedExeInput: {
+      dialogTitle: 'Pilih executable advanced',
+      labelText: 'Executable Advanced',
+      chooseBtnText: 'Pilih',
+      inputPlaceholder: 'Masukkan lokasi file executable',
+      smallText: 'Silahkan pilih atau masukkan lokasi file executable advanced.',
+      error: 'Executable advanced tidak boleh kosong.',
+    },
     playGameBtn: {
       btnText: 'Bermain Game',
       error: {
@@ -294,6 +302,14 @@ const resources = {
       directorySmallText: 'Please choose or enter the directory location where you installed PES 2017.',
       dialogTitle: 'Choose the PES 2017 directory',
     },
+    advancedExeInput: {
+      dialogTitle: 'Choose advanced executable',
+      labelText: 'Advanced Executable',
+      chooseBtnText: 'Choose',
+      inputPlaceholder: 'Enter the location of the executable file',
+      smallText: 'Please choose or enter the location of the advanced executable file.',
+      error: 'Advanced executable cannot be empty.',
+    },
     playGameBtn: {
       btnText: 'Play Game',
       error: {
@@ -378,7 +394,6 @@ const resources = {
       },
       successDeleteAlertMsg: 'Press Room successfully deleted.',
     },
-
     modalWithSimpleConfigForm: {
       dialogTitle: 'Choose new :param directory you want to add.',
       errorAlertMsgWithCpk: ':param wrong. Make sure after directory name is common directory (example: <strong>Reza Fikkri\\common</strong>) and make sure in common directory no .cpk file!',
